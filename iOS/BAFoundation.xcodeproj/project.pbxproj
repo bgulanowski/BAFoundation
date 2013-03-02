@@ -1,0 +1,355 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		84A0D22116E2724F0010D80D /* BACoreDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D20A16E2724F0010D80D /* BACoreDataManager.h */; };
+		84A0D22216E2724F0010D80D /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D20B16E2724F0010D80D /* BACoreDataManager.m */; };
+		84A0D22316E2724F0010D80D /* BAMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D20C16E2724F0010D80D /* BAMacros.h */; };
+		84A0D22416E2724F0010D80D /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D20D16E2724F0010D80D /* BARelationshipProxy.h */; };
+		84A0D22516E2724F0010D80D /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D20E16E2724F0010D80D /* BARelationshipProxy.m */; };
+		84A0D22616E2724F0010D80D /* BASampleArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D20F16E2724F0010D80D /* BASampleArray.h */; };
+		84A0D22716E2724F0010D80D /* BASampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21016E2724F0010D80D /* BASampleArray.m */; };
+		84A0D22816E2724F0010D80D /* BASparseBitArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21116E2724F0010D80D /* BASparseBitArray.h */; };
+		84A0D22916E2724F0010D80D /* BASparseBitArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21216E2724F0010D80D /* BASparseBitArray.m */; };
+		84A0D22A16E2724F0010D80D /* BAUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21316E2724F0010D80D /* BAUUID.h */; };
+		84A0D22B16E2724F0010D80D /* BAUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21416E2724F0010D80D /* BAUUID.m */; };
+		84A0D22C16E2724F0010D80D /* DateTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21516E2724F0010D80D /* DateTransformer.h */; };
+		84A0D22D16E2724F0010D80D /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21616E2724F0010D80D /* DateTransformer.m */; };
+		84A0D22E16E2724F0010D80D /* FloatNumberTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21716E2724F0010D80D /* FloatNumberTransformer.h */; };
+		84A0D22F16E2724F0010D80D /* FloatNumberTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21816E2724F0010D80D /* FloatNumberTransformer.m */; };
+		84A0D23016E2724F0010D80D /* IntegerNumberTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21916E2724F0010D80D /* IntegerNumberTransformer.h */; };
+		84A0D23116E2724F0010D80D /* IntegerNumberTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21A16E2724F0010D80D /* IntegerNumberTransformer.m */; };
+		84A0D23216E2724F0010D80D /* NSManagedObject+BAAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21B16E2724F0010D80D /* NSManagedObject+BAAdditions.h */; };
+		84A0D23316E2724F0010D80D /* NSManagedObject+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21C16E2724F0010D80D /* NSManagedObject+BAAdditions.m */; };
+		84A0D23416E2724F0010D80D /* NSManagedObjectContext+BAAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21D16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.h */; };
+		84A0D23516E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21E16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m */; };
+		84A0D23616E2724F0010D80D /* NSObject+PlistTransforming.h in Headers */ = {isa = PBXBuildFile; fileRef = 84A0D21F16E2724F0010D80D /* NSObject+PlistTransforming.h */; };
+		84A0D23716E2724F0010D80D /* NSObject+PlistTransforming.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D22016E2724F0010D80D /* NSObject+PlistTransforming.m */; };
+		84A0D23916E2728A0010D80D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A0D23816E2728A0010D80D /* UIKit.framework */; };
+		B6AAB6CE14C21B9A0007A0A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AAB6CD14C21B9A0007A0A4 /* Foundation.framework */; };
+		B6AAB6E214C21BC20007A0A4 /* BABitArray.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6DA14C21BC20007A0A4 /* BABitArray.h */; };
+		B6AAB6E314C21BC20007A0A4 /* BABitArray.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DB14C21BC20007A0A4 /* BABitArray.m */; };
+		B6AAB6E414C21BC20007A0A4 /* BAGraphNode.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6DC14C21BC20007A0A4 /* BAGraphNode.h */; };
+		B6AAB6E514C21BC20007A0A4 /* BAGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */; };
+		B6AAB6E614C21BC20007A0A4 /* BANoiseMaker.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6DE14C21BC20007A0A4 /* BANoiseMaker.h */; };
+		B6AAB6E714C21BC20007A0A4 /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DF14C21BC20007A0A4 /* BANoiseMaker.m */; };
+		B6AAB6E814C21BC20007A0A4 /* BATextIOHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6E014C21BC20007A0A4 /* BATextIOHandler.h */; };
+		B6AAB6E914C21BC20007A0A4 /* BATextIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6E114C21BC20007A0A4 /* BATextIOHandler.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		84A0D20A16E2724F0010D80D /* BACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BACoreDataManager.h; path = ../../BACoreDataManager.h; sourceTree = "<group>"; };
+		84A0D20B16E2724F0010D80D /* BACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BACoreDataManager.m; path = ../../BACoreDataManager.m; sourceTree = "<group>"; };
+		84A0D20C16E2724F0010D80D /* BAMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BAMacros.h; path = ../../BAMacros.h; sourceTree = "<group>"; };
+		84A0D20D16E2724F0010D80D /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BARelationshipProxy.h; path = ../../BARelationshipProxy.h; sourceTree = "<group>"; };
+		84A0D20E16E2724F0010D80D /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BARelationshipProxy.m; path = ../../BARelationshipProxy.m; sourceTree = "<group>"; };
+		84A0D20F16E2724F0010D80D /* BASampleArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BASampleArray.h; path = ../../BASampleArray.h; sourceTree = "<group>"; };
+		84A0D21016E2724F0010D80D /* BASampleArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BASampleArray.m; path = ../../BASampleArray.m; sourceTree = "<group>"; };
+		84A0D21116E2724F0010D80D /* BASparseBitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BASparseBitArray.h; path = ../../BASparseBitArray.h; sourceTree = "<group>"; };
+		84A0D21216E2724F0010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BASparseBitArray.m; path = ../../BASparseBitArray.m; sourceTree = "<group>"; };
+		84A0D21316E2724F0010D80D /* BAUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BAUUID.h; path = ../../BAUUID.h; sourceTree = "<group>"; };
+		84A0D21416E2724F0010D80D /* BAUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BAUUID.m; path = ../../BAUUID.m; sourceTree = "<group>"; };
+		84A0D21516E2724F0010D80D /* DateTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateTransformer.h; path = ../../DateTransformer.h; sourceTree = "<group>"; };
+		84A0D21616E2724F0010D80D /* DateTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateTransformer.m; path = ../../DateTransformer.m; sourceTree = "<group>"; };
+		84A0D21716E2724F0010D80D /* FloatNumberTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FloatNumberTransformer.h; path = ../../FloatNumberTransformer.h; sourceTree = "<group>"; };
+		84A0D21816E2724F0010D80D /* FloatNumberTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FloatNumberTransformer.m; path = ../../FloatNumberTransformer.m; sourceTree = "<group>"; };
+		84A0D21916E2724F0010D80D /* IntegerNumberTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IntegerNumberTransformer.h; path = ../../IntegerNumberTransformer.h; sourceTree = "<group>"; };
+		84A0D21A16E2724F0010D80D /* IntegerNumberTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IntegerNumberTransformer.m; path = ../../IntegerNumberTransformer.m; sourceTree = "<group>"; };
+		84A0D21B16E2724F0010D80D /* NSManagedObject+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+BAAdditions.h"; path = "../../NSManagedObject+BAAdditions.h"; sourceTree = "<group>"; };
+		84A0D21C16E2724F0010D80D /* NSManagedObject+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+BAAdditions.m"; path = "../../NSManagedObject+BAAdditions.m"; sourceTree = "<group>"; };
+		84A0D21D16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectContext+BAAdditions.h"; path = "../../NSManagedObjectContext+BAAdditions.h"; sourceTree = "<group>"; };
+		84A0D21E16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+BAAdditions.m"; path = "../../NSManagedObjectContext+BAAdditions.m"; sourceTree = "<group>"; };
+		84A0D21F16E2724F0010D80D /* NSObject+PlistTransforming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+PlistTransforming.h"; path = "../../NSObject+PlistTransforming.h"; sourceTree = "<group>"; };
+		84A0D22016E2724F0010D80D /* NSObject+PlistTransforming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+PlistTransforming.m"; path = "../../NSObject+PlistTransforming.m"; sourceTree = "<group>"; };
+		84A0D23816E2728A0010D80D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		B6AAB6CA14C21B9A0007A0A4 /* libBAFoundation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBAFoundation.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6AAB6CD14C21B9A0007A0A4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B6AAB6D114C21B9A0007A0A4 /* BAFoundation-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BAFoundation-Prefix.pch"; sourceTree = "<group>"; };
+		B6AAB6DA14C21BC20007A0A4 /* BABitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BABitArray.h; path = ../../BABitArray.h; sourceTree = "<group>"; };
+		B6AAB6DB14C21BC20007A0A4 /* BABitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BABitArray.m; path = ../../BABitArray.m; sourceTree = "<group>"; };
+		B6AAB6DC14C21BC20007A0A4 /* BAGraphNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BAGraphNode.h; path = ../../BAGraphNode.h; sourceTree = "<group>"; };
+		B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BAGraphNode.m; path = ../../BAGraphNode.m; sourceTree = "<group>"; };
+		B6AAB6DE14C21BC20007A0A4 /* BANoiseMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BANoiseMaker.h; path = ../../BANoiseMaker.h; sourceTree = "<group>"; };
+		B6AAB6DF14C21BC20007A0A4 /* BANoiseMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BANoiseMaker.m; path = ../../BANoiseMaker.m; sourceTree = "<group>"; };
+		B6AAB6E014C21BC20007A0A4 /* BATextIOHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BATextIOHandler.h; path = ../../BATextIOHandler.h; sourceTree = "<group>"; };
+		B6AAB6E114C21BC20007A0A4 /* BATextIOHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BATextIOHandler.m; path = ../../BATextIOHandler.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B6AAB6C714C21B9A0007A0A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6AAB6CE14C21B9A0007A0A4 /* Foundation.framework in Frameworks */,
+				84A0D23916E2728A0010D80D /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B6AAB6BF14C21B9A0007A0A4 = {
+			isa = PBXGroup;
+			children = (
+				B6AAB6CF14C21B9A0007A0A4 /* BAFoundation */,
+				B6AAB6CC14C21B9A0007A0A4 /* Frameworks */,
+				B6AAB6CB14C21B9A0007A0A4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B6AAB6CB14C21B9A0007A0A4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6AAB6CA14C21B9A0007A0A4 /* libBAFoundation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B6AAB6CC14C21B9A0007A0A4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B6AAB6CD14C21B9A0007A0A4 /* Foundation.framework */,
+				84A0D23816E2728A0010D80D /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B6AAB6CF14C21B9A0007A0A4 /* BAFoundation */ = {
+			isa = PBXGroup;
+			children = (
+				B6AAB6DA14C21BC20007A0A4 /* BABitArray.h */,
+				B6AAB6DB14C21BC20007A0A4 /* BABitArray.m */,
+				84A0D20A16E2724F0010D80D /* BACoreDataManager.h */,
+				84A0D20B16E2724F0010D80D /* BACoreDataManager.m */,
+				B6AAB6DC14C21BC20007A0A4 /* BAGraphNode.h */,
+				B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */,
+				84A0D20C16E2724F0010D80D /* BAMacros.h */,
+				B6AAB6DE14C21BC20007A0A4 /* BANoiseMaker.h */,
+				B6AAB6DF14C21BC20007A0A4 /* BANoiseMaker.m */,
+				84A0D20D16E2724F0010D80D /* BARelationshipProxy.h */,
+				84A0D20E16E2724F0010D80D /* BARelationshipProxy.m */,
+				84A0D20F16E2724F0010D80D /* BASampleArray.h */,
+				84A0D21016E2724F0010D80D /* BASampleArray.m */,
+				84A0D21116E2724F0010D80D /* BASparseBitArray.h */,
+				84A0D21216E2724F0010D80D /* BASparseBitArray.m */,
+				B6AAB6E014C21BC20007A0A4 /* BATextIOHandler.h */,
+				B6AAB6E114C21BC20007A0A4 /* BATextIOHandler.m */,
+				84A0D21316E2724F0010D80D /* BAUUID.h */,
+				84A0D21416E2724F0010D80D /* BAUUID.m */,
+				84A0D21516E2724F0010D80D /* DateTransformer.h */,
+				84A0D21616E2724F0010D80D /* DateTransformer.m */,
+				84A0D21716E2724F0010D80D /* FloatNumberTransformer.h */,
+				84A0D21816E2724F0010D80D /* FloatNumberTransformer.m */,
+				84A0D21916E2724F0010D80D /* IntegerNumberTransformer.h */,
+				84A0D21A16E2724F0010D80D /* IntegerNumberTransformer.m */,
+				84A0D21B16E2724F0010D80D /* NSManagedObject+BAAdditions.h */,
+				84A0D21C16E2724F0010D80D /* NSManagedObject+BAAdditions.m */,
+				84A0D21D16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.h */,
+				84A0D21E16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m */,
+				84A0D21F16E2724F0010D80D /* NSObject+PlistTransforming.h */,
+				84A0D22016E2724F0010D80D /* NSObject+PlistTransforming.m */,
+				B6AAB6D014C21B9A0007A0A4 /* Supporting Files */,
+			);
+			path = BAFoundation;
+			sourceTree = "<group>";
+		};
+		B6AAB6D014C21B9A0007A0A4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B6AAB6D114C21B9A0007A0A4 /* BAFoundation-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		B6AAB6C814C21B9A0007A0A4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6AAB6E214C21BC20007A0A4 /* BABitArray.h in Headers */,
+				B6AAB6E414C21BC20007A0A4 /* BAGraphNode.h in Headers */,
+				B6AAB6E614C21BC20007A0A4 /* BANoiseMaker.h in Headers */,
+				B6AAB6E814C21BC20007A0A4 /* BATextIOHandler.h in Headers */,
+				84A0D22116E2724F0010D80D /* BACoreDataManager.h in Headers */,
+				84A0D22316E2724F0010D80D /* BAMacros.h in Headers */,
+				84A0D22416E2724F0010D80D /* BARelationshipProxy.h in Headers */,
+				84A0D22616E2724F0010D80D /* BASampleArray.h in Headers */,
+				84A0D22816E2724F0010D80D /* BASparseBitArray.h in Headers */,
+				84A0D22A16E2724F0010D80D /* BAUUID.h in Headers */,
+				84A0D22C16E2724F0010D80D /* DateTransformer.h in Headers */,
+				84A0D22E16E2724F0010D80D /* FloatNumberTransformer.h in Headers */,
+				84A0D23016E2724F0010D80D /* IntegerNumberTransformer.h in Headers */,
+				84A0D23216E2724F0010D80D /* NSManagedObject+BAAdditions.h in Headers */,
+				84A0D23416E2724F0010D80D /* NSManagedObjectContext+BAAdditions.h in Headers */,
+				84A0D23616E2724F0010D80D /* NSObject+PlistTransforming.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		B6AAB6C914C21B9A0007A0A4 /* BAFoundation */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6AAB6D714C21B9A0007A0A4 /* Build configuration list for PBXNativeTarget "BAFoundation" */;
+			buildPhases = (
+				B6AAB6C614C21B9A0007A0A4 /* Sources */,
+				B6AAB6C714C21B9A0007A0A4 /* Frameworks */,
+				B6AAB6C814C21B9A0007A0A4 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BAFoundation;
+			productName = BAFoundation;
+			productReference = B6AAB6CA14C21B9A0007A0A4 /* libBAFoundation.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B6AAB6C114C21B9A0007A0A4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Marketcircle Inc";
+			};
+			buildConfigurationList = B6AAB6C414C21B9A0007A0A4 /* Build configuration list for PBXProject "BAFoundation" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B6AAB6BF14C21B9A0007A0A4;
+			productRefGroup = B6AAB6CB14C21B9A0007A0A4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6AAB6C914C21B9A0007A0A4 /* BAFoundation */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B6AAB6C614C21B9A0007A0A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6AAB6E314C21BC20007A0A4 /* BABitArray.m in Sources */,
+				B6AAB6E514C21BC20007A0A4 /* BAGraphNode.m in Sources */,
+				B6AAB6E714C21BC20007A0A4 /* BANoiseMaker.m in Sources */,
+				B6AAB6E914C21BC20007A0A4 /* BATextIOHandler.m in Sources */,
+				84A0D22216E2724F0010D80D /* BACoreDataManager.m in Sources */,
+				84A0D22516E2724F0010D80D /* BARelationshipProxy.m in Sources */,
+				84A0D22716E2724F0010D80D /* BASampleArray.m in Sources */,
+				84A0D22916E2724F0010D80D /* BASparseBitArray.m in Sources */,
+				84A0D22B16E2724F0010D80D /* BAUUID.m in Sources */,
+				84A0D22D16E2724F0010D80D /* DateTransformer.m in Sources */,
+				84A0D22F16E2724F0010D80D /* FloatNumberTransformer.m in Sources */,
+				84A0D23116E2724F0010D80D /* IntegerNumberTransformer.m in Sources */,
+				84A0D23316E2724F0010D80D /* NSManagedObject+BAAdditions.m in Sources */,
+				84A0D23516E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m in Sources */,
+				84A0D23716E2724F0010D80D /* NSObject+PlistTransforming.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B6AAB6D514C21B9A0007A0A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B6AAB6D614C21B9A0007A0A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B6AAB6D814C21B9A0007A0A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BAFoundation.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BAFoundation/BAFoundation-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B6AAB6D914C21B9A0007A0A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/BAFoundation.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "BAFoundation/BAFoundation-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B6AAB6C414C21B9A0007A0A4 /* Build configuration list for PBXProject "BAFoundation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6AAB6D514C21B9A0007A0A4 /* Debug */,
+				B6AAB6D614C21B9A0007A0A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6AAB6D714C21B9A0007A0A4 /* Build configuration list for PBXNativeTarget "BAFoundation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6AAB6D814C21B9A0007A0A4 /* Debug */,
+				B6AAB6D914C21B9A0007A0A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B6AAB6C114C21B9A0007A0A4 /* Project object */;
+}
