@@ -194,6 +194,7 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
 
 @synthesize updateBlock=_updateBlock;
 @synthesize buildBlock=_enlargeBlock;
+@synthesize expandBlock=_expandBlock;
 
 @synthesize bits=_bits;
 @synthesize children=_children;

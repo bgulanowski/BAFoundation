@@ -60,6 +60,10 @@ extern void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t
 
 @interface BASparseBitArray : NSObject {
     
+    SparseArrayUpdate _updateBlock;
+    SparseArrayBuild _enlargeBlock;
+    SparseArrayExpand _expandBlock;
+    
     BABitArray *_bits; // storage for leaf nodes
     NSMutableArray *_children; // storage for interior nodes
     
