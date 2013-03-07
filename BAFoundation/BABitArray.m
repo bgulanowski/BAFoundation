@@ -380,6 +380,9 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 
 NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	
+    if(range.length == 0)
+        return 0;
+    
 	NSUInteger first = range.location/bitsInChar;
 	NSUInteger last = (range.location+range.length-1)/bitsInChar;
 	NSUInteger start = range.location%bitsInChar;
