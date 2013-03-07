@@ -30,6 +30,12 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 NSUInteger bitsInChar = NSNotFound;
 
+#pragma mark - Accessors
+- (NSData *)bufferData {
+    return [NSData dataWithBytes:buffer length:bufferLength];
+}
+
+
 #pragma mark - NSObject
 + (void)initialize {
 	if(NSNotFound == bitsInChar) {

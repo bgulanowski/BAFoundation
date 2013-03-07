@@ -58,7 +58,7 @@ extern void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t
 
 @class BABitArray;
 
-@interface BASparseBitArray : NSObject {
+@interface BASparseBitArray : NSObject<NSCoding> {
     
     SparseArrayUpdate _updateBlock;
     SparseArrayBuild _enlargeBlock;
@@ -76,6 +76,8 @@ extern void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t
     NSUInteger _leafSize; // maximum storable bits in a leaf node: base^power
     NSUInteger _treeSize; // maximum storable bits for the while sub-tree: treeBase^power = (base * 2^level)^power = leafSize * 2^(level+power)
     NSUInteger _treeBase; // size of each dimension of the whole sub-tree: base * 2^level
+    
+    BOOL _enableArchiveCompression;
 }
 
 @property (nonatomic, strong) SparseArrayUpdate updateBlock;
@@ -94,6 +96,10 @@ extern void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t
 @property (nonatomic, readonly) NSUInteger leafSize;
 @property (nonatomic, readonly) NSUInteger treeSize;
 @property (nonatomic, readonly) NSUInteger treeBase;
+
+@property (nonatomic, readonly) NSUInteger count;
+
+@property (nonatomic) BOOL enableArchiveCompression;
 
 // The initial tree always has two levels (0 and 1)
 // The root, at level 1, has <scale> children, all leaves, each with <leafSize> storage

@@ -8,7 +8,9 @@
 
 #import "BASparseBitArray.h"
 
-#import <BAFoundation/BABitArray.h>
+#import "NSData+GZip.h"
+
+#import "BABitArray.h"
 
 
 uint32_t powersOf2[TABLE_SIZE];
@@ -208,6 +210,7 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
 @synthesize leafSize=_leafSize;
 @synthesize treeSize=_treeSize;
 @synthesize treeBase=_treeBase;
+@synthesize enableArchiveCompression=_enableArchiveCompression;
 
 
 #pragma mark - Private
@@ -403,6 +406,17 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
     return _bits;
 }
 
+- (NSUInteger)count {
+    if(_bits)
+        return [_bits count];
+    NSUInteger count = 0;
+    for (BASparseBitArray *child in _children)
+        if([child isKindOfClass:[BASparseBitArray class]])
+            count += child.count;
+    
+    return count;
+}
+
 
 #pragma mark - NSObject
 + (void)initialize {
@@ -417,6 +431,38 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
             power <<= 1;
         }
     });
+}
+
+
+#pragma mark - NSCoding
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if(self) {
+        _base = [aDecoder decodeIntegerForKey:@"base"];
+        _power = [aDecoder decodeIntegerForKey:@"power"];
+        _level = [aDecoder decodeIntegerForKey:@"level"];
+        _scale = [aDecoder decodeIntegerForKey:@"scale"];
+        _leafSize = [aDecoder decodeIntegerForKey:@"leafSize"];
+        _treeSize = [aDecoder decodeIntegerForKey:@"treeSize"];
+        _treeBase = [aDecoder decodeIntegerForKey:@"treeBase"];
+        _bits = [aDecoder decodeObjectForKey:@"gzippedBits"] ?: [aDecoder decodeObjectForKey:@"bits"];
+        _children = [aDecoder decodeObjectForKey:@"children"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeInteger:_base forKey:@"base"];
+    [aCoder encodeInteger:_power forKey:@"power"];
+    [aCoder encodeInteger:_level forKey:@"level"];
+    [aCoder encodeInteger:_scale forKey:@"scale"];
+    [aCoder encodeInteger:_leafSize forKey:@"leafSize"];
+    [aCoder encodeInteger:_treeSize forKey:@"treeSize"];
+    [aCoder encodeInteger:_treeBase forKey:@"treeBase"];
+    if(_enableArchiveCompression)
+        [aCoder encodeObject:[[_bits bufferData] gzipDeflate] forKey:@"gzippedBits"];
+    else
+        [aCoder encodeObject:_bits forKey:@"bits"];
 }
 
 

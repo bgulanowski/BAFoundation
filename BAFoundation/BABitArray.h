@@ -16,6 +16,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 	NSUInteger count;        // number of set bits
 }
 
+@property (readonly) NSData *bufferData;
 @property (readonly) NSUInteger length;
 @property (readonly) NSUInteger count;
 
