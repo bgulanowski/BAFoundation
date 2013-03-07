@@ -60,6 +60,11 @@
 		84A0D25E16E27E270010D80D /* SparseBitArrayTest2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25916E27E270010D80D /* SparseBitArrayTest2D.m */; };
 		84A0D25F16E27E270010D80D /* SparseBitArrayTest3D.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */; };
 		84A0D26016E27E270010D80D /* SparseBitArrayTestBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */; };
+		84BBE63C16E8E35800AF371A /* NSData+GZip.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE63A16E8E35800AF371A /* NSData+GZip.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84BBE63D16E8E35800AF371A /* NSData+GZip.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE63A16E8E35800AF371A /* NSData+GZip.h */; };
+		84BBE63E16E8E35800AF371A /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE63B16E8E35800AF371A /* NSData+GZip.m */; };
+		84BBE63F16E8E35800AF371A /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE63B16E8E35800AF371A /* NSData+GZip.m */; };
+		84BBE64116E8EDBD00AF371A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 84BBE64016E8EDBD00AF371A /* libz.dylib */; };
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
@@ -139,6 +144,9 @@
 		84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTest3D.m; sourceTree = "<group>"; };
 		84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparseBitArrayTestBasic.h; sourceTree = "<group>"; };
 		84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTestBasic.m; sourceTree = "<group>"; };
+		84BBE63A16E8E35800AF371A /* NSData+GZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GZip.h"; sourceTree = "<group>"; };
+		84BBE63B16E8E35800AF371A /* NSData+GZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GZip.m"; sourceTree = "<group>"; };
+		84BBE64016E8EDBD00AF371A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BARelationshipProxy.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -179,6 +187,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BBE64116E8EDBD00AF371A /* libz.dylib in Frameworks */,
 				842C153015FD9BE600D5AE05 /* CoreData.framework in Frameworks */,
 				4E6B60981056B1E700027CCC /* Foundation.framework in Frameworks */,
 			);
@@ -216,6 +225,7 @@
 				4E4CC4F91338D37C007AD580 /* SenTestingKit.framework */,
 				842C152F15FD9BE600D5AE05 /* CoreData.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+				84BBE64016E8EDBD00AF371A /* libz.dylib */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
@@ -310,6 +320,8 @@
 		84A0D26216E27E8A0010D80D /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				84BBE63A16E8E35800AF371A /* NSData+GZip.h */,
+				84BBE63B16E8E35800AF371A /* NSData+GZip.m */,
 				842C151315FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h */,
 				842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */,
 				842C151515FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h */,
@@ -327,6 +339,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BBE63D16E8E35800AF371A /* NSData+GZip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +363,7 @@
 				B6F030FF14300C9C0087940B /* BANoiseMaker.h in Headers */,
 				841944EE1637322B0036C725 /* BASampleArray.h in Headers */,
 				84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */,
+				84BBE63C16E8E35800AF371A /* NSData+GZip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +546,7 @@
 				4E792AB4133A2EF2003C9B3E /* BAGraphNode.m in Sources */,
 				4E792AB5133A2EF3003C9B3E /* BATextIOHandler.m in Sources */,
 				4E792B13133A32BB003C9B3E /* BABitArray.m in Sources */,
+				84BBE63F16E8E35800AF371A /* NSData+GZip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +569,7 @@
 				841944EF1637322B0036C725 /* BASampleArray.m in Sources */,
 				84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */,
 				84A0D20716E271110010D80D /* BASparseBitArray.m in Sources */,
+				84BBE63E16E8E35800AF371A /* NSData+GZip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
