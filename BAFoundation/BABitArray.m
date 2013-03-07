@@ -102,13 +102,19 @@ NSUInteger bitsInChar = NSNotFound;
     [aCoder encodeObject:data forKey:key];
     [aCoder encodeInteger:(NSInteger)length forKey:@"length"];
     [aCoder encodeBool:enableArchiveCompression forKey:@"compressed"];
+    [aCoder encodeInteger:count forKey:@"count"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
     NSData *data = [aDecoder decodeObjectForKey:@"data"] ?: [[aDecoder decodeObjectForKey:@"gzippedData"] gzipInflate];
     self = [self initWithData:data length:[aDecoder decodeIntegerForKey:@"length"]];
-    if(self)
+    if(self) {
         enableArchiveCompression = [aDecoder decodeBoolForKey:@"compressed"];
+        
+        NSUInteger storedCount = [aDecoder decodeIntegerForKey:@"count"];
+        
+        NSAssert(storedCount == count, @"Reading from archive failed; bit count does not match. Expected: %ud; actual: %ud", (unsigned)storedCount, (unsigned)count);
+    }
     return self;
 }
 

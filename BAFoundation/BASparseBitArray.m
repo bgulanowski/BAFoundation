@@ -231,9 +231,11 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
         _treeBase = _base * powi(2, _level);
         _treeSize = _leafSize << (_level * _power);
 
-        _children = [[NSMutableArray alloc] init];
-        for (NSUInteger i=0; i<_scale; ++i)
-            [_children addObject:[NSNull null]];
+        if(_level > 0) {
+            _children = [[NSMutableArray alloc] init];
+            for (NSUInteger i=0; i<_scale; ++i)
+                [_children addObject:[NSNull null]];
+        }
     }
     
     return self;
@@ -398,23 +400,25 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
 
 #pragma mark - Accessors
 - (BABitArray *)bits {
-    if(!_bits) {
+    if(!_bits && _level == 0) {
         @synchronized(self) {
-            _bits = [[BABitArray alloc] initWithLength:_leafSize];
-            _bits.enableArchiveCompression = self.enableArchiveCompression;
+            if(!_bits) {
+                _bits = [[BABitArray alloc] initWithLength:_leafSize];
+                _bits.enableArchiveCompression = self.enableArchiveCompression;
+            }
         }
     }
     return _bits;
 }
 
 - (NSUInteger)count {
-    if(_bits)
+    if(_level == 0)
         return [_bits count];
+    
     NSUInteger count = 0;
     for (BASparseBitArray *child in _children)
         if([child isKindOfClass:[BASparseBitArray class]])
             count += child.count;
-    
     return count;
 }
 
@@ -446,8 +450,8 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
         _leafSize = [aDecoder decodeIntegerForKey:@"leafSize"];
         _treeSize = [aDecoder decodeIntegerForKey:@"treeSize"];
         _treeBase = [aDecoder decodeIntegerForKey:@"treeBase"];
-        _children = [aDecoder decodeObjectForKey:@"children"];
-        _bits = [aDecoder decodeObjectForKey:@"bits"];
+        _children = [[aDecoder decodeObjectForKey:@"children"] retain];
+        _bits = [[aDecoder decodeObjectForKey:@"bits"] retain];
     }
     return self;
 }
@@ -460,8 +464,10 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
     [aCoder encodeInteger:_leafSize forKey:@"leafSize"];
     [aCoder encodeInteger:_treeSize forKey:@"treeSize"];
     [aCoder encodeInteger:_treeBase forKey:@"treeBase"];
-    [aCoder encodeObject:_children forKey:@"children"];
-    [aCoder encodeObject:_bits forKey:@"bits"];
+    if(_bits)
+        [aCoder encodeObject:_bits forKey:@"bits"];
+    else if(_level > 0)
+        [aCoder encodeObject:_children forKey:@"children"];
 }
 
 
