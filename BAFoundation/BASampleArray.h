@@ -8,7 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BASampleArray : NSObject {
+@protocol BASampleArray <NSObject>
+
+- (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
+
+- (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index;
+- (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index;
+- (void)sample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates;
+- (void)setSample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates;
+
+@end
+
+@interface BASampleArray : NSObject<BASampleArray> {
     
     UInt8 *_samples;
     
@@ -24,13 +35,6 @@
 @property (nonatomic, readonly) NSUInteger order;
 @property (nonatomic, readonly) NSUInteger size;
 @property (nonatomic, readonly) NSUInteger count;
-
-- (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
-
-- (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index;
-- (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index;
-- (void)sample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates;
-- (void)setSample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates;
 
 - (UInt32)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y;
 - (void)setPageSample:(UInt32)sample atX:(NSUInteger)x y:(NSUInteger)y;
