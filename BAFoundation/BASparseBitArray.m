@@ -401,6 +401,7 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
     if(!_bits) {
         @synchronized(self) {
             _bits = [[BABitArray alloc] initWithLength:_leafSize];
+            _bits.enableArchiveCompression = self.enableArchiveCompression;
         }
     }
     return _bits;
@@ -445,8 +446,8 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
         _leafSize = [aDecoder decodeIntegerForKey:@"leafSize"];
         _treeSize = [aDecoder decodeIntegerForKey:@"treeSize"];
         _treeBase = [aDecoder decodeIntegerForKey:@"treeBase"];
-        _bits = [aDecoder decodeObjectForKey:@"gzippedBits"] ?: [aDecoder decodeObjectForKey:@"bits"];
         _children = [aDecoder decodeObjectForKey:@"children"];
+        _bits = [aDecoder decodeObjectForKey:@"bits"];
     }
     return self;
 }
@@ -459,10 +460,8 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
     [aCoder encodeInteger:_leafSize forKey:@"leafSize"];
     [aCoder encodeInteger:_treeSize forKey:@"treeSize"];
     [aCoder encodeInteger:_treeBase forKey:@"treeBase"];
-    if(_enableArchiveCompression)
-        [aCoder encodeObject:[[_bits bufferData] gzipDeflate] forKey:@"gzippedBits"];
-    else
-        [aCoder encodeObject:_bits forKey:@"bits"];
+    [aCoder encodeObject:_children forKey:@"children"];
+    [aCoder encodeObject:_bits forKey:@"bits"];
 }
 
 

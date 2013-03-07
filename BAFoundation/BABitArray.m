@@ -7,6 +7,8 @@
 
 #import "BABitArray.h"
 
+#import "NSData+GZip.h"
+
 
 void setBits(unsigned char *byte, NSUInteger start, NSUInteger end, BOOL set);
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
@@ -25,7 +27,7 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 @implementation BABitArray
 
-@synthesize length, count;
+@synthesize length, count, enableArchiveCompression;
 
 
 NSUInteger bitsInChar = NSNotFound;
@@ -89,29 +91,42 @@ NSUInteger bitsInChar = NSNotFound;
 
 #pragma mark - NSCoding
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+    
     NSData *data = [NSData dataWithBytesNoCopy:buffer length:bufferLength freeWhenDone:NO];
-    [aCoder encodeObject:data forKey:@"data"];
+    NSString *key = @"data";
+    if(enableArchiveCompression) {
+        data = [data gzipDeflate];
+        key = @"gzippedData";
+    }
+    
+    [aCoder encodeObject:data forKey:key];
     [aCoder encodeInteger:(NSInteger)length forKey:@"length"];
+    [aCoder encodeBool:enableArchiveCompression forKey:@"compressed"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super init];
-    if(self) {
-        NSData *data = [aDecoder decodeObjectForKey:@"data"];
-
-        bufferLength = [data length];
-        buffer = malloc(bufferLength);
-
-        if(buffer)
-            [data getBytes:buffer length:bufferLength];
-        length = (NSUInteger)[aDecoder decodeIntegerForKey:@"length"];
-        [self refreshCount];
-    }
+    NSData *data = [aDecoder decodeObjectForKey:@"data"] ?: [[aDecoder decodeObjectForKey:@"gzippedData"] gzipInflate];
+    self = [self initWithData:data length:[aDecoder decodeIntegerForKey:@"length"]];
+    if(self)
+        enableArchiveCompression = [aDecoder decodeBoolForKey:@"compressed"];
     return self;
 }
 
 
 #pragma mark - BABitArray
+- (id)initWithData:(NSData *)data length:(NSUInteger)bitsLength {
+    self = [super init];
+    if(self) {
+        bufferLength = [data length];
+        buffer = malloc(bufferLength);
+        
+        if(buffer)
+            [data getBytes:buffer length:bufferLength];
+        length = bitsLength;
+        [self refreshCount];
+    }
+    return self;
+}
 - (BOOL)bit:(NSUInteger)index {
 	if(index > length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];

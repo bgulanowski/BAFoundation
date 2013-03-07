@@ -14,7 +14,11 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 	NSUInteger bufferLength; // in bytes, rounded up
 	NSUInteger length;       // in bits as initialized
 	NSUInteger count;        // number of set bits
+    
+    BOOL enableArchiveCompression;
 }
+
+@property (nonatomic) BOOL enableArchiveCompression;
 
 @property (readonly) NSData *bufferData;
 @property (readonly) NSUInteger length;
@@ -40,6 +44,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (void)refreshCount;
 
 - (id)initWithLength:(NSUInteger)bits;
+- (id)initWithData:(NSData *)data length:(NSUInteger)length;
 
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits;
 + (BABitArray *)bitArray8;
