@@ -18,6 +18,13 @@ uint32_t powersOf8[TABLE_SIZE];
 
 #pragma mark - Private Functions
 
+/*
+ * The leaf index calculations first determine the maximum size of the hypercube containing the desired coordinates.
+ * Then they divide that space into 2^power partitions, and determine in which of those partitions the point lies.
+ * The index is a recursive sum which terminates when the the base of the partion, is 2 (partition size is 2^power
+ * where power = 2, 3, or however many dimensions the space contains).
+ */
+
 // Don't call recursive functions directly from class code
 static uint32_t LeafIndex2DRecursive(uint32_t x, uint32_t y, uint32_t l) {
     
