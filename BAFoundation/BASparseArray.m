@@ -18,11 +18,14 @@ uint32_t powersOf8[TABLE_SIZE];
 
 #pragma mark - Private Functions
 
-/*
- * The leaf index calculations first determine the maximum size of the hypercube containing the desired coordinates.
+/* The leaf index calculations first determine the maximum size of the hypercube containing the desired coordinates.
  * Then they divide that space into 2^power partitions, and determine in which of those partitions the point lies.
- * The index is a recursive sum which terminates when the the base of the partion, is 2 (partition size is 2^power
- * where power = 2, 3, or however many dimensions the space contains).
+ *
+ * Find the offset of the next child partition: the index of the child, from 0 to 2^power-1, multiplied by l^power,
+ * the size of each child partition. Offset the coordinates to be relative to the child partition's first element,
+ * then recursive call using the new coordinates and child size (half that of the parent).
+ *
+ * The index is a recursive sum which terminates when we cannot divide the children any more.
  */
 
 // Don't call recursive functions directly from class code
