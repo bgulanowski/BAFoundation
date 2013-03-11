@@ -52,7 +52,7 @@
 - (NSManagedObjectModel *)model {
 	
     if(!model) {
-        @synchronized(model) {
+        @synchronized(self) {
             if(!model)
                 model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[self modelURL]];
         }
@@ -64,9 +64,9 @@
 - (NSManagedObjectContext *)context {
 	
     if(!context) {
-        @synchronized(context) {
+        @synchronized(self) {
             if(nil == context) {
-                self.context = [NSManagedObjectContext newObjectContextWithModel:self.model
+                context = [NSManagedObjectContext newObjectContextWithModel:self.model
                                                                             type:[[self class] defaultStoreType]
                                                                         storeURL:[[self class] defaultStoreURL]];
                 [context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
@@ -80,7 +80,7 @@
 - (NSManagedObjectContext *)editingContext {
     
     if(!editingContext) {
-        @synchronized(editingContext) {
+        @synchronized(self) {
             if(!editingContext)
                 editingContext = [self.context editingContext];
         };

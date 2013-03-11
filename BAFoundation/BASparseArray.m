@@ -291,6 +291,7 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
         if(create) {
             child = [[[self class] alloc] initWithParent:self];
             [_children replaceObjectAtIndex:index withObject:child];
+            [child release];
             if(_enlargeBlock)
                 _enlargeBlock(self, index);
         }
@@ -416,6 +417,8 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
         newChild->_children = _children;
         _children = [[NSMutableArray alloc] init];
         [_children addObject:newChild];
+        [newChild release];
+        
         for (NSUInteger i=1; i<_scale; ++i)
             [_children addObject:[NSNull null]];
     }

@@ -30,7 +30,7 @@ static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger
 
 - (BASampleArray *)samples {
     if(!_samples && _level == 0) {
-        @synchronized(_samples) {
+        @synchronized(self) {
             if(!_samples) {
                 // self.base is the same thing as BASampleArray.order (Need to change the name on the latter)
                 _samples = [BASampleArray sampleArrayWithPower:self.power order:self.base size:_sampleSize];
