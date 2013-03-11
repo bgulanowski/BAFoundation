@@ -135,7 +135,8 @@
 }
 
 
-#pragma mark - SparseBitArray
+#pragma mark - BABitArray
+
 - (BOOL)bit:(NSUInteger)index {
     NSUInteger offset = 0;
     BASparseBitArray *leaf = (BASparseBitArray *)[self leafForStorageIndex:index offset:&offset];
@@ -174,6 +175,38 @@
         [self initializeChildren:^(BASparseArray *child) {
             [(BASparseBitArray *)child clearAll];
         }];
+}
+
+- (NSUInteger)firstSetBit {
+    
+    if(0 == _level)
+        return _bits ? [_bits firstSetBit] : NSNotFound;
+    
+    NSUInteger firstSetBit = NSNotFound;
+    
+    for (BASparseBitArray *child in self.children) {
+        firstSetBit = [child firstSetBit];
+        if(NSNotFound != firstSetBit)
+            break;
+    }
+    
+    return firstSetBit;
+}
+
+- (NSUInteger)lastSetBit {
+    
+    if(0 == _level)
+        return _bits ? [_bits lastSetBit] : NSNotFound;
+    
+    NSUInteger lastSetBit = NSNotFound;
+    
+    for (BASparseBitArray *child in [self.children reverseObjectEnumerator]) {
+        lastSetBit = [child firstSetBit];
+        if(NSNotFound != lastSetBit)
+            break;
+    }
+    
+    return lastSetBit;
 }
 
 

@@ -8,10 +8,10 @@
 
 #import <BAFoundation/BASparseArray.h>
 
+#import <BAFoundation/BABitArray.h>
 
-@class BABitArray;
 
-@interface BASparseBitArray : BASparseArray<NSCoding> {
+@interface BASparseBitArray : BASparseArray<NSCoding, BABitArray> {
     
     BABitArray *_bits; // storage for leaf data
     
@@ -20,18 +20,6 @@
 
 @property (nonatomic, strong) SparseArrayToggle toggleBlock;
 @property (nonatomic, strong) BABitArray *bits;
-
-@property (nonatomic, readonly) NSUInteger count;
-
-- (BOOL)bit:(NSUInteger)index;
-- (void)setBit:(NSUInteger)index;
-- (void)clearBit:(NSUInteger)index;
-
-- (void)setRange:(NSRange)range;
-- (void)clearRange:(NSRange)range;
-
-- (void)setAll;
-- (void)clearAll;
 
 // power 2 conveniences
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y;

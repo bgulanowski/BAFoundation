@@ -9,7 +9,30 @@
 typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
-@interface BABitArray : NSObject<NSCopying, NSCoding> {
+@protocol BABitArray <NSObject>
+
+@property (nonatomic, readonly) NSUInteger count;
+
+- (BOOL)bit:(NSUInteger)index;
+- (void)setBit:(NSUInteger)index;
+- (void)setRange:(NSRange)range;
+- (void)setAll;
+
+- (void)clearBit:(NSUInteger)index;
+- (void)clearRange:(NSRange)range;
+- (void)clearAll;
+
+- (NSUInteger)firstSetBit;
+- (NSUInteger)lastSetBit;
+
+@optional
+- (NSUInteger)firstClearBit;
+- (NSUInteger)lastClearBit;
+
+@end
+
+
+@interface BABitArray : NSObject<NSCopying, NSCoding, BABitArray> {
 	unsigned char *buffer;
 	NSUInteger bufferLength; // in bytes, rounded up
 	NSUInteger length;       // in bits as initialized
@@ -22,20 +45,6 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @property (readonly) NSData *bufferData;
 @property (readonly) NSUInteger length;
-@property (readonly) NSUInteger count;
-
-- (BOOL)bit:(NSUInteger)index;
-- (void)setBit:(NSUInteger)index;
-- (void)setRange:(NSRange)range;
-- (void)setAll;
-- (void)clearBit:(NSUInteger)index;
-- (void)clearRange:(NSRange)range;
-- (void)clearAll;
-
-- (NSUInteger)firstSetBit;
-- (NSUInteger)lastSetBit;
-- (NSUInteger)firstClearBit;
-- (NSUInteger)lastClearBit;
 
 - (NSUInteger)nextAfter:(NSUInteger)prev;
 - (void)enumerate:(BABitArrayEnumerator)block;
