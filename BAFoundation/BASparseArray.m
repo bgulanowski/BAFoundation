@@ -71,11 +71,26 @@ static uint32_t LeafIndex3DRecursive(uint32_t x, uint32_t y, uint32_t z, uint32_
     return result;
 }
 
-static uint32_t LeafIndexRecursive(uint32_t *coords, uint32_t count) {
+static uint32_t LeafIndexRecursive(uint32_t *coords, uint32_t count, uint32_t l) {
+    
+    l /= 2;
     
     uint32_t result = 0;
+    uint32_t childIndex = 0;
+    uint32_t offset = 1;
+
+    for (NSUInteger i=0; i<count; ++i) {
+        if(coords[i] >= l) {
+            coords[i] -= l;
+            childIndex += offset;
+        }
+        offset += 2;
+    }
     
-    // TODO: complete
+    if(l > 1)
+        result = powi(l, count)*childIndex + LeafIndexRecursive(coords, count, l);
+    else
+        result = childIndex;
     
     return result;
 }
@@ -179,11 +194,20 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
 
 uint32_t LeafIndexForCoordinates(uint32_t *coords, uint32_t base, uint32_t power) {
     
-    uint32_t result = 0;
+    if(power == 2)
+        return LeafIndexFor2DCoordinates(coords[0], coords[1], base);
     
-    // TODO:
+    if(power == 3)
+        return LeafIndexFor3DCoordinates(coords[0], coords[1], coords[2], base);
     
-    return result;
+    uint32_t max = 0;
+    
+    for(NSUInteger i=0; i<power; ++i) {
+        max = MAX(max, coords[i]);
+        coords[i]/=base;
+    }
+    
+    return max == 0 ? 0 : LeafIndexRecursive(coords, power, NextPowerOf2(max+1));
 }
 
 void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t power) {
