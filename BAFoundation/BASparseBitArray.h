@@ -11,14 +11,16 @@
 #import <BAFoundation/BABitArray.h>
 
 
+@class BASparseBitArray;
+
+typedef void(^SparseRangeUpdate)(BASparseBitArray *bitArray, NSRange range, BOOL set);
+
+
 @interface BASparseBitArray : BASparseArray<NSCoding, BABitArray> {
-    
+    SparseRangeUpdate _rangeUpdateBlock;
     BABitArray *_bits; // storage for leaf data
-    
-    SparseArrayToggle _toggleBlock;
 }
 
-@property (nonatomic, strong) SparseArrayToggle toggleBlock;
 @property (nonatomic, strong) BABitArray *bits;
 
 // power 2 conveniences

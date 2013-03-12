@@ -19,10 +19,11 @@ extern uint32_t powersOf8[TABLE_SIZE];
 @class BASparseArray;
 
 
-typedef void (^SparseArrayToggle)(BASparseArray *sparseArray, NSUInteger index, BOOL set);
-typedef void (^SparseArrayUpdate)(BASparseArray *sparseArray, NSUInteger index, void *newValue);
-typedef void  (^SparseArrayBuild)(BASparseArray *sparseArray, NSUInteger childIndex);
-typedef void (^SparseArrayExpand)(BASparseArray *sparseArray, NSUInteger newLevel);
+typedef void  (^SparseArrayUpdate)(BASparseArray *sparseArray, NSUInteger index, void *newValue);
+typedef void   (^SparseArrayBuild)(BASparseArray *sparseArray, NSUInteger childIndex);
+typedef void  (^SparseArrayExpand)(BASparseArray *sparseArray, NSUInteger newLevel);
+// This can be used for application-specific changes
+typedef void (^SparseArrayRefresh)(BASparseArray *sparseArray);
 
 
 static inline NSInteger powi ( NSInteger base, NSUInteger exp ) {
@@ -131,6 +132,8 @@ extern void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32
     
     SparseArrayBuild _enlargeBlock;
     SparseArrayExpand _expandBlock;
+    SparseArrayUpdate _updateBlock;
+    SparseArrayRefresh _refreshBlock;
     
     NSMutableArray *_children; // interior nodes
     
@@ -149,6 +152,8 @@ extern void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32
 
 @property (nonatomic, strong)  SparseArrayBuild buildBlock;
 @property (nonatomic, strong) SparseArrayExpand expandBlock;
+@property (nonatomic, strong) SparseArrayUpdate updateBlock;
+@property (nonatomic, strong) SparseArrayRefresh refreshBlock;
 
 @property (nonatomic, readonly) NSArray *children;
 

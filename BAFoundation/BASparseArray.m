@@ -231,6 +231,8 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
 
 @synthesize buildBlock=_enlargeBlock;
 @synthesize expandBlock=_expandBlock;
+@synthesize updateBlock=_updateBlock;
+@synthesize refreshBlock=_refreshBlock;
 
 @synthesize children=_children;
 

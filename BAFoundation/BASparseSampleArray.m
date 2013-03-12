@@ -23,7 +23,6 @@ static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger
 
 @implementation BASparseSampleArray
 
-@synthesize updateBlock=_updateBlock;
 @synthesize sampleSize=_sampleSize;
 
 #pragma mark - Accessors

@@ -13,7 +13,6 @@
 
 @interface BASparseSampleArray : BASparseArray<BASampleArray> {
     BASampleArray *_samples;
-    SparseArrayUpdate _updateBlock;
     NSUInteger _sampleSize;  // bytes per sample, starting at 1; default is 1
 }
 

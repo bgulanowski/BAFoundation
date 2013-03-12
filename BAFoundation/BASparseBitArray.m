@@ -35,15 +35,15 @@
     NSUInteger offset = 0;
     BASparseBitArray *leaf = (BASparseBitArray *)[self leafForStorageIndex:index offset:&offset];
     BABitArray *bits = leaf.bits;
-    SparseArrayToggle toggleBlock = leaf.toggleBlock;
+    SparseArrayUpdate updateBlock = leaf.updateBlock;
     
     index -= offset;
     if(setBit)
         [bits setBit:index];
     else
         [bits clearBit:index];
-    if(toggleBlock)
-        toggleBlock(self, index, setBit);
+    if(updateBlock)
+        updateBlock(self, index, (void *)&setBit);
 }
 
 - (void)updateRange:(NSRange)range set:(BOOL)setBits {
@@ -59,6 +59,8 @@
             [self.bits setRange:range];
         else
             [self.bits clearRange:range];
+        if(_rangeUpdateBlock)
+            _rangeUpdateBlock(self, range, setBits);
         return;
     }
     
@@ -111,7 +113,6 @@
 
 #pragma mark - NSObject
 - (void)dealloc {
-    self.toggleBlock = nil;
     self.bits = nil;
     [super dealloc];
 }
