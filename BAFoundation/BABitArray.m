@@ -146,7 +146,7 @@ NSUInteger bitsInChar = NSNotFound;
 
 - (void)setBit:(NSUInteger)index {
 	if(index > length)
-	[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
+        [NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
 
 	NSUInteger byte = index/bitsInChar;
 	NSUInteger bit = index%bitsInChar;
@@ -159,7 +159,7 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)setRange:(NSRange)range {
-    NSUInteger maxIndex = range.location+range.length;
+    NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
 	count += setRange(buffer, range, YES);
@@ -184,7 +184,7 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)clearRange:(NSRange)range {
-    NSUInteger maxIndex = range.location+range.length;
+    NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
 	count -= setRange(buffer, range, NO);
