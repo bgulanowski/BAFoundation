@@ -16,19 +16,20 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (BOOL)bit:(NSUInteger)index;
 
 - (void)setBit:(NSUInteger)index;
-- (void)setRange:(NSRange)range;
+- (void)setRange:(NSRange)bitRange;
 - (void)setAll;
 
 - (void)clearBit:(NSUInteger)index;
-- (void)clearRange:(NSRange)range;
+- (void)clearRange:(NSRange)bitRange;
 - (void)clearAll;
 
 - (NSUInteger)firstSetBit;
 - (NSUInteger)lastSetBit;
 
 @optional
-- (void)readBits:(BOOL *)bits range:(NSRange)range;
-- (void)writeBits:(BOOL * const)bits range:(NSRange)range;
+// ranges for readBits:range: and writeBits:range are bit ranges
+- (void)readBits:(BOOL *)bits range:(NSRange)bitRange;
+- (void)writeBits:(BOOL * const)bits range:(NSRange)bitRange;
 
 - (NSUInteger)firstClearBit;
 - (NSUInteger)lastClearBit;
@@ -56,8 +57,16 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (BOOL)checkCount;
 - (void)refreshCount;
 
+// range for readBytes:range: and writeBytes:range: is byte range (not bit range) 
+- (void)readBytes:(unsigned char *)bytes range:(NSRange)byteRange;
+- (void)writeBytes:(unsigned char *)bytes range:(NSRange)byteRange;
+
+- (NSData *)dataForRange:(NSRange)bitRange;
+
 - (id)initWithLength:(NSUInteger)bits;
 - (id)initWithData:(NSData *)data length:(NSUInteger)length;
+// otherArray must be of equal or greater length; bitRange must fit within otherArray length
+- (id)initWithBitArray:(BABitArray *)otherArray range:(NSRange)bitRange;
 
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits;
 + (BABitArray *)bitArray8;

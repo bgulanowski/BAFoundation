@@ -1,4 +1,4 @@
-//
+ //
 //  BABitArray.m
 //
 //  Created by Brent Gulanowski on 09-09-27.
@@ -138,6 +138,10 @@ NSUInteger bitsInChar = NSNotFound;
     return self;
 }
 
+- (id)initWithBitArray:(BABitArray *)otherArray range:(NSRange)bitRange {
+    return [self initWithData:[otherArray dataForRange:bitRange] length:bitRange.length];
+}
+
 - (BOOL)bit:(NSUInteger)index {
 	if(index > length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
@@ -163,11 +167,11 @@ NSUInteger bitsInChar = NSNotFound;
 	}
 }
 
-- (void)setRange:(NSRange)range {
-    NSUInteger maxIndex = range.location+range.length-1;
+- (void)setRange:(NSRange)bitRange {
+    NSUInteger maxIndex = bitRange.location+bitRange.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-	count += setRange(buffer, range, YES);
+	count += setRange(buffer, bitRange, YES);
     NSAssert([self checkCount], @"Count incorrect after setting range");
 }
 
@@ -189,11 +193,11 @@ NSUInteger bitsInChar = NSNotFound;
 	}	
 }
 
-- (void)clearRange:(NSRange)range {
-    NSUInteger maxIndex = range.location+range.length-1;
+- (void)clearRange:(NSRange)bitRange {
+    NSUInteger maxIndex = bitRange.location+bitRange.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-	count -= setRange(buffer, range, NO);
+	count -= setRange(buffer, bitRange, NO);
     NSAssert([self checkCount], @"Count incorrect after setting range");
 }
 
@@ -248,6 +252,60 @@ NSUInteger bitsInChar = NSNotFound;
 
 - (void)writeBits:(BOOL *const)bits range:(NSRange)range {
     count+=copyBits(buffer, bits, range, YES);
+}
+
+- (void)readBytes:(unsigned char *)bytes range:(NSRange)byteRange {
+    NSUInteger maxIndex = byteRange.location+byteRange.length-1;
+	if(maxIndex >= bufferLength)
+		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
+    memcpy(bytes, buffer, byteRange.length);
+}
+
+- (void)writeBytes:(unsigned char *)bytes range:(NSRange)byteRange {
+    
+    NSUInteger maxIndex = byteRange.location+byteRange.length-1;
+	if(maxIndex >= bufferLength)
+		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
+
+    NSRange bitRange = NSMakeRange(0, byteRange.length*bitsInChar);
+    NSInteger newCount = hammingWeight(bytes, bitRange);
+    NSInteger oldCount = hammingWeight(buffer+byteRange.location, bitRange);
+    
+    memcpy(buffer, bytes, byteRange.length);
+    
+    count += newCount-oldCount;
+}
+
+- (NSData *)dataForRange:(NSRange)bitRange {
+    
+    size_t bytesLength = (bitRange.length+7)/bitsInChar;
+    
+    if(bitRange.location%bitsInChar == 0)
+        return [NSData dataWithBytes:buffer + (bitRange.location/bitsInChar) length:bytesLength];
+    
+    unsigned char *subBuffer = malloc(sizeof(unsigned char)*bytesLength);
+    
+    union {
+        unsigned char c8[2];
+        uint16_t c16;
+    } pair;
+    
+	NSUInteger first = bitRange.location/bitsInChar;
+	NSUInteger start = bitRange.location%bitsInChar;
+	NSUInteger last  = (bitRange.location+bitRange.length-1)/bitsInChar;
+	NSUInteger end   = (bitRange.length)%bitsInChar;
+    
+    for (NSUInteger i=first; i<last; ++i) {
+        pair.c8[0] = buffer[i];
+        pair.c8[1] = buffer[i+1];
+        pair.c16 >>= start;
+        subBuffer[i-first] = pair.c8[0];
+    }
+    
+    if(bytesLength*bitsInChar > bitRange.length)
+        setBits(subBuffer+bytesLength-1, end, bitsInChar-1, NO);
+    
+    return [NSData dataWithBytes:subBuffer length:bytesLength];
 }
 
 - (NSUInteger)firstClearBit {

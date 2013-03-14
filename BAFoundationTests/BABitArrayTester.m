@@ -223,4 +223,40 @@
     }
 }
 
+- (void)testDataForRange {
+    
+    BABitArray *ba1 = [BABitArray bitArray64];
+    unsigned char c[2] = { 0xC1, 0x0 };
+    NSData *e = [NSData dataWithBytes:c length:1];
+    
+    [ba1 setBit:4];
+    [ba1 setBit:10];
+    [ba1 setBit:11];
+    
+    NSData *a = [ba1 dataForRange:NSMakeRange(4, 8)];
+    
+    BABitArray *t1 = [[[BABitArray alloc] initWithData:a length:8] autorelease];
+    BABitArray *t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(4, 8)] autorelease];
+    
+    STAssertEqualObjects(a, e, @"-dataForRange: failed. Expected %@; actual: %@", e, a);
+    STAssertEqualObjects(t2, t1, @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
+    
+    c[0] = 0x03;
+    c[1] = 0x54;
+    
+    [ba1 setBit:20];
+    [ba1 setBit:22];
+    [ba1 setBit:24];
+    [ba1 setBit:25];
+    
+    e = [NSData dataWithBytes:c length:2];
+    a = [ba1 dataForRange:NSMakeRange(10, 15)];
+
+    t1 = [[[BABitArray alloc] initWithData:a length:15] autorelease];
+    t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(10, 15)] autorelease];
+
+    STAssertEqualObjects(a, e, @"-dataForRange: failed. Expected %@; actual: %@", e, a);
+    STAssertEqualObjects(t2, t1, @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
+}
+
 @end
