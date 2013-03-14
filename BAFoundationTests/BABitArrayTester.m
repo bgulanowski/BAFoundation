@@ -192,4 +192,35 @@
     STAssertEquals(checkCount, [ba1 count], @"enumeration test failed");
 }
 
+- (void)testWriteRange {
+    
+    BABitArray *ba1 = [BABitArray bitArray64];
+    BOOL bits[16];
+    BOOL check[16];
+    
+    bits[0] = YES;
+    
+    [ba1 writeBits:bits range:NSMakeRange(30, 1)];
+    
+    STAssertEquals([ba1 count], (NSUInteger)1, @"Write bits failed; array count incorrect. Expected: 1. Actual: %d", [ba1 count]);
+    
+    [ba1 readBits:check range:NSMakeRange(30, 1)];
+    
+    STAssertEquals(check[0], bits[0], @"Read bits failed.");
+    
+    bits[1] = bits[5] = bits[6] = bits[11] = bits[15] = YES;
+    
+    [ba1 writeBits:bits range:NSMakeRange(0, 16)];
+    
+    STAssertEquals([ba1 count], (NSUInteger)7, @"Write bits failed; array count incorrect. Expected: 7. Actual: %d", [ba1 count]);
+    
+    [ba1 readBits:check range:NSMakeRange(0, 16)];
+    
+    for(NSUInteger i=0; i<16; ++i) {
+        STAssertEquals(check[i], bits[i], @"Read bits failed at bit %d", (int)i);
+        if(check[i] != bits[i])
+            break;
+    }
+}
+
 @end

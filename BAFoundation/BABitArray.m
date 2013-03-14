@@ -10,8 +10,11 @@
 #import "NSData+GZip.h"
 
 
-void setBits(unsigned char *byte, NSUInteger start, NSUInteger end, BOOL set);
+void setBits(unsigned char *bytes, NSUInteger start, NSUInteger end, BOOL set);
+
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
+
+NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write);
 NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 
@@ -113,7 +116,8 @@ NSUInteger bitsInChar = NSNotFound;
         
         NSUInteger storedCount = [aDecoder decodeIntegerForKey:@"count"];
         
-        NSAssert(storedCount == count, @"Reading from archive failed; bit count does not match. Expected: %ud; actual: %ud", (unsigned)storedCount, (unsigned)count);
+        if(storedCount != count)
+            NSLog(@"Count is wrong for bit array. Expected: %d; actual: %d", (int)storedCount, (int)count);
     }
     return self;
 }
@@ -133,6 +137,7 @@ NSUInteger bitsInChar = NSNotFound;
     }
     return self;
 }
+
 - (BOOL)bit:(NSUInteger)index {
 	if(index > length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
@@ -163,6 +168,7 @@ NSUInteger bitsInChar = NSNotFound;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
 	count += setRange(buffer, range, YES);
+    NSAssert([self checkCount], @"Count incorrect after setting range");
 }
 
 - (void)setAll {
@@ -188,6 +194,7 @@ NSUInteger bitsInChar = NSNotFound;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
 	count -= setRange(buffer, range, NO);
+    NSAssert([self checkCount], @"Count incorrect after setting range");
 }
 
 - (void)clearAll {
@@ -233,6 +240,14 @@ NSUInteger bitsInChar = NSNotFound;
         return NSNotFound;
 
 	return (p-buffer)*bitsInChar+b;
+}
+
+- (void)readBits:(BOOL *)bits range:(NSRange)range {
+    copyBits(buffer, bits, range, NO);
+}
+
+- (void)writeBits:(BOOL *const)bits range:(NSRange)range {
+    count+=copyBits(buffer, bits, range, YES);
 }
 
 - (NSUInteger)firstClearBit {
@@ -357,25 +372,30 @@ void setBits(unsigned char *byte, NSUInteger start, NSUInteger end, BOOL set) {
 NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 	
 	NSUInteger first = bitRange.location/bitsInChar;
-	NSUInteger last = (bitRange.location+bitRange.length-1)/bitsInChar;
 	NSUInteger start = bitRange.location%bitsInChar;
-	NSUInteger end = (start+bitRange.length-1)%bitsInChar;
+	NSUInteger last  = (bitRange.location+bitRange.length-1)/bitsInChar;
+	NSUInteger end   = (start+bitRange.length-1)%bitsInChar;
 	
 	NSUInteger odd, even;
 	NSUInteger subtotal = 0, total = 0;
 	unsigned char firstMask = 0, lastMask = 0, mask=0xFF;
 	
-	if(0 == start)
-		firstMask = 0xFF;
-	else
-		setBits(&firstMask, start, 7, YES);
-//	NSLog(@"firstMask = 0x%02X (start %u)", firstMask, start);
-	
-	if(7 == end)
-		lastMask = 0xFF;
-	else
-		setBits(&lastMask, 0, end, YES);
-//	NSLog(@"lastMask = 0x%02X (end %u)", lastMask, end);
+    if(first == last) {
+        setBits(&firstMask, start, end, YES);
+    }
+    else {
+        if(0 == start)
+            firstMask = 0xFF;
+        else
+            setBits(&firstMask, start, 7, YES);
+//        NSLog(@"firstMask = 0x%02X (start %u)", firstMask, start);
+        
+        if(7 == end)
+            lastMask = 0xFF;
+        else
+            setBits(&lastMask, 0, end, YES);
+//        NSLog(@"lastMask = 0x%02X (end %u)", lastMask, end);
+    }
 	
 //	NSLog(@"Counting bits in %u bits", bitRange.length);
 	
@@ -398,6 +418,8 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 		even = subtotal >> 4 & 0x0F;
 		subtotal = odd + even;		
 		total += subtotal;
+        
+        assert(total <= bitRange.length);
 		
 //		NSLog(@"subtotal for byte %u (0x%02X): %u; running total: %u", i, bytes[i], subtotal, total);
 	}
@@ -435,4 +457,49 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 		return range.length - oldCount;
 	else
 		return oldCount;
+}
+
+NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) {
+
+    if(range.length == 0)
+        return 0;
+    
+	NSUInteger first = range.location/bitsInChar;
+	NSUInteger last = (range.location+range.length-1)/bitsInChar;
+	NSUInteger start = range.location%bitsInChar;
+    NSUInteger k = 0;
+    
+    NSInteger oldCount = 0, difference = 0;
+    
+    if(write)
+        oldCount = hammingWeight(bytes, range);
+
+    for (NSUInteger i=first; i<=last; ++i) {
+        
+        NSUInteger end = i == last ? (start+range.length-1)%bitsInChar : bitsInChar - 1;
+        char c = bytes[i];
+        
+        for (NSUInteger j=start; j<=end; ++j) {
+            assert(k<range.length);
+            if(write) {
+                if(bits[k])
+                    c |= 1<<j;
+                else
+                    c &= ~(1<<j);
+            }
+            else {
+                bits[k] = ((c & 1<<j) != 0);
+            }
+            ++k;
+        }
+        if(write)
+            bytes[i] = c;
+    }
+    
+    if(write) {
+        NSInteger newCount = hammingWeight(bytes, range);
+        difference = newCount - oldCount;
+    }
+    
+    return difference;
 }

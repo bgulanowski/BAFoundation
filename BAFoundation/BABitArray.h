@@ -14,6 +14,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @property (nonatomic, readonly) NSUInteger count;
 
 - (BOOL)bit:(NSUInteger)index;
+
 - (void)setBit:(NSUInteger)index;
 - (void)setRange:(NSRange)range;
 - (void)setAll;
@@ -26,6 +27,9 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (NSUInteger)lastSetBit;
 
 @optional
+- (void)readBits:(BOOL *)bits range:(NSRange)range;
+- (void)writeBits:(BOOL * const)bits range:(NSRange)range;
+
 - (NSUInteger)firstClearBit;
 - (NSUInteger)lastClearBit;
 
