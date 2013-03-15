@@ -60,6 +60,7 @@ NSUInteger bitsInChar = NSNotFound;
 - (void)dealloc {
 	if (length > 0)
 		free(buffer);
+    [size release], size = nil;
 	[super dealloc];
 }
 
@@ -402,7 +403,7 @@ NSUInteger bitsInChar = NSNotFound;
 	self = [super init];
 	if(self) {
 		length = bits; // never changes
-        size = vector; // never changes
+        size = [vector retain]; // never changes
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
 		self.count = 0;
 		if(length > 0) {
