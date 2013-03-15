@@ -58,6 +58,8 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @property (readonly) NSData *bufferData;
 @property (readonly) NSUInteger length;
 
+- (BOOL)isEqualToBitArray:(BABitArray *)other;
+
 - (NSUInteger)nextAfter:(NSUInteger)prev;
 - (void)enumerate:(BABitArrayEnumerator)block;
 

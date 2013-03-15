@@ -69,16 +69,6 @@ NSUInteger bitsInChar = NSNotFound;
 			(unsigned long)[self firstSetBit], (unsigned long)[self firstClearBit], (unsigned long)[self lastSetBit], (unsigned long)[self lastClearBit]];
 }
 
-- (BOOL)isEqual:(id)object {
-	
-	BABitArray *ba = (BABitArray *)object;
-
-	return (count == ba->count &&
-			length == ba->length &&
-			bufferLength == ba->bufferLength &&
-			!memcmp(buffer, ba->buffer, bufferLength));
-}
-
 
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone {
@@ -144,6 +134,17 @@ NSUInteger bitsInChar = NSNotFound;
 
 - (id)initWithBitArray:(BABitArray *)otherArray range:(NSRange)bitRange {
     return [self initWithData:[otherArray dataForRange:bitRange] length:bitRange.length];
+}
+
+- (BOOL)isEqualToBitArray:(BABitArray *)other {
+	
+    if((size != other->size) && ![size isEqual:other->size])
+        return NO;
+    
+	return (count == other->count &&
+			length == other->length &&
+			bufferLength == other->bufferLength &&
+			!memcmp(buffer, other->buffer, bufferLength));
 }
 
 - (BOOL)bit:(NSUInteger)index {
