@@ -40,6 +40,25 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @end
 
 
+@class BABitArray;
+
+// Conveniences for bit arrays initialized with a 2-dimensional size use these to update sub-rectangles
+
+@protocol BABitArray2D <BABitArray>
+
+- (void)setRect:(NSRect)rect;
+- (void)clearRect:(NSRect)rect;
+
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin;
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray;
+
+- (BABitArray *)subArrayWithRect:(NSRect)rect;
+
+- (id)initWithBitArray:(BABitArray *)otherArray rect:(NSRect)rect;
+
+@end
+
+
 @interface BABitArray : NSObject<NSCopying, NSCoding, BABitArray> {
     
     BASampleArray *size;
@@ -88,20 +107,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @end
 
 
-// Conveniences for bit arrays initialized with a 2-dimensional size use these to update sub-rectangles
-
-@interface BABitArray (SpatialStorage)
-
-- (void)setRect:(NSRect)rect;
-- (void)clearRect:(NSRect)rect;
-
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin;
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray;
-
-- (BABitArray *)subArrayWithRect:(NSRect)rect;
-
-- (id)initWithBitArray:(BABitArray *)otherArray rect:(NSRect)rect;
-
+@interface BABitArray (SpatialStorage) <BABitArray2D>
 @end
 
 
