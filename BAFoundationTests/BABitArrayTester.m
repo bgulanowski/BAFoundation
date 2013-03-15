@@ -131,7 +131,7 @@
 	BABitArray *ba1 = [BABitArray bitArray8];
 	BABitArray *ba2 = [BABitArray bitArray8];
 	
-	STAssertTrue([ba1 isEqual:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
+	STAssertTrue([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
 }
 
 - (void)testEqualitySimpleNegative {
@@ -141,7 +141,7 @@
     
     [ba1 setBit:7];
 	
-	STAssertFalse([ba1 isEqual:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
+	STAssertFalse([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
 }
 
 - (void)testCopy {
@@ -149,11 +149,11 @@
     BABitArray *ba1 = [BABitArray bitArray64];
     BABitArray *ba2 = [[ba1 copy] autorelease];
     
-    STAssertEqualObjects(ba1, ba2, @"BABitArray copy equality test failed");
+    STAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray copy equality test failed");
     
     [ba2 setBit:63];
     
-    STAssertFalse([ba1 isEqual:ba2], @"BABitArray copy modify inequality test failed");
+    STAssertFalse([ba1 isEqualToBitArray:ba2], @"BABitArray copy modify inequality test failed");
 }
 
 - (void)testEncodeDecode {
@@ -168,7 +168,7 @@
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:ba1];
     BABitArray *ba2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
-    STAssertEqualObjects(ba1, ba2, @"BABitArray encode-decode equality test failed");
+    STAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray encode-decode equality test failed");
 }
 
 - (void)testEnumeration {
@@ -238,8 +238,8 @@
     BABitArray *t1 = [[[BABitArray alloc] initWithData:a length:8] autorelease];
     BABitArray *t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(4, 8)] autorelease];
     
-    STAssertEqualObjects(a, e, @"-dataForRange: failed. Expected %@; actual: %@", e, a);
-    STAssertEqualObjects(t2, t1, @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
+    STAssertTrue([a isEqualToData:e], @"-dataForRange: failed.");
+    STAssertTrue([t1 isEqualToBitArray:t2], @"-initWithData:length: failed.");
     
     c[0] = 0x03;
     c[1] = 0x54;
@@ -255,8 +255,8 @@
     t1 = [[[BABitArray alloc] initWithData:a length:15] autorelease];
     t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(10, 15)] autorelease];
 
-    STAssertEqualObjects(a, e, @"-dataForRange: failed. Expected %@; actual: %@", e, a);
-    STAssertEqualObjects(t2, t1, @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
+    STAssertTrue([a isEqualToData:e], @"-dataForRange: failed.");
+    STAssertTrue([t2 isEqualToBitArray:t1], @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
 }
 
 @end
