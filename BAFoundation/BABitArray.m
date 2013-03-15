@@ -579,3 +579,98 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     
     return difference;
 }
+
+
+@implementation BABitArray (SpatialStorage)
+
+#define BIT_ARRAY_SIZE_ASSERT() NSAssert(size != nil, @"Cannot perform spatial calculations without size")
+#define BIT_ARRAY_RECT_ASSERT() NSAssert(NSMinX(rect) >= 0 && NSMinY(rect) >= 0 && NSMaxX(rect) <= targetSize.width && NSMaxY(rect) <= targetSize.height, @"error")
+
+- (void)updateRect:(NSRect)rect set:(BOOL)set {
+    
+    NSSize targetSize = self.size.size2d;
+    
+    BIT_ARRAY_SIZE_ASSERT();
+    BIT_ARRAY_RECT_ASSERT();
+    
+    NSRange range = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
+    
+    for (NSUInteger i=0; i<rect.size.height; ++i) {
+        setRange(buffer, range, set);
+        range.location += targetSize.width;
+    }
+}
+
+- (void)setRect:(NSRect)rect {
+    [self updateRect:rect set:YES];
+}
+
+- (void)clearRect:(NSRect)rect {
+    [self updateRect:rect set:NO];
+}
+
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
+    
+    NSSize sourceSize = bitArray.size.size2d;
+    NSSize targetSize = self.size.size2d;
+    
+    BIT_ARRAY_SIZE_ASSERT();
+    BIT_ARRAY_RECT_ASSERT();
+
+    NSRange sourceRange = NSMakeRange(origin.x+sourceSize.width*origin.y, rect.size.width);
+    NSRange destRange = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
+    
+    // TODO: Replace with more satisfying implementation
+    BOOL *bits = malloc(rect.size.width*sizeof(BOOL));
+    
+    for (NSUInteger i=0; i<rect.size.height; ++i) {
+        [bitArray readBits:bits range:sourceRange];
+        [self writeBits:bits range:destRange];
+        sourceRange.location += sourceSize.width;
+        destRange.location += targetSize.width;
+    }
+    
+    free(bits);    
+}
+
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray {
+    [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
+}
+
+
+- (BABitArray *)subArrayWithRect:(NSRect)rect {
+    
+    BABitArray *result = [BABitArray bitArrayWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
+    NSPoint origin = rect.origin;
+    
+    rect.origin = NSZeroPoint;
+    
+    [result writeRect:rect fromArray:self offset:origin];
+    
+    return result;
+}
+
+- (id)initWithBitArray:(BABitArray *)otherArray rect:(NSRect)rect {
+    self = [self initWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
+    if(self) {
+        [self writeRect:rect fromArray:otherArray];
+    }
+    return self;
+}
+
+@end
+
+
+@implementation BASampleArray (BABitArraySupport)
+
+- (NSSize)size2d {
+    NSSize result;
+    [self readSamples:(UInt8 *)&result range:NSMakeRange(0, 2)];
+    return result;
+}
+
++ (BASampleArray *)sampleArrayForSize2d:(NSSize)size {
+    return [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(CGFloat)/sizeof(UInt8)] autorelease];
+}
+
+@end

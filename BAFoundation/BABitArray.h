@@ -84,3 +84,26 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 + (BABitArray *)bitArray4096; // 16^3, our zone volume
 
 @end
+
+
+// Conveniences for bit arrays initialized with a 2-dimensional size use these to update sub-rectangles
+
+@interface BABitArray (SpatialStorage)
+
+- (void)setRect:(NSRect)rect;
+- (void)clearRect:(NSRect)rect;
+
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin;
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray;
+
+- (BABitArray *)subArrayWithRect:(NSRect)rect;
+
+- (id)initWithBitArray:(BABitArray *)otherArray rect:(NSRect)rect;
+
+@end
+
+
+@interface BASampleArray (BABitArraySupport)
+- (NSSize)size2d;
++ (BASampleArray *)sampleArrayForSize2d:(NSSize)size;
+@end
