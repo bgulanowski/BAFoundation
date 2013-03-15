@@ -10,7 +10,10 @@
 #import "NSData+GZip.h"
 
 
-void setBits(unsigned char *bytes, NSUInteger start, NSUInteger end, BOOL set);
+// These functions are meant to alter bits in a single byte, not an array of bytes
+static void setBits(unsigned char *byte, NSUInteger start, NSUInteger end);
+static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end);
+
 
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
 
@@ -303,9 +306,9 @@ NSUInteger bitsInChar = NSNotFound;
     }
     
     if(bytesLength*bitsInChar > bitRange.length)
-        setBits(subBuffer+bytesLength-1, end, bitsInChar-1, NO);
+        clearBits(subBuffer+bytesLength-1, end, bitsInChar-1);
     
-    return [NSData dataWithBytes:subBuffer length:bytesLength];
+    return [NSData dataWithBytesNoCopy:subBuffer length:bytesLength freeWhenDone:YES];
 }
 
 - (NSUInteger)firstClearBit {
@@ -418,12 +421,14 @@ NSUInteger bitsInChar = NSNotFound;
 @end
 
 
-void setBits(unsigned char *byte, NSUInteger start, NSUInteger end, BOOL set) {
+inline static void setBits(unsigned char *byte, NSUInteger start, NSUInteger end) {
 	for(NSUInteger i=start; i<=end; ++i)
-		if(set)
-			*byte |= (1 << i);
-		else
-			*byte &= ~(1 << i);	
+        *byte |= (1 << i);
+}
+
+inline static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end) {
+	for(NSUInteger i=start; i<=end; ++i)
+        *byte &= ~(1 << i);
 }
 
 // Algorithm found on the web
@@ -439,19 +444,19 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 	unsigned char firstMask = 0, lastMask = 0, mask=0xFF;
 	
     if(first == last) {
-        setBits(&firstMask, start, end, YES);
+        setBits(&firstMask, start, end);
     }
     else {
         if(0 == start)
             firstMask = 0xFF;
         else
-            setBits(&firstMask, start, 7, YES);
+            setBits(&firstMask, start, 7);
 //        NSLog(@"firstMask = 0x%02X (start %u)", firstMask, start);
         
         if(7 == end)
             lastMask = 0xFF;
         else
-            setBits(&lastMask, 0, end, YES);
+            setBits(&lastMask, 0, end);
 //        NSLog(@"lastMask = 0x%02X (end %u)", lastMask, end);
     }
 	
@@ -497,16 +502,20 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	unsigned char byteSet = set ? 0xFF : 0;
 	
 	NSUInteger oldCount = hammingWeight(bytes, range);
+    
+    // updateBits() is a cover for either setBits() or clearBits(), to reduce the number of if() statements
+    // this might defeat the inlining, but I don't know
+    void(*updateBits)(unsigned char *, NSUInteger, NSUInteger) = set ? setBits : clearBits;
 	
 //	NSLog(@"setRange(0x%08X, %@, %@): first %u; last %u; start %u; end %u; old count %u",
 //		  bytes, NSStringFromRange(range), set?@"YES":@"NO", first, last, start, end, oldCount);
 	
 	if (first == last) {
-		setBits(bytes+first, start, end, set);
+		updateBits(bytes+first, start, end);
 	}
 	else {
-		setBits(bytes+first, start, bitsInChar-1, set);
-		setBits(bytes+last, 0, end, set);		
+		updateBits(bytes+first, start, bitsInChar-1);
+		updateBits(bytes+last, 0, end);		
 		if(last - first > 1)
 			memset(bytes+first+1, byteSet, last - first - 1);
 	}
