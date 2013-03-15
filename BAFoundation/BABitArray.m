@@ -64,9 +64,30 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (NSString *)description {
-	return [NSString stringWithFormat:@"%@ length:%lu count:%lu; first bit: %@; last bit: %@; first set bit: %lu; first clear bit: %lu; last set bit: %lu; last clear bit: %lu",
-			[super description], (unsigned long)length, (unsigned long)count, [self bit:0]?@"YES":@"NO", [self bit:length-1]?@"YES":@"NO",
-			(unsigned long)[self firstSetBit], (unsigned long)[self firstClearBit], (unsigned long)[self lastSetBit], (unsigned long)[self lastClearBit]];
+        
+    NSString *state;
+    
+    if(count == 0)
+        state = @"empty";
+    else if(count == length)
+        state = @"full";
+    else {
+        
+        long firstSet = [self firstSetBit];
+        long firstClr = [self firstClearBit];
+        long lastSet = [self lastSetBit];
+        long lastClr = [self lastClearBit];
+        
+        if(firstSet == NSNotFound) firstSet = -1;
+        if(firstClr == NSNotFound) firstClr = -1;
+        if(lastSet == NSNotFound) lastSet = -1;
+        if(lastClr == NSNotFound) lastClr = -1;
+        
+        state = [NSString stringWithFormat:@"set: %ld-%ld; clear: %ld-%ld", firstSet, lastSet, firstClr, lastClr];
+    }
+    
+	return [NSString stringWithFormat:@"%@ length:%lu count:%lu; state: %@",
+			[super description], (unsigned long)length, (unsigned long)count, state];
 }
 
 
