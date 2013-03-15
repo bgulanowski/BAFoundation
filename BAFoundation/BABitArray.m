@@ -18,7 +18,7 @@ static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end);
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
 
 NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write);
-NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
+NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 
 @interface BABitArray ()
@@ -500,7 +500,7 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 	return total;
 }
 
-NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
+NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	
     if(range.length == 0)
         return 0;
@@ -511,7 +511,7 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	NSUInteger end = (start+range.length-1)%bitsInChar;
 	unsigned char byteSet = set ? 0xFF : 0;
 	
-	NSUInteger oldCount = hammingWeight(bytes, range);
+	NSInteger oldCount = hammingWeight(bytes, range);
     
     // updateBits() is a cover for either setBits() or clearBits(), to reduce the number of if() statements
     // this might defeat the inlining, but I don't know
@@ -531,7 +531,7 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	}
 	
 	if(set)
-		return range.length - oldCount;
+		return (NSInteger)range.length - oldCount;
 	else
 		return oldCount;
 }
@@ -595,11 +595,14 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     BIT_ARRAY_RECT_ASSERT();
     
     NSRange range = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
+    NSInteger delta = 0;
     
     for (NSUInteger i=0; i<rect.size.height; ++i) {
-        setRange(buffer, range, set);
+        delta += setRange(buffer, range, set);
         range.location += targetSize.width;
     }
+    
+    count += delta;
 }
 
 - (void)setRect:(NSRect)rect {
@@ -671,7 +674,9 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
 }
 
 + (BASampleArray *)sampleArrayForSize2d:(NSSize)size {
-    return [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(CGFloat)/sizeof(UInt8)] autorelease];
+    BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(CGFloat)/sizeof(UInt8)] autorelease];
+    [result writeSamples:(UInt8 *)&size range:NSMakeRange(0, 2)];
+    return result;
 }
 
 @end
