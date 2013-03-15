@@ -30,6 +30,7 @@
     NSUInteger _power; // the number of dimensions
     NSUInteger _order; // samples per dimension - the same in all dimensions
     NSUInteger _size;  // bytes per sample, starting at 1
+    NSUInteger _count;
 }
 
 // These are immutable

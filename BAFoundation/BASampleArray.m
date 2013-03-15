@@ -13,18 +13,14 @@
 @implementation BASampleArray
 
 #pragma mark - Properties
-@dynamic samples, count;
-@synthesize power=_power, order=_order, size=_size;
+@dynamic samples;
+@synthesize power=_power, order=_order, size=_size, count=_count;
 
 
 #pragma mark - Accessors
 
 - (UInt8 *)samples {
     return _samples;
-}
-
-- (NSUInteger)count {
-    return (NSUInteger)pow(_order, _power);
 }
 
 
@@ -39,11 +35,13 @@
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size {
     self = [super init];
     if(self) {
-        size_t sampleSize = size * (NSUInteger)powf(order, power);
+
         _power = power;
         _order = order;
         _size = size;
-        _samples = malloc(sampleSize);
+        _count = powi(_order, _power);
+        _samples = malloc(_size*_count);
+
         NSAssert(_samples, @"Failed to allocate memory for BASampleArray");
     }
     return self;
