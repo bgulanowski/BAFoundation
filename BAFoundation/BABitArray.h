@@ -46,15 +46,16 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @protocol BABitArray2D <BABitArray>
 
+- (BASampleArray *)size;
+
 - (void)setRect:(NSRect)rect;
 - (void)clearRect:(NSRect)rect;
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin;
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray;
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin;
 
-- (BABitArray *)subArrayWithRect:(NSRect)rect;
+- (id<BABitArray2D>)subArrayWithRect:(NSRect)rect;
 
-- (id)initWithBitArray:(BABitArray *)otherArray rect:(NSRect)rect;
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect;
 
 @end
 
@@ -108,6 +109,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
 @interface BABitArray (SpatialStorage) <BABitArray2D>
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray;
 @end
 
 

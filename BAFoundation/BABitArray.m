@@ -605,6 +605,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
 
 @implementation BABitArray (SpatialStorage)
 
+@dynamic count;
+
 #define BIT_ARRAY_SIZE_ASSERT() NSAssert(size != nil, @"Cannot perform spatial calculations without size")
 #define BIT_ARRAY_RECT_ASSERT() NSAssert(NSMinX(rect) >= 0 && NSMinY(rect) >= 0 && NSMaxX(rect) <= targetSize.width && NSMaxY(rect) <= targetSize.height, @"error")
 
@@ -634,7 +636,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     [self updateRect:rect set:NO];
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
     
     NSSize sourceSize = bitArray.size.size2d;
     NSSize targetSize = self.size.size2d;
@@ -658,12 +660,12 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     free(bits);    
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray {
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray {
     [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
 }
 
 
-- (BABitArray *)subArrayWithRect:(NSRect)rect {
+- (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
     
     BABitArray *result = [BABitArray bitArrayWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
     NSPoint origin = rect.origin;
