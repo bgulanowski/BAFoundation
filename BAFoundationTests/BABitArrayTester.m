@@ -259,4 +259,24 @@
     STAssertTrue([t2 isEqualToBitArray:t1], @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
 }
 
+- (void)testSubArray {
+    
+    BABitArray *ba1 = [BABitArray bitArrayWithLength:256*256 size:[BASampleArray sampleArrayForSize2d:NSMakeSize(256, 256)]];
+    NSRect rect = NSMakeRect(64, 64, 128, 128);
+    
+    [ba1 setRect:rect];
+    
+    NSUInteger e = (NSUInteger)128*128;
+    NSUInteger a = [ba1 count];
+    
+    STAssertEquals(a, e, @"setRect: failed; count is wrong. Expected: %u. Actual: %u", (unsigned)e, (unsigned)a);
+    
+    BABitArray *ba = [ba1 subArrayWithRect:rect];
+    BABitArray *be = [BABitArray bitArrayWithLength:e size:[BASampleArray sampleArrayForSize2d:NSMakeSize(128, 128)]];
+    
+    [be setAll];
+    
+    STAssertTrue([ba isEqualToBitArray:be], @"subArrayWithRect: failed; Expected: %@. Actual: %@", be, ba);
+}
+
 @end
