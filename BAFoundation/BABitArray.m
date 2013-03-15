@@ -159,7 +159,7 @@ NSUInteger bitsInChar = NSNotFound;
 
 - (BOOL)isEqualToBitArray:(BABitArray *)other {
 	
-    if((size != other->size) && ![size isEqual:other->size])
+    if((size != other->size) && ![size isEqualToSampleArray:other->size])
         return NO;
     
 	return (count == other->count &&
