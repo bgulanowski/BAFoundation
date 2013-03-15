@@ -17,6 +17,10 @@
 - (void)sample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates;
 - (void)setSample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates;
 
+@optional
+- (void)readSamples:(UInt8 *)samples range:(NSRange)range;
+- (void)writeSamples:(UInt8 *)samples range:(NSRange)range;
+
 @end
 
 @interface BASampleArray : NSObject<BASampleArray> {

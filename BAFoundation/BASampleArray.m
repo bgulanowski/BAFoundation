@@ -50,20 +50,19 @@
 }
 
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index {
-    strncpy((char *)sample+index*_size, (char *)sample, _size);
-//    UInt8 *base = sample+index*_size;
-//    
-//    for (NSUInteger i=0; i<_size; ++i)
-//        sample[i] = base[i];
+    memcpy(sample, _samples+index*_size, _size);
 }
 
 - (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index {
-    strncpy((char *)sample, (char *)sample+index*_size, _size);
+    memcpy(_samples+index*_size, sample, _size);
+}
 
-//    UInt8 *base = _samples+index*_size;
-//    
-//    for(NSUInteger i=0; i<_size; ++i)
-//        base[i] = sample[i];
+- (void)readSamples:(UInt8 *)samples range:(NSRange)range {
+    memcpy(samples, _samples+range.location*_size, _size*range.length);
+}
+
+- (void)writeSamples:(UInt8 *)samples range:(NSRange)range {
+    memcpy(_samples+range.location*_size, samples, _size*range.length);
 }
 
 static inline NSUInteger indexForCoordinates(uint32_t *coordinates, NSUInteger power) {
