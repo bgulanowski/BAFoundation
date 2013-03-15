@@ -49,6 +49,16 @@
     return self;
 }
 
+- (BOOL)isEqualToSampleArray:(BASampleArray *)other {
+    
+    if(_power != other->_power ||
+       _order != other->_order ||
+       _size  != other->_size)
+        return NO;
+    
+    return 0 == memcmp(_samples, other->_samples, _size*_count);
+}
+
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index {
     memcpy(sample, _samples+index*_size, _size);
 }

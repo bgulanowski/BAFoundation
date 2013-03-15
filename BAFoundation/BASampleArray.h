@@ -40,6 +40,8 @@
 @property (nonatomic, readonly) NSUInteger size;
 @property (nonatomic, readonly) NSUInteger count;
 
+- (BOOL)isEqualToSampleArray:(BASampleArray *)other;
+
 - (UInt32)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y;
 - (void)setPageSample:(UInt32)sample atX:(NSUInteger)x y:(NSUInteger)y;
 - (UInt32)blockSampleAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
