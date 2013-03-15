@@ -9,6 +9,7 @@
 #import "SparseBitArrayTestBasic.h"
 
 #import "BASparseBitArray.h"
+#import "BAFunctions.h"
 
 
 @implementation SparseBitArrayTestBasic

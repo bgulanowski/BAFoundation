@@ -122,6 +122,7 @@
 		4EF2B51B104D60C9000C8EE2 /* BAGraphNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGraphNode.m; sourceTree = "<group>"; };
 		841944EC1637322B0036C725 /* BASampleArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASampleArray.h; sourceTree = "<group>"; };
 		841944ED1637322B0036C725 /* BASampleArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASampleArray.m; sourceTree = "<group>"; };
+		8428532E16F3A4BE00BD7A71 /* BAFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BAFunctions.h; sourceTree = "<group>"; };
 		842C151315FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+BAAdditions.h"; sourceTree = "<group>"; };
 		842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+BAAdditions.m"; sourceTree = "<group>"; };
 		842C151515FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+BAAdditions.h"; sourceTree = "<group>"; };
@@ -264,6 +265,7 @@
 			children = (
 				84A0D20816E271380010D80D /* BAMacros.h */,
 				32DBCF5E0370ADEE00C91783 /* BAFoundation_Prefix.pch */,
+				8428532E16F3A4BE00BD7A71 /* BAFunctions.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";

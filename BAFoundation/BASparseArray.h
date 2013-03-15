@@ -26,26 +26,6 @@ typedef void  (^SparseArrayExpand)(BASparseArray *sparseArray, NSUInteger newLev
 typedef void (^SparseArrayRefresh)(BASparseArray *sparseArray);
 
 
-static inline NSInteger powi ( NSInteger base, NSUInteger exp ) {
-    NSInteger result = base;
-    if(0 == exp) return 1;
-    while(--exp) result *= base;
-    return result;
-}
-
-static inline uint32_t NextPowerOf2( uint32_t v ) {
-    
-    v--;
-    v |= v >> 1;
-    v |= v >> 2;
-    v |= v >> 4;
-    v |= v >> 8;
-    v |= v >> 16;
-    v++;
-    
-    return v;
-}
-
 /* Leaf indexes for multi-dimensional arrays are numbered consistently following a recursive pattern.
  * Each leaf index is determined by its search order in the tree. As the tree grows, new leaves
  * are appended to the end of the seach order, thus preserving the numbering scheme.

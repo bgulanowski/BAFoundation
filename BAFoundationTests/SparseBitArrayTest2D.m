@@ -9,6 +9,7 @@
 #import "SparseBitArrayTest2D.h"
 
 #import "BASparseBitArray.h"
+#import "BAFunctions.h"
 
 
 #define      BASE 16ul
