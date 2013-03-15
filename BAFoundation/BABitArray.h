@@ -6,6 +6,9 @@
 //
 
 
+#import "BASampleArray.h"
+
+
 typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
@@ -38,6 +41,9 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
 @interface BABitArray : NSObject<NSCopying, NSCoding, BABitArray> {
+    
+    BASampleArray *size;
+    
 	unsigned char *buffer;
 	NSUInteger bufferLength; // in bytes, rounded up
 	NSUInteger length;       // in bits as initialized
@@ -48,6 +54,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @property (nonatomic) BOOL enableArchiveCompression;
 
+@property (readonly) BASampleArray *size;
 @property (readonly) NSData *bufferData;
 @property (readonly) NSUInteger length;
 
@@ -63,11 +70,13 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 - (NSData *)dataForRange:(NSRange)bitRange;
 
+- (id)initWithLength:(NSUInteger)bits size:(BASampleArray *)vector;
 - (id)initWithLength:(NSUInteger)bits;
 - (id)initWithData:(NSData *)data length:(NSUInteger)length;
 // otherArray must be of equal or greater length; bitRange must fit within otherArray length
 - (id)initWithBitArray:(BABitArray *)otherArray range:(NSRange)bitRange;
 
++ (BABitArray *)bitArrayWithLength:(NSUInteger)bits size:(BASampleArray *)vector;
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits;
 + (BABitArray *)bitArray8;
 + (BABitArray *)bitArray64;

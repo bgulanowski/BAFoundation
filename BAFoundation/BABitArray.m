@@ -34,6 +34,7 @@ NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 @implementation BABitArray
 
 @synthesize length, count, enableArchiveCompression;
+@synthesize size;
 
 
 NSUInteger bitsInChar = NSNotFound;
@@ -373,12 +374,13 @@ NSUInteger bitsInChar = NSNotFound;
     }
 }
 
-- (id)initWithLength:(NSUInteger)bits {
+- (id)initWithLength:(NSUInteger)bits size:(BASampleArray *)vector {
 	if(bits > 256*256*256)
 		[NSException raise:NSInvalidArgumentException format:@"Requested unreasonable length for bit array (%lu)", (unsigned long)bits];
 	self = [super init];
 	if(self) {
 		length = bits; // never changes
+        size = vector; // never changes
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
 		self.count = 0;
 		if(length > 0) {
@@ -392,6 +394,10 @@ NSUInteger bitsInChar = NSNotFound;
 	return self;
 }
 
+- (id)initWithLength:(NSUInteger)bits {
+    return [self initWithLength:bits size:nil];
+}
+
 - (BOOL)checkCount {
 	return hammingWeight(buffer, NSMakeRange(0, length)) == count;
 }
@@ -402,8 +408,11 @@ NSUInteger bitsInChar = NSNotFound;
 
 
 #pragma mark Factories
++ (BABitArray *)bitArrayWithLength:(NSUInteger)bits size:(BASampleArray *)vector {
+	return [[[self alloc] initWithLength:bits size:vector] autorelease];
+}
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits {
-	return [[[self alloc] initWithLength:bits] autorelease];
+	return [[[self alloc] initWithLength:bits size:nil] autorelease];
 }
 + (BABitArray *)bitArray8 {
 	return [[[self alloc] initWithLength:8] autorelease];
