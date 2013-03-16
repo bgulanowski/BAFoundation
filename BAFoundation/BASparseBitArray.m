@@ -87,11 +87,22 @@
 
 
 #pragma mark - Accessors
++ (BASampleArray *)sampleArrayForBase:(NSUInteger)base power:(NSUInteger)power {
+    if(power == 2)
+        return [BASampleArray sampleArrayForSize2d:NSMakeSize(base, base)];
+    
+    BASampleArray *sa = [BASampleArray sampleArrayWithPower:1 order:power size:sizeof(NSUInteger)];
+    for(NSUInteger i=0; i<power; ++i)
+        [sa setSample:(UInt8 *)&base atIndex:i];
+    
+    return sa;
+}
+
 - (BABitArray *)bits {
     if(!_bits && _level == 0) {
         @synchronized(self) {
             if(!_bits) {
-                _bits = [[BABitArray alloc] initWithLength:_leafSize];
+                _bits = [[BABitArray alloc] initWithLength:_leafSize size:[[self class] sampleArrayForBase:_base power:_power]];
                 _bits.enableArchiveCompression = self.enableArchiveCompression;
             }
         }
@@ -250,5 +261,82 @@
 //- (void)setRegion:(BARegioni)region {
 //    
 //}
+
+@end
+
+
+@interface BABitArray (ExposedPrivates)
+- (void)updateRect:(NSRect)rect set:(BOOL)set;
+@end
+
+
+@implementation BASparseBitArray (SpatialStorage)
+
+- (BASampleArray *)size {
+    return [[self class] sampleArrayForBase:_treeBase power:_power];
+}
+
+- (void)recursiveUpdateRect:(NSRect)rect set:(BOOL)set {
+    
+    if(0 == _level) {
+        [self.bits updateRect:rect set:set];
+        if(_refreshBlock)
+            _refreshBlock(self);
+    }
+    else {
+        // partition the rectangle between the children, offset, recurse
+        NSUInteger childBase = _treeBase/2;
+        
+        for (NSUInteger i=0; i<4; ++i) {
+            NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+            if(!NSIsEmptyRect(subRect)) {
+                if(i&1)
+                    subRect.origin.x -= childBase;
+                if(i&2)
+                    subRect.origin.y -= childBase;
+                [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveUpdateRect:subRect set:set];
+            }
+        }
+    }
+}
+
+- (void)updateRect:(NSRect)rect set:(BOOL)set {
+    
+    NSUInteger maxIndex = StorageIndexFor2DCoordinates(NSMaxX(rect), NSMaxY(rect), _treeBase);
+    
+    if(maxIndex >= _treeSize)
+        [self expandToFitSize:maxIndex+1];
+    
+    [self recursiveUpdateRect:rect set:set];
+}
+
+- (void)setRect:(NSRect)rect {
+    [self updateRect:rect set:YES];
+}
+
+- (void)clearRect:(NSRect)rect {
+    [self updateRect:rect set:NO];
+}
+
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+    if(0 == _level) {
+        [self.bits writeRect:rect fromArray:bitArray offset:origin];
+    }
+    else {
+        
+    }
+}
+
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray {
+    [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
+}
+
+- (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
+    return nil;
+}
+
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
+    return nil;
+}
 
 @end

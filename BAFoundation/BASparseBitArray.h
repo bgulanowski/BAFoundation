@@ -39,3 +39,7 @@ typedef void(^SparseRangeUpdate)(BASparseBitArray *bitArray, NSRange range, BOOL
 //- (void)setRegion:(BARegioni)region;
 
 @end
+
+
+@interface BASparseBitArray (SpatialStorage) <BABitArray2D>
+@end
