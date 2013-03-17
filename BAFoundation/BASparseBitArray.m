@@ -115,9 +115,11 @@
         return [_bits count];
     
     NSUInteger count = 0;
-    for (BASparseBitArray *child in _children)
-        if([child isKindOfClass:[BASparseBitArray class]])
-            count += child.count;
+    
+    for (id child in _children)
+        if(child != [NSNull null])
+            count += [child count];
+    
     return count;
 }
 
@@ -172,21 +174,27 @@
 }
 
 - (void)setAll {
-    if(!_level)
-        [self.bits setAll];
-    else
-        [self initializeChildren:^(BASparseArray *child) {
-            [(BASparseBitArray *)child setAll];
-        }];
+    if(0 == _level)
+        // AVOID creating if not created
+        [_bits setAll];
+    else {
+        for (id child in self.children) {
+            if(child != [NSNull null])
+                [child setAll];
+        }
+    }
 }
 
 - (void)clearAll {
     if(!_level)
-        [self.bits clearAll];
-    else
-        [self initializeChildren:^(BASparseArray *child) {
-            [(BASparseBitArray *)child clearAll];
-        }];
+        // AVOID creating if not created
+        [_bits clearAll];
+    else {
+        for (id child in self.children) {
+            if(child != [NSNull null])
+                [child clearAll];
+        }
+    }
 }
 
 - (NSUInteger)firstSetBit {
@@ -195,8 +203,10 @@
         return _bits ? [_bits firstSetBit] : NSNotFound;
     
     NSUInteger firstSetBit = NSNotFound;
-    
-    for (BASparseBitArray *child in self.children) {
+
+    for (id child in self.children) {
+        if(child == [NSNull null])
+            continue;
         firstSetBit = [child firstSetBit];
         if(NSNotFound != firstSetBit)
             break;
@@ -212,7 +222,9 @@
     
     NSUInteger lastSetBit = NSNotFound;
     
-    for (BASparseBitArray *child in [self.children reverseObjectEnumerator]) {
+    for (id child in [self.children reverseObjectEnumerator]) {
+        if(child == [NSNull null])
+            continue;
         lastSetBit = [child firstSetBit];
         if(NSNotFound != lastSetBit)
             break;
