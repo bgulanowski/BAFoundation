@@ -271,7 +271,7 @@
     
     STAssertEquals(a, e, @"setRect: failed; count is wrong. Expected: %u. Actual: %u", (unsigned)e, (unsigned)a);
     
-    BABitArray *ba = [ba1 subArrayWithRect:rect];
+    BABitArray *ba = (BABitArray *)[ba1 subArrayWithRect:rect];
     BABitArray *be = [BABitArray bitArrayWithLength:e size:[BASampleArray sampleArrayForSize2d:NSMakeSize(128, 128)]];
     
     [be setAll];
