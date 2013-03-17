@@ -401,7 +401,24 @@
 }
 
 - (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
-    return nil;
+
+    NSUInteger base = NextPowerOf2((uint32_t)(rect.size.height > rect.size.width ? rect.size.height : rect.size.width));
+
+#if 0
+    // be strict, no ambiguity
+    NSAssert(rect.size.height == rect.size.width, @"Sparse array must have uniform size dimensions");
+    NSAssert(base == rect.size.height, @"Sparse array base must be a power of 2");
+#endif
+    
+    self = [self initWithBase:base power:2 level:0];
+    if(self) {
+        NSPoint origin = rect.origin;
+        rect.origin = NSZeroPoint;
+        
+        [self writeRect:rect fromArray:otherArray offset:origin];
+    }
+    
+    return self;
 }
 
 @end
