@@ -318,14 +318,18 @@
         NSUInteger childBase = _treeBase/2;
         
         for (NSUInteger i=0; i<4; ++i) {
+            
             NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
-            if(!NSIsEmptyRect(subRect)) {
-                if(i&1)
-                    subRect.origin.x -= childBase;
-                if(i&2)
-                    subRect.origin.y -= childBase;
-                [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveUpdateRect:subRect set:set];
-            }
+            
+            if(NSIsEmptyRect(subRect))
+                continue;
+            
+            if(i&1)
+                subRect.origin.x -= childBase;
+            if(i&2)
+                subRect.origin.y -= childBase;
+            
+            [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveUpdateRect:subRect set:set];
         }
     }
 }
