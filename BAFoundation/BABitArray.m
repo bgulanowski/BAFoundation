@@ -181,6 +181,8 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)setBit:(NSUInteger)index {
+    if(count == length)
+        return;
 	if(index > length)
         [NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
 
@@ -195,6 +197,8 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)setRange:(NSRange)bitRange {
+    if(count == length)
+        return;
     NSUInteger maxIndex = bitRange.location+bitRange.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
@@ -203,11 +207,15 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)setAll {
+    if(count == length)
+        return;
 	memset(buffer, 0xff, bufferLength);
 	count = length;
 }
 
 - (void)clearBit:(NSUInteger)index {
+    if(count == 0)
+        return;
 	if(index > length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
 	NSUInteger byte = index/bitsInChar;
@@ -217,10 +225,12 @@ NSUInteger bitsInChar = NSNotFound;
 	if(buffer[byte] & mask) {
 		buffer[byte] &= ~mask;
 		--count;
-	}	
+	}
 }
 
 - (void)clearRange:(NSRange)bitRange {
+    if(count == 0)
+        return;
     NSUInteger maxIndex = bitRange.location+bitRange.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
@@ -229,6 +239,8 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)clearAll {
+    if(count == 0)
+        return;
 	memset(buffer, 0, bufferLength);
 	count = 0;
 }
@@ -252,10 +264,19 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (NSUInteger)firstSetBit {
+    if(count == 0)
+        return NSNotFound;
+    if(count == length)
+        return 0;
     return [self first:buffer];
 }
 
 - (NSUInteger)lastSetBit {
+    
+    if(count == 0)
+        return NSNotFound;
+    if(count == length)
+        return length-1;
 
 	unsigned char *p = buffer+bufferLength-1;
 	unsigned char b=(bitsInChar-1), t=1;
@@ -336,6 +357,11 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (NSUInteger)firstClearBit {
+    
+    if(count == 0)
+        return 0;
+    if(count == length)
+        return NSNotFound;
 	
 	unsigned char *p = buffer;
 	unsigned char b=0, t=1;
@@ -354,6 +380,11 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (NSUInteger)lastClearBit {
+    
+    if(count == 0)
+        return length-1;
+    if(count == length)
+        return NSNotFound;
 	
 	unsigned char *p = buffer+bufferLength-1;
 	unsigned char b=(bitsInChar-1), t=1;
@@ -402,6 +433,7 @@ NSUInteger bitsInChar = NSNotFound;
 		[NSException raise:NSInvalidArgumentException format:@"Requested unreasonable length for bit array (%lu)", (unsigned long)bits];
 	self = [super init];
 	if(self) {
+        allClear = YES;
 		length = bits; // never changes
         size = [vector retain]; // never changes
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
