@@ -352,13 +352,44 @@
     [self updateRect:rect set:NO];
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+- (void)recursiveWriteRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+    
     if(0 == _level) {
         [self.bits writeRect:rect fromArray:bitArray offset:origin];
     }
     else {
         
+        NSUInteger childBase = _treeBase/2;
+        
+        for (NSUInteger i=0; i<4; ++i) {
+            
+            NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+            
+            if(NSIsEmptyRect(subRect))
+                continue;
+            
+            if(i&1) {
+                subRect.origin.x -= childBase;
+                origin.x += childBase;
+            }
+            if(i&2) {
+                subRect.origin.y -= childBase;
+                origin.y += childBase;
+            }
+            
+            [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveWriteRect:subRect fromArray:bitArray offset:origin];
+        }
     }
+}
+
+- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+
+    NSUInteger maxIndex = StorageIndexFor2DCoordinates(NSMaxX(rect), NSMaxY(rect), _treeBase);
+    
+    if(maxIndex >= _treeSize)
+        [self expandToFitSize:maxIndex+1];
+    
+    [self recursiveWriteRect:rect fromArray:bitArray offset:origin];
 }
 
 - (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray {
