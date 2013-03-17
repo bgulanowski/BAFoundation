@@ -433,7 +433,6 @@ NSUInteger bitsInChar = NSNotFound;
 		[NSException raise:NSInvalidArgumentException format:@"Requested unreasonable length for bit array (%lu)", (unsigned long)bits];
 	self = [super init];
 	if(self) {
-        allClear = YES;
 		length = bits; // never changes
         size = [vector retain]; // never changes
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
