@@ -233,6 +233,24 @@
     return lastSetBit;
 }
 
+- (NSUInteger)firstClearBit {
+    
+    if(0 == _level)
+        return [_bits lastClearBit];
+    
+    NSUInteger firstClearBit = NSNotFound;
+
+    for (id child in self.children) {
+        if(child == [NSNull null])
+            continue;
+        firstClearBit = [child firstClearBit];
+        if(NSNotFound != firstClearBit)
+            break;
+    }
+    
+    return firstClearBit;
+}
+
 
 #pragma mark - 2D translation conveniences
 
