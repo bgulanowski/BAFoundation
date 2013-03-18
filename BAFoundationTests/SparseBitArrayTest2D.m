@@ -80,6 +80,35 @@
     [_array clearAll];
 }
 
+- (void)test05Walk {
+    
+    NSUInteger treeBase = _array.treeBase*2;
+    NSUInteger leafBase = _array.base;
+    
+    NSUInteger e = 0;
+    
+    for(NSUInteger i=0; i<treeBase; i+=leafBase) {
+        for (NSUInteger j=0; j<treeBase; j+=leafBase) {
+            [_array setBitAtX:j y:i];
+            ++e;
+        }
+    }
+    
+    __block NSUInteger nodeCount = 0;
+    __block NSUInteger leafCount = 0;
+    
+    [_array walkChildren:^BOOL(BASparseArray *sparseArray, NSIndexPath *indexPath, NSUInteger *offset) {
+//        NSLog(@"%@ - {%d,%d}", indexPath, (int)*offset, (int)*(offset+1));
+        ++nodeCount;
+        if(0 == sparseArray.level)
+            ++leafCount;
+        return NO;
+    }];
+    
+//    NSLog(@"Count: %d nodes, %d leaves", (int)nodeCount, (int)leafCount);
+    STAssertEquals(leafCount, e, @"Wrong leaf count. Expected: %d. Actual: %d", e, leafCount);
+}
+
 
 - (void)test99 {
     
