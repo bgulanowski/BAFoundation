@@ -258,6 +258,114 @@
     return firstClearBit;
 }
 
+- (NSUInteger)lastClearBit { return NSNotFound; }
+
+// We must be able to assume that the range is restricted to the first dimension
+// It may cross at most two children, but we can partition the range
+- (void)recursiveUpdateBits:(BOOL *)bits write:(BOOL)write range:(NSRange)bitRange {
+
+    NSUInteger first = bitRange.location%_treeBase;
+    NSUInteger last = first + bitRange.length;
+    
+    NSAssert(last <= _treeBase, @"Range exceeds bounds");
+    
+    if(0 == _level) {
+        if(write)
+            [self.bits readBits:bits range:bitRange];
+        else
+            [self.bits writeBits:bits range:bitRange];
+    }
+    else {
+        
+#if 1
+        NSUInteger treeSize = [self treeSizeForStorageIndex:bitRange.location + bitRange.length];
+        NSUInteger childSize = treeSize >> _power;
+        
+        while (bitRange.length) {
+            
+            NSUInteger offset = 0;
+            BASparseBitArray *child = (BASparseBitArray *)[self childForStorageIndex:bitRange.location offset:&offset];
+            NSUInteger length = MIN(bitRange.length, childSize - bitRange.location);
+            
+            [child updateBits:bits+offset write:write range:NSMakeRange(bitRange.location-offset, length)];
+            bitRange.location += length;
+            bitRange.length -= length;
+        }
+
+#else
+        
+        // This implementation is wrong because it expects storage indices to be laid out
+        // according to a different strategy, accounting for the current size of the tree
+        // and the _power (number of dimensions)
+        
+        // We need a different method which converts leaf subranges from one representation
+        // to the other, then we can use the "natural" indexing scheme.
+        
+        NSUInteger index = 0;
+        // calculate index
+        
+        NSUInteger childSize = _treeSize/_scale;
+        NSUInteger location = (bitRange.location%childSize)/_power + first;
+        NSUInteger length = MIN(last, _treeBase/2);
+        
+        // The new range is in the child's coordinate system
+        NSRange childRange = NSMakeRange(location, length);
+        
+        if(write)
+            [(BASparseBitArray *)[self childAtIndex:index] writeBits:bits range:childRange];
+        else
+            [(BASparseBitArray *)[self childAtIndex:index] readBits:bits range:childRange];
+        
+        if(length < bitRange.length) {
+            childRange.location -= first;
+            childRange.length = bitRange.length - length;
+            if(write)
+                [(BASparseBitArray *)[self childAtIndex:index+1] writeBits:bits range:childRange];
+            else
+                [(BASparseBitArray *)[self childAtIndex:index+1] readBits:bits range:childRange];
+        }
+#endif
+    }
+}
+
+- (void)updateBits:(BOOL *)bits write:(BOOL)write range:(NSRange)bitRange {
+    
+    NSUInteger maxIndex = bitRange.location + bitRange.length;
+    
+    if(maxIndex >= _treeSize)
+        [self expandToFitSize:maxIndex];
+
+    [self recursiveUpdateBits:bits write:write range:bitRange];
+}
+
+- (void)readBits:(BOOL *)bits range:(NSRange)bitRange {
+    [self updateBits:bits write:NO range:bitRange];
+}
+
+- (void)writeBits:(BOOL * const)bits range:(NSRange)bitRange {
+    [self updateBits:bits write:YES range:bitRange];
+}
+
+- (NSString *)stringForRange:(NSRange)range {
+    
+    // use the fact that BOOL is just a char
+    char *bits = calloc(sizeof(char), range.length);
+    
+    [self readBits:(BOOL *)bits range:range];
+    
+    for (NSUInteger i=0; i<range.length; ++i) {
+        bits[i] = bits[i] ? 'S' : '_';
+    }
+    
+    NSString *string = [NSString stringWithCString:bits encoding:NSASCIIStringEncoding];
+    
+    free(bits);
+    
+    return string;
+}
+
+// -rowStringsForRect: and stringForRect: are implemented in BABitArray.m as a category on NSObject
+
 
 #pragma mark - 2D translation conveniences
 
@@ -404,7 +512,15 @@
 }
 
 - (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
-    return nil;
+    
+    Class class;
+    
+    if(rect.size.height == rect.size.width && rect.size.height > self.base && NextPowerOf2(rect.size.height) == rect.size.height)
+        class = [self class];
+    else
+        class = [BABitArray class];
+
+    return [[class alloc] initWithBitArray:self rect:rect];
 }
 
 - (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
