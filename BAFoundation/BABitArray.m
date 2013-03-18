@@ -23,12 +23,9 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 @interface BABitArray ()
 
-- (id)initWithLength:(NSUInteger)bits;
-
 @property (readwrite) NSUInteger count;
 
 @end
-
 
 
 @implementation BABitArray
@@ -295,10 +292,16 @@ NSUInteger bitsInChar = NSNotFound;
 }
 
 - (void)readBits:(BOOL *)bits range:(NSRange)range {
+    NSUInteger maxIndex = range.location+range.length-1;
+	if(maxIndex >= length)
+		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
     copyBits(buffer, bits, range, NO);
 }
 
 - (void)writeBits:(BOOL *const)bits range:(NSRange)range {
+    NSUInteger maxIndex = range.location+range.length-1;
+	if(maxIndex >= length)
+		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
     count+=copyBits(buffer, bits, range, YES);
 }
 
@@ -458,6 +461,24 @@ NSUInteger bitsInChar = NSNotFound;
 
 - (void)refreshCount {
 	count = hammingWeight(buffer, NSMakeRange(0, length));
+}
+
+- (NSString *)stringForRange:(NSRange)range {
+    
+    char * bytes = calloc(sizeof(char), range.length+1);
+    
+    NSAssert(bytes, @"memory error");
+    
+    bytes[range.length] = '\0';
+    
+    for(NSUInteger i=0; i<range.length; ++i)
+        bytes[i] = [self bit:range.location+i] ? 'S' : '_';
+    
+    NSString *result = [NSString stringWithCString:bytes encoding:NSASCIIStringEncoding];
+    
+    free(bytes);
+    
+    return result;
 }
 
 
@@ -696,7 +717,6 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
 }
 
-
 - (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
     
     BABitArray *result = [BABitArray bitArrayWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
@@ -715,6 +735,25 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
         [self writeRect:rect fromArray:otherArray];
     }
     return self;
+}
+
+- (NSArray *)rowStringsForRect:(NSRect)rect {
+    
+    NSMutableArray *rows = [NSMutableArray array];
+    
+    NSSize size2d = [[self size] size2d];
+    NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
+    
+    for (NSUInteger i=rect.origin.y; i<rect.size.height; ++i) {
+        [rows insertObject:[self stringForRange:range] atIndex:0];
+        range.location += size2d.width;
+    }
+    
+    return [[rows copy] autorelease];
+}
+
+- (NSString *)stringForRect:(NSRect)rect {
+    return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
 }
 
 @end

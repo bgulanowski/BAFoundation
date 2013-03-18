@@ -29,13 +29,14 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (NSUInteger)firstSetBit;
 - (NSUInteger)lastSetBit;
 
-@optional
 // ranges for readBits:range: and writeBits:range are bit ranges
 - (void)readBits:(BOOL *)bits range:(NSRange)bitRange;
 - (void)writeBits:(BOOL * const)bits range:(NSRange)bitRange;
 
 - (NSUInteger)firstClearBit;
 - (NSUInteger)lastClearBit;
+
+- (NSString *)stringForRange:(NSRange)range;
 
 @end
 
@@ -46,6 +47,8 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @protocol BABitArray2D <BABitArray>
 
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect;
+
 - (BASampleArray *)size;
 
 - (void)setRect:(NSRect)rect;
@@ -55,7 +58,9 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 - (id<BABitArray2D>)subArrayWithRect:(NSRect)rect;
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect;
+@optional
+- (NSArray *)rowStringsForRect:(NSRect)rect;
+- (NSString *)stringForRect:(NSRect)rect;
 
 @end
 
