@@ -46,13 +46,10 @@
         updateBlock(self, index, (void *)&setBit);
 }
 
-- (void)updateRange:(NSRange)range set:(BOOL)setBits {
+- (void)recursiveUpdateRange:(NSRange)range set:(BOOL)setBits {
     
     NSUInteger maxIndex = range.location + range.length;
-    
-    if(maxIndex >= _treeSize)
-        [self expandToFitSize:maxIndex];
-    
+
     if(!_level) {
         NSAssert(maxIndex < _leafSize, @"node traversal error; updating range %@", NSStringFromRange(range));
         if(setBits)
@@ -77,12 +74,22 @@
         
         dispatch_group_enter(group);
         dispatch_group_async(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [child updateRange:NSMakeRange(range.location+offset, length) set:setBits];
+            [child updateRange:NSMakeRange(range.location-offset, length) set:setBits];
             dispatch_group_leave(group);
         });
         range.location += length;
         range.length -= length;
     }
+}
+
+- (void)updateRange:(NSRange)range set:(BOOL)setBits {
+    
+    NSUInteger maxIndex = range.location + range.length;
+    
+    if(maxIndex >= _treeSize)
+        [self expandToFitSize:maxIndex];
+    
+    [self recursiveUpdateRange:range set:setBits];    
 }
 
 
