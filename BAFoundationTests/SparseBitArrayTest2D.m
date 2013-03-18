@@ -109,6 +109,44 @@
     STAssertEquals(leafCount, e, @"Wrong leaf count. Expected: %d. Actual: %d", e, leafCount);
 }
 
+- (void)test06String {
+    
+    NSUInteger treeBase = _array.treeBase;
+    
+    for (NSUInteger i=0; i<treeBase; ++i)
+        [_array setBitAtX:i y:i];
+
+    NSMutableArray *strings = [NSMutableArray array];
+    char *str = malloc(sizeof(char)*(treeBase+1));
+    
+    for (NSUInteger i=0; i<treeBase; ++i) {
+        memset(str, '_', treeBase);
+        str[i] = 'S';
+        [strings insertObject:[NSString stringWithCString:str encoding:NSASCIIStringEncoding] atIndex:0];
+    }
+    
+    NSString *e = [strings componentsJoinedByString:@"\n"];
+    NSString *a = [_array stringForRect:NSMakeRect(0, 0, treeBase, treeBase)];
+    
+    STAssertEqualObjects(e, a, @"String creation failed.");
+}
+
+//- (void)testWriteRect {
+//    // TODO!
+//    [_array setRect:NSMakeRect(8, 8, 32, 32)];
+//    [_array clearRect:NSMakeRect(16, 16, 16, 16)];
+//    
+//    NSRect rect = NSMakeRect(0, 0, BASE, BASE);
+//    id<BABitArray2D> ba = [_array subArrayWithRect:rect];
+//    
+//    STAssertEquals((NSUInteger)8*8, [ba count], @"Wrong count");
+//    
+//    [ba logRect:rect];
+//    
+//    STAssertNotNil(ba, @"Failed to create subarray");
+//    
+//    
+//}
 
 - (void)test99 {
     
