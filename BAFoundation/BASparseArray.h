@@ -25,6 +25,9 @@ typedef void  (^SparseArrayExpand)(BASparseArray *sparseArray, NSUInteger newLev
 // This can be used for application-specific changes
 typedef void (^SparseArrayRefresh)(BASparseArray *sparseArray);
 
+// return YES to prune the given tree
+typedef BOOL (^SparseArrayWalk)(BASparseArray *sparseArray, NSIndexPath *indexPath, NSUInteger *offset);
+
 
 /* Leaf indexes for multi-dimensional arrays are numbered consistently following a recursive pattern.
  * Each leaf index is determined by its search order in the tree. As the tree grows, new leaves
@@ -148,6 +151,8 @@ extern void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32
 @property (nonatomic, readonly) NSUInteger treeBase;
 
 @property (nonatomic) BOOL enableArchiveCompression;
+
+- (void)walkChildren:(SparseArrayWalk)walkBlock;
 
 // The initial tree always has two levels (0 and 1)
 // The root, at level 1, has <scale> children, all leaves, each with <leafSize> storage

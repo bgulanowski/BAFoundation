@@ -435,6 +435,29 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
 
 #pragma mark - BASparseArray
 
+- (void)recursiveWalkChildren:(SparseArrayWalk)walkBlock indexPath:(NSIndexPath *)indexPath offset:(NSUInteger *)offset {
+    
+    if(walkBlock(self, indexPath, offset) || 0 == _level)
+        return;
+
+    NSUInteger *childOffset = calloc(sizeof(NSUInteger), _power);
+    NSUInteger i=0;
+    
+    for (id child in self.children) {
+        if(child != [NSNull null]) {
+            for (NSUInteger j=0; i<_power; ++i)
+                childOffset[j] = offset[j] + _treeBase*(i&(1<<j));
+            [child recursiveWalkChildren:walkBlock indexPath:[indexPath indexPathByAddingIndex:i] offset:childOffset];
+        }
+        ++i;
+    }
+}
+
+- (void)walkChildren:(SparseArrayWalk)walkBlock {
+    NSUInteger *offset = calloc(sizeof(NSUInteger), _power);
+    [self recursiveWalkChildren:walkBlock indexPath:[[NSIndexPath alloc] init] offset:offset];
+}
+
 - (id)initWithBase:(NSUInteger)base power:(NSUInteger)power {
     return [self initWithBase:base power:power level:1];
 }
