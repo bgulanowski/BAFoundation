@@ -364,8 +364,6 @@
     return string;
 }
 
-// -rowStringsForRect: and stringForRect: are implemented in BABitArray.m as a category on NSObject
-
 
 #pragma mark - 2D translation conveniences
 
@@ -542,6 +540,98 @@
     }
     
     return self;
+}
+
+
+static NSArray *BlanksForRect(NSRect rect) {
+    
+    NSUInteger count = rect.size.width;
+    char *str = malloc(sizeof(char)*count+1);
+    
+    str[count] = '\0';
+    memset(str, '_', count);
+    
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    for (NSUInteger i=0; i<rect.size.height; ++i)
+        [array addObject:[NSString stringWithCString:str encoding:NSASCIIStringEncoding]];
+    
+    return [[array copy] autorelease];
+}
+
+- (NSArray *)rowStringsForRect:(NSRect)rect {
+    
+    // Recursion through children, or iteration over the included leaves?
+    // Either way, we have to do some stitching as we convert between coordinate systems
+    // (the storage is indexed with a 1D coordinate system; our rect array is mapped onto it)
+    
+    // I vote for recursion: we re-stitch the row strings at each level
+    
+    // We don't need to expand -- uninitialized space is filled with blanks ('_' characters)
+    if(NSIsEmptyRect(rect))
+        return nil;
+    
+    if(0 == _level) {
+        if(_bits)
+            return [_bits rowStringsForRect:rect];
+        else
+            return BlanksForRect(rect);
+    }
+    
+    
+    NSArray *childStrings[4];
+    NSUInteger childBase = _treeBase/2;
+    
+    for (NSUInteger i=0; i<4; ++i) {
+        
+        NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+        
+        if(NSIsEmptyRect(subRect))
+            continue;
+        
+        if(i&1)
+            subRect.origin.x -= childBase;
+        if(i&2)
+            subRect.origin.y -= childBase;
+        
+        id child = [_children objectAtIndex:i];
+
+        childStrings[i] = child == [NSNull null] ? BlanksForRect(subRect) : [child rowStringsForRect:subRect];
+    }
+    
+    NSMutableArray *rowStrings = [NSMutableArray array];
+    
+    // Concatenate strings and arrays
+    if(childStrings[2]) {
+        if(childStrings[3]) {
+            NSUInteger count = [childStrings[0] count];
+            for (NSUInteger i=0; i<count; ++i)
+                [rowStrings addObject:[[childStrings[2] objectAtIndex:i] stringByAppendingString:[childStrings[3] objectAtIndex:i]]];
+        }
+    }
+    else if(childStrings[3]) {
+        [rowStrings addObjectsFromArray:childStrings[3]];
+    }
+    
+    if(childStrings[0]) {
+        if(childStrings[1]) {
+            NSUInteger count = [childStrings[0] count];
+            for (NSUInteger i=0; i<count; ++i)
+                [rowStrings addObject:[[childStrings[0] objectAtIndex:i] stringByAppendingString:[childStrings[1] objectAtIndex:i]]];
+        }
+        else {
+            [rowStrings addObjectsFromArray:childStrings[0]];
+        }
+    }
+    else if(childStrings[1]) {
+        [rowStrings addObjectsFromArray:childStrings[1]];
+    }
+    
+    return [[rowStrings copy] autorelease];
+}
+
+- (NSString *)stringForRect:(NSRect)rect {
+    return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
 }
 
 @end

@@ -113,15 +113,20 @@
     
     NSUInteger treeBase = _array.treeBase;
     
-    for (NSUInteger i=0; i<treeBase; ++i)
+    for (NSUInteger i=0; i<treeBase; ++i) {
         [_array setBitAtX:i y:i];
+        [_array setBitAtX:treeBase-1 y:i];
+    }
 
     NSMutableArray *strings = [NSMutableArray array];
     char *str = malloc(sizeof(char)*(treeBase+1));
     
+    str[treeBase] = '\0';
+    
     for (NSUInteger i=0; i<treeBase; ++i) {
         memset(str, '_', treeBase);
         str[i] = 'S';
+        str[treeBase-1] = 'S';
         [strings insertObject:[NSString stringWithCString:str encoding:NSASCIIStringEncoding] atIndex:0];
     }
     
