@@ -108,4 +108,31 @@
     STAssertTrue([_array bit:8], @"Bit 0 doesn't match");
 }
 
+- (void)test04 {
+    
+    NSUInteger treeBase = _array.treeBase;
+    NSUInteger leafBase = _array.base;
+
+    NSUInteger e = 0;
+
+    for(NSUInteger i=0; i<treeBase; i+=leafBase) {
+        [_array setBit:i];
+        ++e;
+    }
+    
+    __block NSUInteger nodeCount = 0;
+    __block NSUInteger leafCount = 0;
+
+    [_array walkChildren:^BOOL(BASparseArray *sparseArray, NSIndexPath *indexPath, NSUInteger *offset) {
+//        NSLog(@"%@ - %d", indexPath, (int)&offset);
+        ++nodeCount;
+        if(0 == sparseArray.level)
+            ++leafCount;
+        return NO;
+    }];
+    
+    NSLog(@"Count: %d nodes, %d leaves", (int)nodeCount, (int)leafCount);
+    STAssertEquals(leafCount, e, @"Wrong leaf count. Expected: %d. Actual: %d", e, leafCount);
+}
+
 @end
