@@ -41,6 +41,41 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 NSUInteger bitsInChar = NSNotFound;
 
+
+static inline BOOL setBit(unsigned char *buffer, NSUInteger index) {
+    
+	NSUInteger byte = index/bitsInChar;
+	NSUInteger bit = index%bitsInChar;
+	unsigned char mask = (1 << bit);
+	
+    BOOL wasSet = buffer[byte] & mask;
+    
+    if(!wasSet)
+		buffer[byte] |= mask;
+    
+    return !wasSet;
+}
+
+static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
+    
+	NSUInteger byte = index/bitsInChar;
+	NSUInteger bit = index%bitsInChar;
+	unsigned char mask = (1 << bit);
+	
+    BOOL wasSet = buffer[byte] & mask;
+    
+	if(wasSet)
+		buffer[byte] &= ~mask;
+	
+    return wasSet;
+}
+
+// These macros are intended only for use within this file, as the refer to ivars directly
+#define GET_BIT(_index_) ((buffer[((_index_)/bitsInChar)] & (1 << ((_index_)%bitsInChar))) != 0)
+#define SET_BIT(_index_) do { if(setBit(buffer, _index_)) ++count; }while(0)
+#define CLR_BIT(_index_) do { if(clrBit(buffer, _index_)) --count; }while(0)
+
+
 #pragma mark - Accessors
 - (NSData *)bufferData {
     return [NSData dataWithBytes:buffer length:bufferLength];
@@ -174,12 +209,10 @@ NSUInteger bitsInChar = NSNotFound;
 - (BOOL)bit:(NSUInteger)index {
 	if(index > length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
-	
-	NSUInteger byte = index/bitsInChar;
-	NSUInteger bit = index%bitsInChar;
-	
+		
 //	NSLog(@"Checking bit %u in byte %u (0x%02X): 0x%02X", bit, byte, buffer[byte], (buffer[byte] & (1 << bit)));
-	return (BOOL)((buffer[byte] & (1 << bit)) != 0);
+//	return (BOOL)((buffer[(index/bitsInChar)] & (1 << (index%bitsInChar))) != 0);
+    return GET_BIT(index);
 }
 
 - (void)setBit:(NSUInteger)index {
@@ -187,15 +220,7 @@ NSUInteger bitsInChar = NSNotFound;
         return;
 	if(index > length)
         [NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
-
-	NSUInteger byte = index/bitsInChar;
-	NSUInteger bit = index%bitsInChar;
-	unsigned char mask = (1 << bit);
-	
-	if(! (buffer[byte] & mask)) {
-		buffer[byte] |= mask;
-		++count;
-	}
+    SET_BIT(index);
 }
 
 - (void)setRange:(NSRange)bitRange {
@@ -220,14 +245,7 @@ NSUInteger bitsInChar = NSNotFound;
         return;
 	if(index > length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)index];
-	NSUInteger byte = index/bitsInChar;
-	NSUInteger bit = index%bitsInChar;
-	unsigned char mask = (1 << bit);
-	
-	if(buffer[byte] & mask) {
-		buffer[byte] &= ~mask;
-		--count;
-	}
+    CLR_BIT(index);
 }
 
 - (void)clearRange:(NSRange)bitRange {
@@ -479,7 +497,7 @@ NSUInteger bitsInChar = NSNotFound;
     bytes[range.length] = '\0';
     
     for(NSUInteger i=0; i<range.length; ++i)
-        bytes[i] = [self bit:range.location+i] ? 'S' : '_';
+        bytes[i] = GET_BIT(range.location+i) ? 'S' : '_';
     
     NSString *result = [NSString stringWithCString:bytes encoding:NSASCIIStringEncoding];
     
@@ -679,17 +697,17 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
 
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    return [self bit:x + y*size.size2d.width];
+    return GET_BIT(x + y*(NSUInteger)size.size2d.width);
 }
 
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    [self setBit:x + y*size.size2d.width];
+    SET_BIT(x + y*(NSUInteger)size.size2d.width);
 }
 
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    [self clearBit:x + y*size.size2d.width];
+    SET_BIT(x + y*(NSUInteger)size.size2d.width);
 }
 
 
@@ -697,21 +715,21 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     BIT_ARRAY_SIZE_ASSERT();
     NSUInteger dims[3];
     [size size3d:dims];
-    return [self bit:x + y*dims[0] + z*dims[1]*dims[0]];
+    return GET_BIT(x + y*dims[0] + z*dims[1]*dims[0]);
 }
 
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
     BIT_ARRAY_SIZE_ASSERT();
     NSUInteger dims[3];
     [size size3d:dims];
-    [self setBit:x + y*dims[0] + z*dims[1]*dims[0]];
+    SET_BIT(x + y*dims[0] + z*dims[1]*dims[0]);
 }
 
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
     BIT_ARRAY_SIZE_ASSERT();
     NSUInteger dims[3];
     [size size3d:dims];
-    [self clearBit:x + y*dims[0] + z*dims[1]*dims[0]];
+    CLR_BIT(x + y*dims[0] + z*dims[1]*dims[0]);
 }
 
 
