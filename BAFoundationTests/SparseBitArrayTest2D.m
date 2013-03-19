@@ -136,22 +136,22 @@
     STAssertEqualObjects(e, a, @"String creation failed.");
 }
 
-//- (void)testWriteRect {
-//    // TODO!
-//    [_array setRect:NSMakeRect(8, 8, 32, 32)];
-//    [_array clearRect:NSMakeRect(16, 16, 16, 16)];
-//    
-//    NSRect rect = NSMakeRect(0, 0, BASE, BASE);
-//    id<BABitArray2D> ba = [_array subArrayWithRect:rect];
-//    
-//    STAssertEquals((NSUInteger)8*8, [ba count], @"Wrong count");
-//    
-//    [ba logRect:rect];
-//    
-//    STAssertNotNil(ba, @"Failed to create subarray");
-//    
-//    
-//}
+- (void)testWriteRect {
+    
+    [_array setRect:NSMakeRect(8, 8, 32, 32)];
+    [_array clearRect:NSMakeRect(16, 16, 16, 16)];
+    
+    NSString *string = [_array stringForRect];
+    
+    STAssertEquals([string length], [_array treeSize]+[_array treeBase]-1, @"whaaa");
+    
+    NSRect rect = NSMakeRect(0, 0, BASE, BASE);
+    id<BABitArray2D> ba = [_array subArrayWithRect:rect];
+    
+    STAssertEquals((NSUInteger)8*8, [ba count], @"Wrong count");
+        
+    STAssertNotNil(ba, @"Failed to create subarray");
+}
 
 - (void)test99 {
     

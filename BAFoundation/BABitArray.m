@@ -741,11 +741,18 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     
     // TODO: Replace with more satisfying implementation
     BOOL *bits = malloc(rect.size.width*sizeof(BOOL));
+    BOOL isSimple = [bitArray isKindOfClass:[BABitArray class]];
     
     for (NSUInteger i=0; i<rect.size.height; ++i) {
-        [bitArray readBits:bits range:sourceRange];
+        if(isSimple) {
+            [bitArray readBits:bits range:sourceRange];
+            sourceRange.location += sourceSize.width;
+        }
+        else {
+            for (NSUInteger j=0; j<rect.size.width; ++j)
+                bits[j] = [bitArray bitAtX:j y:i];
+        }
         [self writeBits:bits range:destRange];
-        sourceRange.location += sourceSize.width;
         destRange.location += targetSize.width;
     }
     
