@@ -71,6 +71,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @optional
 - (NSArray *)rowStringsForRect:(NSRect)rect;
 - (NSString *)stringForRect:(NSRect)rect;
+- (NSString *)stringForRect;
 
 @end
 

@@ -634,4 +634,8 @@ static NSArray *BlanksForRect(NSRect rect) {
     return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
 }
 
+- (NSString *)stringForRect {
+    return [[self rowStringsForRect:NSMakeRect(0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
+}
+
 @end

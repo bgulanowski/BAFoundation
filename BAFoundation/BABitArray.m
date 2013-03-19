@@ -795,6 +795,10 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
 }
 
+- (NSString *)stringForRect {
+    return [[self rowStringsForRect:NSZeroRect] componentsJoinedByString:@"\n"];
+}
+
 @end
 
 
