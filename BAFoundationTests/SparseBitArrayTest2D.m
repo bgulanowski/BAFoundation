@@ -133,7 +133,7 @@
     NSString *e = [strings componentsJoinedByString:@"\n"];
     NSString *a = [_array stringForRect];
     
-    STAssertEqualObjects(e, a, @"String creation failed.");
+    STAssertEqualObjects(a, e, @"String creation failed.");
 }
 
 - (void)testWriteRect {
