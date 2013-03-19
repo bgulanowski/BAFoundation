@@ -11,14 +11,18 @@
 #import "BAFunctions.h"
 
 
-// These functions are meant to alter bits in a single byte, not an array of bytes
+// Set/clear a range of bit positions in a single byte
 static void setBits(unsigned char *byte, NSUInteger start, NSUInteger end);
 static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end);
 
-
+// These functions refer to a range of bits starting in the byte at the address provided
+// Count the number of set bits
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
 
+// Copy bits from, or to, the provide array of BOOLs
 NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write);
+
+// Set or clear bits
 NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 
