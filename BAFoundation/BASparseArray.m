@@ -452,6 +452,8 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
         }
         ++i;
     }
+    
+    free(childOffset);
 }
 
 - (void)walkChildren:(SparseArrayWalk)walkBlock {
