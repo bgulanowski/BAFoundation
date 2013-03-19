@@ -502,6 +502,8 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
     
     if(pOffset)
         *pOffset += offset;
+    else
+        pOffset = &offset;
     
     return [child leafForStorageIndex:index-offset offset:pOffset];
 }
