@@ -161,6 +161,7 @@ extern void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32
 - (void)expandToFitSize:(NSUInteger)newTreeSize;
 
 - (BASparseArray *)childAtIndex:(NSUInteger)index;
+- (BASparseArray *)leafForIndex:(NSUInteger)index;
 - (BASparseArray *)leafForStorageIndex:(NSUInteger)index offset:(NSUInteger *)pOffset;
 
 @end
