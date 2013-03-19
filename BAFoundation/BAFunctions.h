@@ -33,4 +33,12 @@ static inline uint32_t NextPowerOf2( uint32_t v ) {
     return v;
 }
 
+static inline NSUInteger countBits(BOOL *bits, NSUInteger length) {
+    NSUInteger count = 0;
+    for (NSUInteger i=0; i<length; ++i)
+        if(bits[i])
+            ++ count;
+    return count;
+}
+
 #endif

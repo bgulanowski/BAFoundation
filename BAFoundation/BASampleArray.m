@@ -8,6 +8,8 @@
 
 #import "BASampleArray.h"
 
+#import "BAFunctions.h"
+
 
 #pragma mark -
 @implementation BASampleArray

@@ -10,6 +10,7 @@
 
 #import "BASparseArrayPrivate.h"
 #import "BASampleArray.h"
+#import "BAFunctions.h"
 
 
 static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger base, NSUInteger power) {

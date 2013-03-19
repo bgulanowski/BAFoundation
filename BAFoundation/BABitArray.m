@@ -8,6 +8,7 @@
 #import "BABitArray.h"
 
 #import "NSData+GZip.h"
+#import "BAFunctions.h"
 
 
 // These functions are meant to alter bits in a single byte, not an array of bytes

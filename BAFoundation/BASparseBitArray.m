@@ -13,6 +13,7 @@
 #import "NSData+GZip.h"
 
 #import "BABitArray.h"
+#import "BAFunctions.h"
 
 
 #pragma mark -

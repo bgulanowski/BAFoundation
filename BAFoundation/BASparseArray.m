@@ -9,6 +9,7 @@
 #import "BASparseArray.h"
 
 #import "BASparseArrayPrivate.h"
+#import "BAFunctions.h"
 
 
 uint32_t powersOf2[TABLE_SIZE];
