@@ -287,7 +287,7 @@
             BASparseBitArray *child = (BASparseBitArray *)[self childForStorageIndex:bitRange.location offset:&offset];
             NSUInteger length = MIN(bitRange.length, childSize - bitRange.location);
             
-            [child updateBits:bits+offset write:write range:NSMakeRange(bitRange.location-offset, length)];
+            [child recursiveUpdateBits:bits+offset write:write range:NSMakeRange(bitRange.location-offset, length)];
             bitRange.location += length;
             bitRange.length -= length;
         }
