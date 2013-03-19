@@ -661,6 +661,45 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
 @dynamic count;
 
 #define BIT_ARRAY_SIZE_ASSERT() NSAssert(size != nil, @"Cannot perform spatial calculations without size")
+
+- (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y {
+    BIT_ARRAY_SIZE_ASSERT();
+    return [self bit:x + y*size.size2d.width];
+}
+
+- (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y {
+    BIT_ARRAY_SIZE_ASSERT();
+    [self setBit:x + y*size.size2d.width];
+}
+
+- (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y {
+    BIT_ARRAY_SIZE_ASSERT();
+    [self clearBit:x + y*size.size2d.width];
+}
+
+
+- (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
+    BIT_ARRAY_SIZE_ASSERT();
+    NSUInteger dims[3];
+    [size size3d:dims];
+    return [self bit:x + y*dims[0] + z*dims[1]*dims[0]];
+}
+
+- (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
+    BIT_ARRAY_SIZE_ASSERT();
+    NSUInteger dims[3];
+    [size size3d:dims];
+    [self setBit:x + y*dims[0] + z*dims[1]*dims[0]];
+}
+
+- (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
+    BIT_ARRAY_SIZE_ASSERT();
+    NSUInteger dims[3];
+    [size size3d:dims];
+    [self clearBit:x + y*dims[0] + z*dims[1]*dims[0]];
+}
+
+
 #define BIT_ARRAY_RECT_ASSERT() NSAssert(NSMinX(rect) >= 0 && NSMinY(rect) >= 0 && NSMaxX(rect) <= targetSize.width && NSMaxY(rect) <= targetSize.height, @"error")
 
 - (void)updateRect:(NSRect)rect set:(BOOL)set {

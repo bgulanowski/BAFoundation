@@ -51,6 +51,16 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 - (BASampleArray *)size;
 
+// power 2 conveniences
+- (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y;
+- (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y;
+- (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y;
+
+// power 3 conveniences
+- (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
+- (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
+- (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
+
 - (void)setRect:(NSRect)rect;
 - (void)clearRect:(NSRect)rect;
 

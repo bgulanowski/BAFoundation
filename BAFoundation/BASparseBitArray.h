@@ -23,18 +23,6 @@ typedef void(^SparseRangeUpdate)(BASparseBitArray *bitArray, NSRange range, BOOL
 
 @property (nonatomic, strong) BABitArray *bits;
 
-// power 2 conveniences
-- (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y;
-- (void)updateBitAtX:(NSUInteger)x y:(NSUInteger)y set:(BOOL)set;
-- (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y;
-- (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y;
-
-// power 3 conveniences
-- (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
-- (void)updateBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z set:(BOOL)set;
-- (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
-- (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
-
 // Add new category to BAScene and move there
 //- (void)setRegion:(BARegioni)region;
 
