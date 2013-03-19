@@ -130,5 +130,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @interface BASampleArray (BABitArraySupport)
 - (NSSize)size2d;
+- (void)size3d:(NSUInteger*)size;
 + (BASampleArray *)sampleArrayForSize2d:(NSSize)size;
++ (BASampleArray *)sampleArrayForSize3d:(NSUInteger *)size;
 @end

@@ -806,9 +806,19 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     return result;
 }
 
+- (void)size3d:(NSUInteger*)size {
+    [self readSamples:(UInt8 *)&size range:NSMakeRange(0, 3)];
+}
+
 + (BASampleArray *)sampleArrayForSize2d:(NSSize)size {
     BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(CGFloat)/sizeof(UInt8)] autorelease];
     [result writeSamples:(UInt8 *)&size range:NSMakeRange(0, 2)];
+    return result;
+}
+
++ (BASampleArray *)sampleArrayForSize3d:(NSUInteger *)size {
+    BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:3 size:sizeof(NSUInteger)/sizeof(UInt8)] autorelease];
+    [result writeSamples:(UInt8 *)&size range:NSMakeRange(0, 3)];
     return result;
 }
 
