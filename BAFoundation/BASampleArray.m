@@ -38,7 +38,7 @@
     [aCoder encodeInteger:_power forKey:@"power"];
     [aCoder encodeInteger:_order forKey:@"order"];
     [aCoder encodeInteger:_size  forKey: @"size"];
-    [aCoder encodeObject:[NSData dataWithBytesNoCopy:_samples length:_size*_count freeWhenDone:NO]];
+    [aCoder encodeObject:[NSData dataWithBytesNoCopy:_samples length:_size*_count freeWhenDone:NO] forKey:@"sampleData"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -54,7 +54,7 @@
 
         NSData *sampleData = [aDecoder decodeObjectForKey:@"sampleData"];
         
-        [sampleData getBytes:_samples length:_size];
+        [sampleData getBytes:_samples length:_size*_count];
     }
     return self;
 }
