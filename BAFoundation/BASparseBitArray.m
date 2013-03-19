@@ -121,8 +121,11 @@
 - (NSUInteger)length { return _treeSize; }
 
 - (NSUInteger)count {
-    if(_level == 0)
+
+    if(_level == 0) {
+        NSAssert([_bits checkCount], @"count check failed");
         return [_bits count];
+    }
     
     NSUInteger count = 0;
     
@@ -263,9 +266,7 @@
 
 - (NSUInteger)lastClearBit { return NSNotFound; }
 
-// We must be able to assume that the range is restricted to the first dimension
-// It may cross at most two children, but we can partition the range
-- (void)recursiveUpdateBits:(BOOL *)bits write:(BOOL)write range:(NSRange)bitRange {
+- (NSUInteger)recursiveUpdateBits:(BOOL *)bits write:(BOOL)write range:(NSRange)bitRange {
 
     NSUInteger first = bitRange.location%_treeBase;
     NSUInteger last = first + bitRange.length;
@@ -274,15 +275,15 @@
     
     if(0 == _level) {
         if(write)
-            [self.bits readBits:bits range:bitRange];
+            return [self.bits readBits:bits range:bitRange];
         else
-            [self.bits writeBits:bits range:bitRange];
+            return [self.bits writeBits:bits range:bitRange];
     }
     else {
         
-#if 1
         NSUInteger treeSize = [self treeSizeForStorageIndex:bitRange.location + bitRange.length];
         NSUInteger childSize = treeSize >> _power;
+        NSUInteger result = 0;
         
         while (bitRange.length) {
             
@@ -290,63 +291,31 @@
             BASparseBitArray *child = (BASparseBitArray *)[self childForStorageIndex:bitRange.location offset:&offset];
             NSUInteger length = MIN(bitRange.length, childSize - bitRange.location);
             
-            [child recursiveUpdateBits:bits+offset write:write range:NSMakeRange(bitRange.location-offset, length)];
+            result += [child recursiveUpdateBits:bits+offset write:write range:NSMakeRange(bitRange.location-offset, length)];
             bitRange.location += length;
             bitRange.length -= length;
         }
-
-#else
         
-        // This implementation is wrong because it expects storage indices to be laid out
-        // according to a different strategy, accounting for the current size of the tree
-        // and the _power (number of dimensions)
-        
-        // We need a different method which converts leaf subranges from one representation
-        // to the other, then we can use the "natural" indexing scheme.
-        
-        NSUInteger index = 0;
-        // calculate index
-        
-        NSUInteger childSize = _treeSize/_scale;
-        NSUInteger location = (bitRange.location%childSize)/_power + first;
-        NSUInteger length = MIN(last, _treeBase/2);
-        
-        // The new range is in the child's coordinate system
-        NSRange childRange = NSMakeRange(location, length);
-        
-        if(write)
-            [(BASparseBitArray *)[self childAtIndex:index] writeBits:bits range:childRange];
-        else
-            [(BASparseBitArray *)[self childAtIndex:index] readBits:bits range:childRange];
-        
-        if(length < bitRange.length) {
-            childRange.location -= first;
-            childRange.length = bitRange.length - length;
-            if(write)
-                [(BASparseBitArray *)[self childAtIndex:index+1] writeBits:bits range:childRange];
-            else
-                [(BASparseBitArray *)[self childAtIndex:index+1] readBits:bits range:childRange];
-        }
-#endif
+        return result;
     }
 }
 
-- (void)updateBits:(BOOL *)bits write:(BOOL)write range:(NSRange)bitRange {
+- (NSUInteger)updateBits:(BOOL *)bits write:(BOOL)write range:(NSRange)bitRange {
     
     NSUInteger maxIndex = bitRange.location + bitRange.length;
     
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex];
 
-    [self recursiveUpdateBits:bits write:write range:bitRange];
+    return [self recursiveUpdateBits:bits write:write range:bitRange];
 }
 
-- (void)readBits:(BOOL *)bits range:(NSRange)bitRange {
-    [self updateBits:bits write:NO range:bitRange];
+- (NSUInteger)readBits:(BOOL *)bits range:(NSRange)bitRange {
+    return [self updateBits:bits write:NO range:bitRange];
 }
 
-- (void)writeBits:(BOOL * const)bits range:(NSRange)bitRange {
-    [self updateBits:bits write:YES range:bitRange];
+- (NSUInteger)writeBits:(BOOL * const)bits range:(NSRange)bitRange {
+    return [self updateBits:bits write:YES range:bitRange];
 }
 
 - (NSString *)stringForRange:(NSRange)range {
@@ -468,7 +437,7 @@
     [self updateRect:rect set:NO];
 }
 
-- (void)recursiveWriteRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+- (void)recursiveWriteRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
     
     if(0 == _level) {
         [self.bits writeRect:rect fromArray:bitArray offset:origin];
@@ -498,7 +467,37 @@
     }
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+- (NSUInteger)readBits:(BOOL *)bits fromX:(NSUInteger)x y:(NSUInteger)y length:(NSUInteger)length {
+    
+    NSUInteger count = 0;
+    BOOL *subBits = bits;
+    NSUInteger subLength = length;
+    
+    while (subLength > 0) {
+        
+        NSUInteger leafIndex = LeafIndexFor2DCoordinates(x, y, _base);
+        BASparseBitArray *leaf = (BASparseBitArray *)[self leafForIndex:leafIndex];
+
+        // Leaf data co-ordinates
+        NSUInteger lx = x%_base;
+        NSUInteger ly = y%_base;
+        NSUInteger ll = MIN(_base-lx, subLength);
+        
+        NSRange bitsRange = NSMakeRange(lx + ly*_base, ll);
+        
+        count += [leaf.bits readBits:subBits range:bitsRange];
+                
+        subLength -= ll;
+        subBits += ll;
+        x += ll;
+    }
+    
+    NSAssert(count==countBits(bits,length), @"count failed");
+    
+    return count;
+}
+
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
 
     NSUInteger maxIndex = StorageIndexFor2DCoordinates(NSMaxX(rect), NSMaxY(rect), _treeBase);
     
@@ -508,20 +507,28 @@
     [self recursiveWriteRect:rect fromArray:bitArray offset:origin];
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray {
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray {
     [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
 }
 
 - (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
     
-    Class class;
+    BABitArray *subArray = [[BABitArray alloc] initWithLength:rect.size.height*rect.size.width size:[BASampleArray sampleArrayForSize2d:rect.size]];
+    NSUInteger width = rect.size.width;
     
-    if(rect.size.height == rect.size.width && rect.size.height > self.base && NextPowerOf2(rect.size.height) == rect.size.height)
-        class = [self class];
-    else
-        class = [BABitArray class];
+    BOOL *bits = malloc(width);
+    
+    for (NSUInteger y=0; y<rect.size.height; ++y) {
 
-    return [[class alloc] initWithBitArray:self rect:rect];
+        NSRange destRange = NSMakeRange(y * width, width);
+        
+        [self readBits:bits fromX:rect.origin.x y:rect.origin.y+y length:width];
+        [subArray writeBits:bits range:destRange];
+    }
+    
+    free(bits);
+    
+    return [subArray autorelease];
 }
 
 - (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
@@ -587,7 +594,8 @@ static NSArray *BlanksForRect(NSRect rect) {
     
     for (NSUInteger i=0; i<4; ++i) {
         
-        NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+        NSRect childRect = NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase);
+        NSRect subRect = NSIntersectionRect(rect, childRect);
         
         if(NSIsEmptyRect(subRect)) {
             childStrings[i] = NULL;

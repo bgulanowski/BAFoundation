@@ -232,7 +232,7 @@ NSUInteger bitsInChar = NSNotFound;
     NSUInteger maxIndex = bitRange.location+bitRange.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-	count -= setRange(buffer, bitRange, NO);
+	count += setRange(buffer, bitRange, NO);
     NSAssert([self checkCount], @"Count incorrect after setting range");
 }
 
@@ -292,18 +292,20 @@ NSUInteger bitsInChar = NSNotFound;
 	return (p-buffer)*bitsInChar+b;
 }
 
-- (void)readBits:(BOOL *)bits range:(NSRange)range {
+- (NSUInteger)readBits:(BOOL *)bits range:(NSRange)range {
     NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-    copyBits(buffer, bits, range, NO);
+    return copyBits(buffer, bits, range, NO);
 }
 
-- (void)writeBits:(BOOL *const)bits range:(NSRange)range {
+- (NSUInteger)writeBits:(BOOL *const)bits range:(NSRange)range {
     NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-    count+=copyBits(buffer, bits, range, YES);
+    NSUInteger diff = copyBits(buffer, bits, range, YES);;
+    count+=diff;
+    return diff;
 }
 
 - (void)readBytes:(unsigned char *)bytes range:(NSRange)byteRange {
@@ -608,30 +610,30 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	if(set)
 		return (NSInteger)range.length - oldCount;
 	else
-		return oldCount;
+		return -oldCount;
 }
+
 
 NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) {
 
     if(range.length == 0)
         return 0;
     
-	NSUInteger first = range.location/bitsInChar;
-	NSUInteger last = (range.location+range.length-1)/bitsInChar;
-	NSUInteger start = range.location%bitsInChar;
+    NSUInteger frst = range.location;
+    NSUInteger last = range.location+range.length-1;
+	NSUInteger frstByte = frst/bitsInChar;
+	NSUInteger lastByte = last/bitsInChar;
     NSUInteger k = 0;
     
-    NSInteger oldCount = 0, difference = 0;
+    NSInteger oldCount = hammingWeight(bytes, range);
     
-    if(write)
-        oldCount = hammingWeight(bytes, range);
-
-    for (NSUInteger i=first; i<=last; ++i) {
+    for (NSUInteger i=frstByte; i<=lastByte; ++i) {
         
-        NSUInteger end = i == last ? (start+range.length-1)%bitsInChar : bitsInChar - 1;
+        NSUInteger frstBit = i == frstByte ? frst%bitsInChar : 0;
+        NSUInteger lastBit = i == lastByte ? last%bitsInChar : bitsInChar - 1;
         char c = bytes[i];
         
-        for (NSUInteger j=start; j<=end; ++j) {
+        for (NSUInteger j=frstBit; j<=lastBit; ++j) {
             assert(k<range.length);
             if(write) {
                 if(bits[k])
@@ -648,18 +650,26 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
             bytes[i] = c;
     }
     
+    NSUInteger result;
+    
     if(write) {
         NSInteger newCount = hammingWeight(bytes, range);
-        difference = newCount - oldCount;
+        assert(newCount == countBits(bits, range.length));
+        result = newCount - oldCount;
     }
-    
-    return difference;
+    else {
+        result = oldCount;
+        assert(oldCount == countBits(bits, range.length));
+    }
+
+    return result;
 }
 
 
 @implementation BABitArray (SpatialStorage)
 
 @dynamic count;
+@dynamic length;
 
 #define BIT_ARRAY_SIZE_ASSERT() NSAssert(size != nil, @"Cannot perform spatial calculations without size")
 
@@ -713,12 +723,16 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     NSRange range = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
     NSInteger delta = 0;
     
+    NSAssert([self checkCount], @"count incorrect");
+    
     for (NSUInteger i=0; i<rect.size.height; ++i) {
         delta += setRange(buffer, range, set);
         range.location += targetSize.width;
     }
     
     count += delta;
+    
+    NSAssert([self checkCount], @"count incorrect");
 }
 
 - (void)setRect:(NSRect)rect {
@@ -729,7 +743,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     [self updateRect:rect set:NO];
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin {
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
     
     NSSize sourceSize = bitArray.size.size2d;
     NSSize targetSize = self.size.size2d;
@@ -740,27 +754,20 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     NSRange sourceRange = NSMakeRange(origin.x+sourceSize.width*origin.y, rect.size.width);
     NSRange destRange = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
     
-    // TODO: Replace with more satisfying implementation
+    // TODO: Replace with more effective implementation
     BOOL *bits = malloc(rect.size.width*sizeof(BOOL));
-    BOOL isSimple = [bitArray isKindOfClass:[BABitArray class]];
     
     for (NSUInteger i=0; i<rect.size.height; ++i) {
-        if(isSimple) {
-            [bitArray readBits:bits range:sourceRange];
-            sourceRange.location += sourceSize.width;
-        }
-        else {
-            for (NSUInteger j=0; j<rect.size.width; ++j)
-                bits[j] = [bitArray bitAtX:j y:i];
-        }
+        [bitArray readBits:bits range:sourceRange];
+        sourceRange.location += sourceSize.width;
         [self writeBits:bits range:destRange];
         destRange.location += targetSize.width;
     }
     
-    free(bits);    
+    free(bits);
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray {
+- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray {
     [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
 }
 
@@ -776,10 +783,15 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     return result;
 }
 
-- (id)initWithBitArray:(BABitArray *)otherArray rect:(NSRect)rect {
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
     self = [self initWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
     if(self) {
-        [self writeRect:rect fromArray:otherArray];
+
+        NSPoint origin = rect.origin;
+        
+        rect.origin = NSZeroPoint;
+        
+        [self writeRect:rect fromArray:otherArray offset:origin];
     }
     return self;
 }
@@ -794,8 +806,9 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
         rect.size = size2d;
     
     NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
+    NSUInteger maxY = rect.origin.y + rect.size.height;
     
-    for (NSUInteger i=rect.origin.y; i<rect.size.height; ++i) {
+    for (NSUInteger i=rect.origin.y; i<maxY; ++i) {
         [rows insertObject:[self stringForRange:range] atIndex:0];
         range.location += size2d.width;
     }

@@ -31,8 +31,8 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (NSUInteger)lastSetBit;
 
 // ranges for readBits:range: and writeBits:range are bit ranges
-- (void)readBits:(BOOL *)bits range:(NSRange)bitRange;
-- (void)writeBits:(BOOL * const)bits range:(NSRange)bitRange;
+- (NSUInteger)readBits:(BOOL *)bits range:(NSRange)bitRange;
+- (NSUInteger)writeBits:(BOOL * const)bits range:(NSRange)bitRange;
 
 - (NSUInteger)firstClearBit;
 - (NSUInteger)lastClearBit;
@@ -42,13 +42,11 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @end
 
 
-@class BABitArray;
-
 // Conveniences for bit arrays initialized with a 2-dimensional size use these to update sub-rectangles
 
 @protocol BABitArray2D <BABitArray>
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect;
+- (id)initWithBitArray:(id<BABitArray>)otherArray rect:(NSRect)rect;
 
 - (BASampleArray *)size;
 

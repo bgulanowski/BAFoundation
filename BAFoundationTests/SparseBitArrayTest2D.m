@@ -138,8 +138,13 @@
 
 - (void)testWriteRect {
     
-    [_array setRect:NSMakeRect(8, 8, 32, 32)];
-    [_array clearRect:NSMakeRect(16, 16, 16, 16)];
+    NSRect setRect = NSMakeRect(8, 8, 32, 32);
+    NSRect clrRect = NSMakeRect(16, 16, 16, 16);
+    
+    [_array setRect:setRect];
+    [_array clearRect:clrRect];
+    
+    STAssertEquals([_array count], (NSUInteger) (32*32 - 16*16), @"count failed");
     
     NSString *string = [_array stringForRect];
     
@@ -148,12 +153,32 @@
     NSRect rect = NSMakeRect(0, 0, BASE, BASE);
     id<BABitArray2D> ba = [_array subArrayWithRect:rect];
     
-    STAssertEquals((NSUInteger)8*8, [ba count], @"Wrong count");
+    STAssertEquals([ba count], (NSUInteger)8*8, @"Wrong count");
     
     string = [_array stringForRect:rect];
     NSString *other = [ba stringForRect];
     
     STAssertNotNil(ba, @"Failed to create subarray");
+    
+    STAssertEqualObjects(other, string, @"string creation failed");
+    
+    rect = NSMakeRect(4, 4, 20, 10);
+    
+    NSUInteger length = rect.size.width * rect.size.height;
+    NSRect intersection = NSIntersectionRect(rect, setRect);
+    NSUInteger count = intersection.size.width*intersection.size.height;
+
+    ba = [_array subArrayWithRect:rect];
+    STAssertEquals(ba.length, length, @"wrong length");
+    STAssertEquals(ba.count, count, @"wrong count");
+
+    NSUInteger stringLength = length + rect.size.height - 1;
+
+    string = [_array stringForRect:rect];
+    STAssertEquals([string length], stringLength, @"wrong string length");
+
+    other = [ba stringForRect];
+    STAssertEquals([other length], stringLength, @"wrong string length");
     
     STAssertEqualObjects(string, other, @"string creation failed");
 }
