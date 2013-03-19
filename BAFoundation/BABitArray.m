@@ -781,6 +781,10 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     NSMutableArray *rows = [NSMutableArray array];
     
     NSSize size2d = [[self size] size2d];
+    
+    if(NSEqualRects(rect, NSZeroRect))
+        rect.size = size2d;
+    
     NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
     
     for (NSUInteger i=rect.origin.y; i<rect.size.height; ++i) {
