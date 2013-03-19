@@ -365,6 +365,24 @@
 }
 
 
+//- (void)setRegion:(BARegioni)region {
+//    
+//}
+
+@end
+
+
+@interface BABitArray (ExposedPrivates)
+- (void)updateRect:(NSRect)rect set:(BOOL)set;
+@end
+
+
+@implementation BASparseBitArray (SpatialStorage)
+
+- (BASampleArray *)size {
+    return [[self class] sampleArrayForBase:_treeBase power:_power];
+}
+
 #pragma mark - 2D translation conveniences
 
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y {
@@ -399,24 +417,6 @@
 
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
     [self updateBitAtX:x y:y z:z set:NO];
-}
-
-//- (void)setRegion:(BARegioni)region {
-//    
-//}
-
-@end
-
-
-@interface BABitArray (ExposedPrivates)
-- (void)updateRect:(NSRect)rect set:(BOOL)set;
-@end
-
-
-@implementation BASparseBitArray (SpatialStorage)
-
-- (BASampleArray *)size {
-    return [[self class] sampleArrayForBase:_treeBase power:_power];
 }
 
 - (void)recursiveUpdateRect:(NSRect)rect set:(BOOL)set {
