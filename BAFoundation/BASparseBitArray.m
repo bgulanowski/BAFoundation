@@ -118,6 +118,8 @@
     return _bits;
 }
 
+- (NSUInteger)length { return _treeSize; }
+
 - (NSUInteger)count {
     if(_level == 0)
         return [_bits count];

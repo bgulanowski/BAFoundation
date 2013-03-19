@@ -14,7 +14,8 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @protocol BABitArray <NSObject>
 
-@property (nonatomic, readonly) NSUInteger count;
+@property (readonly) NSUInteger length;
+@property (readonly) NSUInteger count;
 
 - (BOOL)bit:(NSUInteger)index;
 
@@ -92,7 +93,6 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @property (readonly) BASampleArray *size;
 @property (readonly) NSData *bufferData;
-@property (readonly) NSUInteger length;
 
 - (BOOL)isEqualToBitArray:(BABitArray *)other;
 
