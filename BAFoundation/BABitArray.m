@@ -159,6 +159,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     [aCoder encodeInteger:(NSInteger)length forKey:@"length"];
     [aCoder encodeBool:enableArchiveCompression forKey:@"compressed"];
     [aCoder encodeInteger:count forKey:@"count"];
+    [aCoder encodeObject:size forKey:@"size"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -166,6 +167,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     self = [self initWithData:data length:[aDecoder decodeIntegerForKey:@"length"]];
     if(self) {
         enableArchiveCompression = [aDecoder decodeBoolForKey:@"compressed"];
+        size = [[aDecoder decodeObjectForKey:@"size"] retain];
         
         NSUInteger storedCount = [aDecoder decodeIntegerForKey:@"count"];
         

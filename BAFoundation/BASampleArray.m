@@ -33,6 +33,33 @@
 }
 
 
+#pragma mark - NSCoding
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeInteger:_power forKey:@"power"];
+    [aCoder encodeInteger:_order forKey:@"order"];
+    [aCoder encodeInteger:_size  forKey: @"size"];
+    [aCoder encodeObject:[NSData dataWithBytesNoCopy:_samples length:_size*_count freeWhenDone:NO]];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super init];
+    if(self) {
+        _power = [aDecoder decodeIntegerForKey:@"power"];
+        _order = [aDecoder decodeIntegerForKey:@"order"];
+        _size  = [aDecoder decodeIntegerForKey: @"size"];
+        _count = powi(_order, _power);
+        _samples = malloc(_size*_count);
+
+        NSAssert(_samples, @"Failed to allocate memory for BASampleArray");
+
+        NSData *sampleData = [aDecoder decodeObjectForKey:@"sampleData"];
+        
+        [sampleData getBytes:_samples length:_size];
+    }
+    return self;
+}
+
+
 #pragma mark - BASampleArray
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size {
     self = [super init];
@@ -40,7 +67,7 @@
 
         _power = power;
         _order = order;
-        _size = size;
+        _size  =  size;
         _count = powi(_order, _power);
         _samples = malloc(_size*_count);
 
