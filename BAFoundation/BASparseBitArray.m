@@ -586,8 +586,10 @@ static NSArray *BlanksForRect(NSRect rect) {
         
         NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
         
-        if(NSIsEmptyRect(subRect))
+        if(NSIsEmptyRect(subRect)) {
+            childStrings[i] = NULL;
             continue;
+        }
         
         if(i&1)
             subRect.origin.x -= childBase;

@@ -131,7 +131,7 @@
     }
     
     NSString *e = [strings componentsJoinedByString:@"\n"];
-    NSString *a = [_array stringForRect:NSMakeRect(0, 0, treeBase, treeBase)];
+    NSString *a = [_array stringForRect];
     
     STAssertEqualObjects(e, a, @"String creation failed.");
 }
@@ -149,8 +149,13 @@
     id<BABitArray2D> ba = [_array subArrayWithRect:rect];
     
     STAssertEquals((NSUInteger)8*8, [ba count], @"Wrong count");
-        
+    
+    string = [_array stringForRect:rect];
+    NSString *other = [ba stringForRect];
+    
     STAssertNotNil(ba, @"Failed to create subarray");
+    
+    STAssertEqualObjects(string, other, @"string creation failed");
 }
 
 - (void)test99 {
