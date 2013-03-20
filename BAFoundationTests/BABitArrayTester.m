@@ -105,7 +105,18 @@
 	STAssertFalse([ba bit:30], @"Failed to clear bit 30");
 	STAssertTrue([ba bit:35], @"Failed to set bit 35");
 	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);	
+	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+    
+    ba = [BABitArray bitArrayWithLength:8*8 size:[BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)]];
+    
+    [ba setDiagonalReverse:NO min:0 max:8];
+    STAssertEquals([ba count], (NSUInteger)8, @"Failed count after set diagonal");
+    
+    [ba setRow:6 min:0 max:8];
+    STAssertEquals([ba count], (NSUInteger)15, @"Failed count after set row");
+    
+    [ba setColumn:4 min:0 max:8];
+    STAssertEquals([ba count], (NSUInteger)21, @"Failed count after set column");
 }
 
 - (void)test03FirstLast {
@@ -126,7 +137,7 @@
 	STAssertTrue(63==lc, @"Last clear failed. Expected %qu; actual: %qu", 63, lc);
 }
 
-- (void)testEqualitySimplePositive {
+- (void)test04EqualitySimplePositive {
 	
 	BABitArray *ba1 = [BABitArray bitArray8];
 	BABitArray *ba2 = [BABitArray bitArray8];
@@ -134,7 +145,7 @@
 	STAssertTrue([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
 }
 
-- (void)testEqualitySimpleNegative {
+- (void)test05EqualitySimpleNegative {
 	
 	BABitArray *ba1 = [BABitArray bitArray8];
 	BABitArray *ba2 = [BABitArray bitArray8];
@@ -144,7 +155,7 @@
 	STAssertFalse([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
 }
 
-- (void)testCopy {
+- (void)test10Copy {
 	
     BABitArray *ba1 = [BABitArray bitArray64];
     BABitArray *ba2 = [[ba1 copy] autorelease];
@@ -156,7 +167,7 @@
     STAssertFalse([ba1 isEqualToBitArray:ba2], @"BABitArray copy modify inequality test failed");
 }
 
-- (void)testEncodeDecode {
+- (void)test11EncodeDecode {
     
     BABitArray *ba1 = [BABitArray bitArray64];
 
@@ -171,7 +182,7 @@
     STAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray encode-decode equality test failed");
 }
 
-- (void)testEnumeration {
+- (void)test20Enumeration {
     
     BABitArray *ba1 = [BABitArray bitArray64];
     __block NSUInteger checkCount = 0;
@@ -192,7 +203,7 @@
     STAssertEquals(checkCount, [ba1 count], @"enumeration test failed");
 }
 
-- (void)testWriteRange {
+- (void)test30WriteRange {
     
     BABitArray *ba1 = [BABitArray bitArray64];
     BOOL bits[16];
@@ -223,7 +234,7 @@
     }
 }
 
-- (void)testDataForRange {
+- (void)test31DataForRange {
     
     BABitArray *ba1 = [BABitArray bitArray64];
     unsigned char c[2] = { 0xC1, 0x0 };
@@ -259,7 +270,7 @@
     STAssertTrue([t2 isEqualToBitArray:t1], @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
 }
 
-- (void)testSubArray {
+- (void)test32SubArray {
     
     BABitArray *ba1 = [BABitArray bitArrayWithLength:256*256 size:[BASampleArray sampleArrayForSize2d:NSMakeSize(256, 256)]];
     NSRect rect = NSMakeRect(64, 64, 128, 128);
@@ -277,6 +288,119 @@
     [be setAll];
     
     STAssertTrue([ba isEqualToBitArray:be], @"subArrayWithRect: failed; Expected: %@. Actual: %@", be, ba);
+}
+
+- (void)test40RowFlip {
+    
+    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
+    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    
+    [ba1 setDiagonalReverse:NO min:0 max:8];
+    [ba1 setRow:6 min:0 max:8];
+    
+    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    [e setDiagonalReverse:YES min:0 max:8];
+    [e setRow:1 min:0 max:8];
+    
+    BABitArray *a = [ba1 bitArrayByFlippingRows];
+    
+    STAssertTrue([a isEqualToBitArray:e], @"flipping rows failed");
+}
+
+- (void)test41ColumnFlip {
+    
+    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
+    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    
+    [ba1 setDiagonalReverse:NO min:0 max:8];
+    [ba1 setColumn:6 min:0 max:8];
+    
+    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    [e setDiagonalReverse:YES min:0 max:8];
+    [e setColumn:1 min:0 max:8];
+
+    BABitArray *a = [ba1 bitArrayByFlippingColumns];
+    
+    STAssertTrue([a isEqualToBitArray:e], @"flipping columns failed");
+}
+
+- (void)test42Rotation90 {
+    
+    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
+    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    
+    [ba1 setDiagonalReverse:NO min:0 max:8];
+    [ba1 setColumn:5 min:0 max:8];
+    
+    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    [e setDiagonalReverse:YES min:0 max:8];
+    [e setRow:5 min:0 max:8];
+    
+    BABitArray *a = [ba1 bitArrayByRotating:1];
+    
+    STAssertTrue([a isEqualToBitArray:e], @"rotation by 90 degrees failed");
+}
+
+- (void)test43Rotation180 {
+    
+    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
+    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    
+    [ba1 setDiagonalReverse:NO min:0 max:8];
+    [ba1 setColumn:2 min:0 max:8];
+    [ba1 setRow:4 min:0 max:8];
+    
+    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    [e setDiagonalReverse:NO min:0 max:8];
+    [e setColumn:5 min:0 max:8];
+    [e setRow:3 min:0 max:8];
+
+    BABitArray *a = [ba1 bitArrayByRotating:2];
+    
+    STAssertTrue([a isEqualToBitArray:e], @"rotation by 180 degrees failed");
+}
+
+- (void)test44Rotation270 {
+    
+    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
+    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    
+    [ba1 setDiagonalReverse:NO min:0 max:8];
+    [ba1 setColumn:2 min:0 max:8];
+    
+    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    [e setDiagonalReverse:YES min:0 max:8];
+    [e setRow:5 min:0 max:8];
+    
+    BABitArray *a = [ba1 bitArrayByRotating:3];
+    
+    STAssertTrue([a isEqualToBitArray:e], @"rotation by 90 degrees failed");
+}
+
+@end
+
+
+@implementation BABitArray (TestingAdditions)
+
+- (void)setDiagonalReverse:(BOOL)reverse min:(NSUInteger)min max:(NSUInteger)max {
+    if(reverse) {
+        for (NSUInteger i=min; i<max; ++i)
+            [self setBitAtX:max-1-i y:i];
+    }
+    else {
+        for (NSUInteger i=min; i<max; ++i)
+            [self setBitAtX:i y:i];
+    }
+}
+
+- (void)setRow:(NSUInteger)row min:(NSUInteger)min max:(NSUInteger)max {
+    for (NSUInteger i=min; i<max; ++i)
+        [self setBitAtX:i y:row];
+}
+
+- (void)setColumn:(NSUInteger)column min:(NSUInteger)min max:(NSUInteger)max {
+    for (NSUInteger i=min; i<max; ++i)
+        [self setBitAtX:column y:i];
 }
 
 @end

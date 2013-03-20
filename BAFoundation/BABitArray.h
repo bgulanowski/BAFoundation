@@ -112,6 +112,8 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 // otherArray must be of equal or greater length; bitRange must fit within otherArray length
 - (id)initWithBitArray:(BABitArray *)otherArray range:(NSRange)bitRange;
 
+- (BABitArray *)reverseBitArray;
+
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits size:(BASampleArray *)vector;
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits;
 + (BABitArray *)bitArray8;
@@ -123,6 +125,9 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
 @interface BABitArray (SpatialStorage) <BABitArray2D>
+- (BABitArray *)bitArrayByFlippingColumns;
+- (BABitArray *)bitArrayByFlippingRows;
+- (BABitArray *)bitArrayByRotating:(NSInteger)quarters; // "quarters" are increments are 90 degrees
 - (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray;
 @end
 

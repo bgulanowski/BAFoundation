@@ -20,7 +20,7 @@ static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end);
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
 
 // Copy bits from, or to, the provide array of BOOLs
-NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write);
+NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse);
 
 // Set or clear bits
 NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
@@ -74,6 +74,8 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 #define GET_BIT(_index_) ((buffer[((_index_)/bitsInChar)] & (1 << ((_index_)%bitsInChar))) != 0)
 #define SET_BIT(_index_) do { if(setBit(buffer, _index_)) ++count; }while(0)
 #define CLR_BIT(_index_) do { if(clrBit(buffer, _index_)) --count; }while(0)
+
+#define SET_OTHER_BIT(_bitArray_, _index_) do { if(setBit((_bitArray_)->buffer, _index_)) ++(_bitArray_)->count; }while(0)
 
 
 #pragma mark - Accessors
@@ -320,14 +322,14 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-    return copyBits(buffer, bits, range, NO);
+    return copyBits(buffer, bits, range, NO, NO);
 }
 
 - (NSUInteger)writeBits:(BOOL *const)bits range:(NSRange)range {
     NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
 		[NSException raise:NSInvalidArgumentException format:@"index beyond bounds: %lu", (unsigned long)maxIndex];
-    NSUInteger diff = copyBits(buffer, bits, range, YES);;
+    NSUInteger diff = copyBits(buffer, bits, range, YES, NO);
     count+=diff;
     return diff;
 }
@@ -464,7 +466,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	self = [super init];
 	if(self) {
 		length = bits; // never changes
-        size = [vector retain]; // never changes
+        size = [vector copy]; // never changes
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
 		self.count = 0;
 		if(length > 0) {
@@ -510,6 +512,31 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 
 
 #pragma mark Factories
+- (BABitArray *)reverseBitArray {
+    
+    const size_t copyBatchSize = 256;
+    
+    BABitArray *reverse = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
+    NSRange sourceRange = NSMakeRange(0, MIN(copyBatchSize, length));
+    NSRange destRange = NSMakeRange(length-sourceRange.length, sourceRange.length);
+
+    BOOL *bits = malloc(copyBatchSize*sizeof(BOOL));
+
+    while (sourceRange.location < length-1) {
+        copyBits(buffer, bits, sourceRange, NO, YES);
+        sourceRange.location += copyBatchSize;
+        sourceRange.length = MIN(copyBatchSize, length-sourceRange.location);
+
+        copyBits(reverse->buffer, bits, destRange, YES, NO);
+        destRange.location -= destRange.length;
+        destRange.length = sourceRange.length;
+    }
+    
+    free(bits);
+    
+    return reverse;
+}
+
 + (BABitArray *)bitArrayWithLength:(NSUInteger)bits size:(BASampleArray *)vector {
 	return [[[self alloc] initWithLength:bits size:vector] autorelease];
 }
@@ -638,7 +665,7 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 }
 
 
-NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) {
+NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse) {
 
     if(range.length == 0)
         return 0;
@@ -647,7 +674,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
     NSUInteger last = range.location+range.length-1;
 	NSUInteger frstByte = frst/bitsInChar;
 	NSUInteger lastByte = last/bitsInChar;
-    NSUInteger k = 0;
+    NSUInteger k = reverse ? range.length-1 : 0;
+    NSUInteger inc = reverse ? -1 : 1;
     
     NSInteger oldCount = hammingWeight(bytes, range);
     
@@ -668,7 +696,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
             else {
                 bits[k] = ((c & 1<<j) != 0);
             }
-            ++k;
+            k+=inc;
         }
         if(write)
             bytes[i] = c;
@@ -846,6 +874,123 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write) 
 
 - (NSString *)stringForRect {
     return [[self rowStringsForRect:NSZeroRect] componentsJoinedByString:@"\n"];
+}
+
+- (BABitArray *)bitArrayByFlippingColumns {
+    
+    if(count == 0 || count == length)
+        return [[self copy] autorelease];
+    
+    BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
+    
+    NSSize size2d = self.size.size2d;
+    NSUInteger width = size2d.width;
+    NSUInteger height = size2d.height;
+    
+    for (NSUInteger i=0; i<height; ++i) {
+        for (NSUInteger j=0; j<width; ++j) {
+            if(GET_BIT(j + i*width))
+                SET_OTHER_BIT(copy, width-j-1 + i*width);
+        }
+    }
+    
+    return copy;
+}
+
+- (BABitArray *)bitArrayByFlippingRowsReverse:(BOOL)reverse {
+    
+    if(count == 0 || count == length)
+        return [[self copy] autorelease];
+    
+    BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
+    NSSize size2d = self.size.size2d;
+    NSUInteger width = size2d.width;
+    NSUInteger height = size2d.height;
+    
+    BOOL *bits = malloc(sizeof(BOOL)*width);
+    
+    NSRange source = NSMakeRange(0, width);
+    NSRange dest = NSMakeRange((height-1)*width, width);
+
+    for (NSUInteger i=0; i<height; ++i) {
+        copyBits(buffer, bits, source, NO, NO);
+        source.location += width;
+        copyBits(copy->buffer, bits, dest, YES, reverse);
+        dest.location -= width;
+    }
+    
+    [copy refreshCount];
+    
+    free(bits);
+    
+    return copy;
+}
+
+- (BABitArray *)bitArrayByFlippingRows {
+    return [self bitArrayByFlippingRowsReverse:NO];
+}
+
+- (BABitArray *)bitArrayByRotating:(NSInteger)quarters {
+    
+    quarters = quarters%4;
+    
+    if(quarters < 0)
+        quarters += 4;
+    
+    BABitArray *copy = [BABitArray bitArrayWithLength:length size:nil];
+    NSSize size2d = self.size.size2d;
+    NSUInteger width = size2d.width;
+    NSUInteger height = size2d.height;
+        
+    switch (quarters) {
+            
+        case 0:
+            return [[self copy] autorelease];
+
+        case 1:
+            // Rotate 90 CCW around origin, then translate by x+width
+            // (x,y) -> (-y, x) -> (w+x, y) = (w+(-y), x) = (w-y, x)
+            // x2 = -y, x3 = w-x2 = w - (-y) = w-y
+            // y2 = x,  y3 = y2 = x
+            // index = x3 + w*y3 = (w-y) + w*x
+            // w is actually width-1 for indexed storage
+            for (NSUInteger i=0; i<height; ++i) {
+                for (NSUInteger j=0; j<width; ++j) {
+                    if(GET_BIT(j + i*width))
+                        SET_OTHER_BIT(copy, (width-1-i) + j*width);
+                }
+            }
+
+            break;
+            
+        case 2: // (x, y) -> (width-x-1, height-y-1)
+            return [self bitArrayByFlippingRowsReverse:YES];
+            
+        case 3:
+        default:
+            // Rotate 90 CW around origin, then translate by y+height
+            // (x,y) -> (y, -x) -> (x, h+y) = (y, h+(-x)) = (y, h-x)
+            // x2 = y, x3 = x2 = y
+            // y2 = -x, y3 = h+y2 = h+(-x) = h-x
+            // index = x3 + w*y3 = y + w*(h-x)
+            // wi is actually width-1 for indexed storage
+            for (NSUInteger i=0; i<height; ++i) {
+                for (NSUInteger j=0; j<width; ++j) {
+                    if(GET_BIT(j + i*width))
+                        SET_OTHER_BIT(copy, i + (height-1-j)*width);
+                }
+            }
+
+            break;
+    }
+    
+    if(quarters == 1 || quarters == 3) {
+        // swap height and width in size
+        copy->size = [[BASampleArray sampleArrayForSize2d:NSMakeSize(height, width)] retain];
+        [copy refreshCount];
+    }
+    
+    return copy;
 }
 
 @end

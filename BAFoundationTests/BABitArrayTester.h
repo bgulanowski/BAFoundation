@@ -8,8 +8,19 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
+#import "BABitArray.h"
+
+
 @interface BABitArrayTester : SenTestCase {
 
 }
 
+@end
+
+
+@interface BABitArray (TestingAdditions)
+// up to, but not including, max
+- (void)setDiagonalReverse:(BOOL)reverse min:(NSUInteger)min max:(NSUInteger)max;
+- (void)setRow:(NSUInteger)row min:(NSUInteger)min max:(NSUInteger)max;
+- (void)setColumn:(NSUInteger)column min:(NSUInteger)min max:(NSUInteger)max;
 @end
