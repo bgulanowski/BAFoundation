@@ -60,6 +60,18 @@
 }
 
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+
+    BASampleArray *copy = [[BASampleArray alloc] initWithPower:_power order:_order size:_size];
+    
+    memcpy(copy->_samples, _samples, _size*_count);
+    
+    return copy;
+}
+
+
 #pragma mark - BASampleArray
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size {
     self = [super init];
@@ -77,6 +89,12 @@
 }
 
 - (BOOL)isEqualToSampleArray:(BASampleArray *)other {
+    
+    if(other == self)
+        return YES;
+    
+    if(!other)
+        return NO;
     
     if(_power != other->_power ||
        _order != other->_order ||

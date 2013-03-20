@@ -23,7 +23,7 @@
 
 @end
 
-@interface BASampleArray : NSObject<NSCoding, BASampleArray> {
+@interface BASampleArray : NSObject<NSCoding, NSCopying, BASampleArray> {
     
     UInt8 *_samples;
     
