@@ -441,6 +441,8 @@
     
     if(0 == _level) {
         [self.bits writeRect:rect fromArray:bitArray offset:origin];
+        if(_refreshBlock)
+            _refreshBlock(self);
     }
     else {
         
