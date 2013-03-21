@@ -457,11 +457,13 @@
             
             if(i&1) {
                 subRect.origin.x -= childBase;
-                origin.x += childBase;
+                if(rect.origin.x < childBase)
+                    origin.x += (childBase - rect.origin.x);
             }
             if(i&2) {
                 subRect.origin.y -= childBase;
-                origin.y += childBase;
+                if(rect.origin.y < childBase)
+                    origin.y += (childBase - rect.origin.y);
             }
             
             [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveWriteRect:subRect fromArray:bitArray offset:origin];
@@ -473,23 +475,37 @@
     
     NSUInteger count = 0;
     BOOL *subBits = bits;
-    NSUInteger subLength = length;
+    NSUInteger remainder = length;
+    NSUInteger leafCount = powi(_scale, _level);
     
-    while (subLength > 0) {
+    while (remainder > 0) {
         
-        NSUInteger leafIndex = LeafIndexFor2DCoordinates(x, y, _base);
-        BASparseBitArray *leaf = (BASparseBitArray *)[self leafForIndex:leafIndex];
-
         // Leaf data co-ordinates
         NSUInteger lx = x%_base;
         NSUInteger ly = y%_base;
-        NSUInteger ll = MIN(_base-lx, subLength);
+        NSUInteger ll = MIN(_base-lx, remainder);
         
         NSRange bitsRange = NSMakeRange(lx + ly*_base, ll);
         
-        count += [leaf.bits readBits:subBits range:bitsRange];
-                
-        subLength -= ll;
+        NSUInteger leafIndex = LeafIndexFor2DCoordinates(x, y, _base);
+        BASparseBitArray *leaf = nil;
+        
+        NSUInteger subCount;
+        
+        if(leafIndex < leafCount) {
+            leaf = (BASparseBitArray *)[self leafForIndex:leafIndex];
+            subCount = [leaf.bits readBits:subBits range:bitsRange];
+        }
+        else {
+            memset(subBits, 0, ll);
+            subCount = 0;
+        }
+
+        NSAssert(subCount==countBits(subBits,ll), @"count failed");
+
+        count += subCount;
+        
+        remainder -= ll;
         subBits += ll;
         x += ll;
     }
