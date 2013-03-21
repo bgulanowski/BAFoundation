@@ -937,15 +937,19 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     if(quarters < 0)
         quarters += 4;
     
-    BABitArray *copy = [BABitArray bitArrayWithLength:length size:nil];
+    BABitArray *copy = nil;
     NSSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
+    
+    if(quarters == 1 || quarters == 3)
+        copy = [BABitArray bitArrayWithLength:length size:nil];
         
     switch (quarters) {
             
         case 0:
-            return [[self copy] autorelease];
+            copy = [[self copy] autorelease];
+            break;
 
         case 1:
             // Rotate 90 CCW around origin, then translate by x+width
@@ -964,7 +968,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
             break;
             
         case 2: // (x, y) -> (width-x-1, height-y-1)
-            return [self bitArrayByFlippingRowsReverse:YES];
+            copy = [self bitArrayByFlippingRowsReverse:YES];
+            break;
             
         case 3:
         default:
