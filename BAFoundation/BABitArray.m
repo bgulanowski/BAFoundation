@@ -876,6 +876,10 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     return [[self rowStringsForRect:NSZeroRect] componentsJoinedByString:@"\n"];
 }
 
+- (id)initWithSize:(NSSize)initSize {
+    return [self initWithLength:initSize.width*initSize.height size:[BASampleArray sampleArrayForSize2d:initSize]];
+}
+
 - (BABitArray *)bitArrayByFlippingColumns {
     
     if(count == 0 || count == length)
@@ -996,6 +1000,10 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     }
     
     return copy;
+}
+
++ (BABitArray *)bitArrayWithSize:(NSSize)initSize {
+    return [[[self alloc] initWithSize:initSize] autorelease];
 }
 
 @end

@@ -125,10 +125,12 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
 @interface BABitArray (SpatialStorage) <BABitArray2D>
+- (id)initWithSize:(NSSize)initSize;
 - (BABitArray *)bitArrayByFlippingColumns;
 - (BABitArray *)bitArrayByFlippingRows;
 - (BABitArray *)bitArrayByRotating:(NSInteger)quarters; // "quarters" are increments are 90 degrees
 - (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray;
++ (BABitArray *)bitArrayWithSize:(NSSize)initSize;
 @end
 
 
