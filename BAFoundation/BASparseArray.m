@@ -499,7 +499,7 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
         return [self childAtIndex:index];
     
 //    NSUInteger leafCount = _treeSize/_leafSize;
-    NSUInteger childLeafCount = powi(2, _level+_power-1); // leafCount/_scale;
+    NSUInteger childLeafCount = powi(_scale, _level-1); // leafCount/_scale;
     NSUInteger childIndex = index/childLeafCount;
     BASparseArray *child = [self childAtIndex:childIndex];
     
