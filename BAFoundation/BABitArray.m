@@ -517,19 +517,24 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     const size_t copyBatchSize = 256;
     
     BABitArray *reverse = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
-    NSRange sourceRange = NSMakeRange(0, MIN(copyBatchSize, length));
-    NSRange destRange = NSMakeRange(length-sourceRange.length, sourceRange.length);
+    NSUInteger copyCount = MIN(copyBatchSize, length);
+    NSRange sourceRange = NSMakeRange(0, copyCount);
+    NSRange destRange = NSMakeRange(length-copyCount, copyCount);
 
     BOOL *bits = malloc(copyBatchSize*sizeof(BOOL));
 
     while (sourceRange.location < length-1) {
-        copyBits(buffer, bits, sourceRange, NO, YES);
-        sourceRange.location += copyBatchSize;
-        sourceRange.length = MIN(copyBatchSize, length-sourceRange.location);
 
+        copyBits(buffer, bits, sourceRange, NO, YES);
         copyBits(reverse->buffer, bits, destRange, YES, NO);
-        destRange.location -= destRange.length;
-        destRange.length = sourceRange.length;
+
+        sourceRange.location += copyCount;
+
+        copyCount = MIN(copyBatchSize, length-sourceRange.location);
+        destRange.location -= copyCount;
+
+        sourceRange.length = copyCount;
+        destRange.length = copyCount;
     }
     
     free(bits);
