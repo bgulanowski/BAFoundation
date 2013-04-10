@@ -386,6 +386,9 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
 - (void)dealloc {
     self.buildBlock = nil;
     self.expandBlock = nil;
+    self.updateBlock = nil;
+    self.refreshBlock = nil;
+    self.userObject = nil;
     [_children release], _children = nil;
     [super dealloc];
 }
