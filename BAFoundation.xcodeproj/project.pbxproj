@@ -44,6 +44,7 @@
 		842C153015FD9BE600D5AE05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842C152F15FD9BE600D5AE05 /* CoreData.framework */; };
 		842C154B15FDA19C00D5AE05 /* BAUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C154915FDA19C00D5AE05 /* BAUUID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		842C154C15FDA19C00D5AE05 /* BAUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C154A15FDA19C00D5AE05 /* BAUUID.m */; };
+		848699461707AC0C00727A5D /* BAFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8428532E16F3A4BE00BD7A71 /* BAFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
 		8486D1091600F3810065DEFF /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F030FE14300C9C0087940B /* BANoiseMaker.m */; };
 		8486D10A1600F3810065DEFF /* BAUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C154A15FDA19C00D5AE05 /* BAUUID.m */; };
@@ -382,6 +383,7 @@
 				84BBE63C16E8E35800AF371A /* NSData+GZip.h in Headers */,
 				84BBE64416E932F000AF371A /* BASparseSampleArray.h in Headers */,
 				84BBE64816E934C500AF371A /* BASparseArray.h in Headers */,
+				848699461707AC0C00727A5D /* BAFunctions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
