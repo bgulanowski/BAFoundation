@@ -100,6 +100,10 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (BOOL)checkCount;
 - (void)refreshCount;
 
+// These are inefficient and not tested
+- (NSUInteger)indexOfNthSetBit:(NSUInteger)n;
+- (NSUInteger)indexOfNthClearBit:(NSUInteger)n;
+
 // range for readBytes:range: and writeBytes:range: is byte range (not bit range) 
 - (void)readBytes:(unsigned char *)bytes range:(NSRange)byteRange;
 - (void)writeBytes:(unsigned char *)bytes range:(NSRange)byteRange;

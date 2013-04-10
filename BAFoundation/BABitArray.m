@@ -318,6 +318,16 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	return (p-buffer)*bitsInChar+b;
 }
 
+- (NSUInteger)indexOfNthSetBit:(NSUInteger)n {
+
+    NSUInteger index = [self firstSetBit];
+    
+    for (NSUInteger i=0; i<n && index != NSNotFound; ++i)
+        index = [self nextAfter:index];
+    
+    return index;
+}
+
 - (NSUInteger)readBits:(BOOL *)bits range:(NSRange)range {
     NSUInteger maxIndex = range.location+range.length-1;
 	if(maxIndex >= length)
@@ -432,6 +442,39 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
         return NSNotFound;
 
 	return (p-buffer)*bitsInChar+b;
+}
+
+- (NSUInteger)indexOfNthClearBit:(NSUInteger)n {
+    
+    if(count == 0)
+        return n;
+    else if(n == length-count)
+        return [self lastClearBit];
+    else if(n > length-count)
+        return NSNotFound;
+
+    NSUInteger first = [self firstClearBit];
+    
+    if(n == 0)
+        return first;
+    
+    // TODO: if n > (length-count)/2, work backwards from end
+    
+    NSUInteger nextSet = [self nextAfter:first];
+    NSUInteger prevSet;
+    NSUInteger block;
+    NSUInteger total = 1;
+
+    while (nextSet < length) {
+        prevSet = nextSet;
+        nextSet = [self nextAfter:prevSet];
+        block = nextSet - prevSet - 1;
+        if(n - total >= block)
+            return nextSet - 1 - (block - (n - total));
+        total += block;
+    }
+    
+    return NSNotFound;
 }
 
 - (NSUInteger)nextAfter:(NSUInteger)prev {
