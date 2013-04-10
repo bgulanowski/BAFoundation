@@ -491,16 +491,14 @@
         NSUInteger leafIndex = LeafIndexFor2DCoordinates(x, y, _base);
         BASparseBitArray *leaf = nil;
         
-        NSUInteger subCount;
+        NSUInteger subCount = 0;
         
-        if(leafIndex < leafCount) {
+        if(leafIndex < leafCount)
             leaf = (BASparseBitArray *)[self leafForIndex:leafIndex];
+        if(leaf)
             subCount = [leaf.bits readBits:subBits range:bitsRange];
-        }
-        else {
+        else
             memset(subBits, 0, ll);
-            subCount = 0;
-        }
 
         NSAssert(subCount==countBits(subBits,ll), @"count failed");
 
