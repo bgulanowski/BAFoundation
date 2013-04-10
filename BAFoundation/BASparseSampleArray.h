@@ -16,7 +16,6 @@
     NSUInteger _sampleSize;  // bytes per sample, starting at 1; default is 1
 }
 
-@property (nonatomic, strong) SparseArrayUpdate updateBlock;
 @property (nonatomic, strong, readonly) BASampleArray *samples;
 @property (nonatomic) NSUInteger sampleSize;
 
