@@ -637,17 +637,13 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
             firstMask = 0xFF;
         else
             setBits(&firstMask, start, 7);
-//        NSLog(@"firstMask = 0x%02X (start %u)", firstMask, start);
         
         if(7 == end)
             lastMask = 0xFF;
         else
             setBits(&lastMask, 0, end);
-//        NSLog(@"lastMask = 0x%02X (end %u)", lastMask, end);
     }
-	
-//	NSLog(@"Counting bits in %u bits", bitRange.length);
-	
+		
 	for(NSUInteger i=first; i<=last; ++i) {
 		
 		if(first == i)
@@ -669,9 +665,7 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 		total += subtotal;
         
         assert(total <= bitRange.length);
-		
-//		NSLog(@"subtotal for byte %u (0x%02X): %u; running total: %u", i, bytes[i], subtotal, total);
-	}
+    }
 	
 	return total;
 }
