@@ -19,7 +19,7 @@ static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end);
 // Count the number of set bits
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
 
-// Copy bits from, or to, the provide array of BOOLs
+// Copy bits from, or to, the provided array of BOOLs
 NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse);
 
 // Set or clear bits
@@ -70,7 +70,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     return wasSet;
 }
 
-// These macros are intended only for use within this file, as the refer to ivars directly
+// These macros are intended only for use within this file, as they refer to ivars directly
 #define GET_BIT(_index_) ((buffer[((_index_)/bitsInChar)] & (1 << ((_index_)%bitsInChar))) != 0)
 #define SET_BIT(_index_) do { if(setBit(buffer, _index_)) ++count; }while(0)
 #define CLR_BIT(_index_) do { if(clrBit(buffer, _index_)) --count; }while(0)
