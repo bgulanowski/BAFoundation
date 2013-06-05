@@ -67,8 +67,8 @@
         @synchronized(self) {
             if(nil == context) {
                 context = [NSManagedObjectContext newObjectContextWithModel:self.model
-                                                                            type:[[self class] defaultStoreType]
-                                                                        storeURL:[[self class] defaultStoreURL]];
+                                                                       type:[[self class] defaultStoreType]
+                                                                   storeURL:self.storeURL];
                 [context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
             }
         }
