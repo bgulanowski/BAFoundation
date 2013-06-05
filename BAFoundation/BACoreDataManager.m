@@ -89,6 +89,16 @@
     return editingContext;
 }
 
+- (NSURL *)storeURL {
+    if(!storeURL) {
+        @synchronized(self) {
+            if(!storeURL)
+                storeURL = [[self class] defaultStoreURL];
+        }
+    }
+    return storeURL;
+}
+
 
 #pragma mark - Designated Initializer
 
