@@ -133,10 +133,10 @@ extern void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32
     BOOL _enableArchiveCompression;
 }
 
-@property (nonatomic, strong)  SparseArrayBuild buildBlock;
-@property (nonatomic, strong) SparseArrayExpand expandBlock;
-@property (nonatomic, strong) SparseArrayUpdate updateBlock;
-@property (nonatomic, strong) SparseArrayRefresh refreshBlock;
+@property (nonatomic, copy) SparseArrayBuild buildBlock;
+@property (nonatomic, copy) SparseArrayExpand expandBlock;
+@property (nonatomic, copy) SparseArrayUpdate updateBlock;
+@property (nonatomic, copy) SparseArrayRefresh refreshBlock;
 
 @property (nonatomic, readonly) NSArray *children;
 

@@ -27,6 +27,11 @@
 		4EF2B51D104D60C9000C8EE2 /* BAGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF2B51B104D60C9000C8EE2 /* BAGraphNode.m */; };
 		841944EE1637322B0036C725 /* BASampleArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 841944EC1637322B0036C725 /* BASampleArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		841944EF1637322B0036C725 /* BASampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 841944ED1637322B0036C725 /* BASampleArray.m */; };
+		84259104176784D700BED70D /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
+		84259105176784D700BED70D /* BASparseSampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64316E932F000AF371A /* BASparseSampleArray.m */; };
+		842591061767850300BED70D /* BASampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 841944ED1637322B0036C725 /* BASampleArray.m */; };
+		842591071767850300BED70D /* BASparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64716E934C500AF371A /* BASparseArray.m */; };
+		842591081767850300BED70D /* BASparseBitArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D20516E271110010D80D /* BASparseBitArray.m */; };
 		842C151915FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C151315FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		842C151A15FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */; };
 		842C151B15FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C151515FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -469,7 +474,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Lichen Labs";
 			};
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "BAFoundation" */;
@@ -554,6 +559,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842591061767850300BED70D /* BASampleArray.m in Sources */,
+				842591071767850300BED70D /* BASparseArray.m in Sources */,
+				842591081767850300BED70D /* BASparseBitArray.m in Sources */,
+				84259104176784D700BED70D /* BARelationshipProxy.m in Sources */,
+				84259105176784D700BED70D /* BASparseSampleArray.m in Sources */,
 				8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */,
 				8486D1091600F3810065DEFF /* BANoiseMaker.m in Sources */,
 				8486D10A1600F3810065DEFF /* BAUUID.m in Sources */,
@@ -678,8 +688,9 @@
 		1DEB91B208733DA50010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -688,7 +699,9 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
@@ -698,15 +711,18 @@
 		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 			};

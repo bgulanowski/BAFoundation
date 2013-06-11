@@ -11,6 +11,10 @@
 #import <BAFoundation/BASampleArray.h>
 
 
+typedef NSUInteger BAPageSample;
+typedef NSUInteger BABlockSample;
+
+
 @interface BASparseSampleArray : BASparseArray<BASampleArray> {
     BASampleArray *_samples;
     NSUInteger _sampleSize;  // bytes per sample, starting at 1; default is 1
@@ -21,11 +25,11 @@
 
 - (id)initWithBase:(NSUInteger)base power:(NSUInteger)power sampleSize:(NSUInteger)size;
 
-- (UInt32)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y;
-- (void)setPageSample:(UInt32)sample atX:(NSUInteger)x y:(NSUInteger)y;
+- (BAPageSample)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y;
+- (void)setPageSample:(BAPageSample)sample atX:(NSUInteger)x y:(NSUInteger)y;
 
-- (UInt32)blockSampleAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
-- (void)setBlockSample:(UInt32)sample atX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
+- (BABlockSample)blockSampleAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
+- (void)setBlockSample:(BABlockSample)sample atX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 
 - (float)blockFloatAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 - (void)setBlockFloat:(float)sample  atX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;

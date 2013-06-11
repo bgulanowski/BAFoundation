@@ -107,23 +107,23 @@ static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger
     [self setSample:sample atIndex:StorageIndexForCoordinates(coordinates, _base, _power)];
 }
 
-- (UInt32)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y {
-    UInt32 sample;
+- (BAPageSample)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y {
+    BAPageSample sample;
     [self sample:(UInt8 *)&sample atIndex:StorageIndexFor2DCoordinates(x, y, _base)];
     return sample;
 }
 
-- (void)setPageSample:(UInt32)sample atX:(NSUInteger)x y:(NSUInteger)y {
+- (void)setPageSample:(BAPageSample)sample atX:(NSUInteger)x y:(NSUInteger)y {
     [self setSample:(UInt8 *)sample atIndex:StorageIndexFor2DCoordinates(x, y, _base)];
 }
 
-- (UInt32)blockSampleAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
-    UInt32 sample;
+- (BABlockSample)blockSampleAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
+    BABlockSample sample;
     [self sample:(UInt8 *)&sample atIndex:StorageIndexFor3DCoordinates(x, y, z, _base)];
     return sample;
 }
 
-- (void)setBlockSample:(UInt32)sample atX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
+- (void)setBlockSample:(BABlockSample)sample atX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
     [self setSample:(UInt8 *)sample atIndex:StorageIndexFor3DCoordinates(x, y, z, _base)];
 }
 

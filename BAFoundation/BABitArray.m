@@ -274,7 +274,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	unsigned char t=1;
 	NSUInteger b=0;
 	
-	while(!*p && p++<buffer+bufferLength-1);
+	while(!*p && p<buffer+bufferLength-1) p++;
     
     if(p-buffer>=bufferLength)
         return NSNotFound;
@@ -305,7 +305,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	unsigned char *p = buffer+bufferLength-1;
 	unsigned char b=(bitsInChar-1), t=1;
 
-	while(!*p && p-->=buffer);
+	while(!*p && p>=buffer) p--;
     
     if(p < buffer)
         return NSNotFound;
@@ -408,7 +408,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	unsigned char *p = buffer;
 	unsigned char b=0, t=1;
 
-	while(!(unsigned char)~*p && p++<buffer+bufferLength-1);
+	while(!(unsigned char)~*p && p<buffer+bufferLength-1) p++;
 
     if(p-buffer>=bufferLength)
         return NSNotFound;
