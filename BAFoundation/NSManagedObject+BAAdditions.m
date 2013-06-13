@@ -45,8 +45,13 @@ Class numberClass;
 
 
 #pragma mark - Object Creation
++ (NSManagedObject *)insertObjectInManagedObjectContext:(NSManagedObjectContext *)context {
+	return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:context];
+}
+
 + (NSManagedObject *)insertObject {
-	return [NSEntityDescription insertNewObjectForEntityForName:[self entityName] inManagedObjectContext:BAActiveContext];
+    NSAssert(BAActiveContext, @"No active managed object context");
+	return [self insertObjectInManagedObjectContext:BAActiveContext];
 }
 
 
