@@ -77,6 +77,9 @@
 		84BBE64916E934C500AF371A /* BASparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64716E934C500AF371A /* BASparseArray.m */; };
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
+		84F9EE8517909D83005B6DD1 /* BANoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F9EE8317909D5A005B6DD1 /* BANoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84F9EE8617909D83005B6DD1 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9EE8417909D5A005B6DD1 /* BANoise.m */; };
+		84F9EE8717909D87005B6DD1 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9EE8417909D5A005B6DD1 /* BANoise.m */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		B6F030FF14300C9C0087940B /* BANoiseMaker.h in Headers */ = {isa = PBXBuildFile; fileRef = B6F030FD14300C9C0087940B /* BANoiseMaker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6F0310014300C9C0087940B /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F030FE14300C9C0087940B /* BANoiseMaker.m */; };
@@ -165,6 +168,8 @@
 		84BBE64A16E938FB00AF371A /* BASparseArrayPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BASparseArrayPrivate.h; sourceTree = "<group>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BARelationshipProxy.m; sourceTree = "<group>"; };
+		84F9EE8317909D5A005B6DD1 /* BANoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
+		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BANoise.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* BAFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BAFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6F030FD14300C9C0087940B /* BANoiseMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BANoiseMaker.h; sourceTree = "<group>"; };
@@ -314,6 +319,8 @@
 				4EF2B51B104D60C9000C8EE2 /* BAGraphNode.m */,
 				B6F030FD14300C9C0087940B /* BANoiseMaker.h */,
 				B6F030FE14300C9C0087940B /* BANoiseMaker.m */,
+				84F9EE8317909D5A005B6DD1 /* BANoise.h */,
+				84F9EE8417909D5A005B6DD1 /* BANoise.m */,
 				84E61CD91671553C00F796F8 /* BARelationshipProxy.h */,
 				84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */,
 				841944EC1637322B0036C725 /* BASampleArray.h */,
@@ -377,6 +384,7 @@
 				842C152715FD9BC900D5AE05 /* BACoreDataManager.h in Headers */,
 				842C152915FD9BC900D5AE05 /* DateTransformer.h in Headers */,
 				842C152B15FD9BC900D5AE05 /* FloatNumberTransformer.h in Headers */,
+				84F9EE8517909D83005B6DD1 /* BANoise.h in Headers */,
 				842C152D15FD9BC900D5AE05 /* IntegerNumberTransformer.h in Headers */,
 				4E98F9D00F92E29B0085B8EC /* BATextIOHandler.h in Headers */,
 				4EF2B51C104D60C9000C8EE2 /* BAGraphNode.h in Headers */,
@@ -576,6 +584,7 @@
 				4E792AB4133A2EF2003C9B3E /* BAGraphNode.m in Sources */,
 				4E792AB5133A2EF3003C9B3E /* BATextIOHandler.m in Sources */,
 				4E792B13133A32BB003C9B3E /* BABitArray.m in Sources */,
+				84F9EE8717909D87005B6DD1 /* BANoise.m in Sources */,
 				84BBE63F16E8E35800AF371A /* NSData+GZip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -601,6 +610,7 @@
 				84A0D20716E271110010D80D /* BASparseBitArray.m in Sources */,
 				84BBE63E16E8E35800AF371A /* NSData+GZip.m in Sources */,
 				84BBE64516E932F000AF371A /* BASparseSampleArray.m in Sources */,
+				84F9EE8617909D83005B6DD1 /* BANoise.m in Sources */,
 				84BBE64916E934C500AF371A /* BASparseArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
