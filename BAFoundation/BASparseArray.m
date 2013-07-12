@@ -516,6 +516,8 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
     
     NSAssert(index >= offset, @"offset calculation error.");
     
+//    if(child->_level == 0)
+//        return child;
     if(child == self)
         return self;
     
