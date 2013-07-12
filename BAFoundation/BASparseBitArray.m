@@ -446,29 +446,40 @@
     }
     else {
         
+        dispatch_group_t group = dispatch_group_create();
+        
         NSUInteger childBase = _treeBase/2;
         
         for (NSUInteger i=0; i<4; ++i) {
             
-            NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
-            NSPoint offset = origin;
+            dispatch_group_enter(group);
             
-            if(NSIsEmptyRect(subRect))
-                continue;
-            
-            if(i&1) {
-                subRect.origin.x -= childBase;
-                if(rect.origin.x < childBase)
-                    offset.x += (childBase - rect.origin.x);
-            }
-            if(i&2) {
-                subRect.origin.y -= childBase;
-                if(rect.origin.y < childBase)
-                    offset.y += (childBase - rect.origin.y);
-            }
-            
-            [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveWriteRect:subRect fromArray:bitArray offset:offset];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                
+                NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+                NSPoint offset = origin;
+                
+                if(!NSIsEmptyRect(subRect)) {
+                    
+                    if(i&1) {
+                        subRect.origin.x -= childBase;
+                        if(rect.origin.x < childBase)
+                            offset.x += (childBase - rect.origin.x);
+                    }
+                    if(i&2) {
+                        subRect.origin.y -= childBase;
+                        if(rect.origin.y < childBase)
+                            offset.y += (childBase - rect.origin.y);
+                    }
+                    
+                    [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveWriteRect:subRect fromArray:bitArray offset:offset];
+                }
+                dispatch_group_leave(group);
+            });
         }
+        
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+        dispatch_release(group);
     }
 }
 
