@@ -988,9 +988,6 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     
-    if(quarters == 1 || quarters == 3)
-        copy = [BABitArray bitArrayWithLength:length size:nil];
-        
     switch (quarters) {
             
         case 0:
@@ -998,6 +995,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
             break;
 
         case 1:
+            copy = [BABitArray bitArrayWithLength:length size:nil];
             // Rotate 90 CCW around origin, then translate by x+width
             // (x,y) -> (-y, x) -> (w+x, y) = (w+(-y), x) = (w-y, x)
             // x2 = -y, x3 = w-x2 = w - (-y) = w-y
@@ -1019,6 +1017,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
             
         case 3:
         default:
+            copy = [BABitArray bitArrayWithLength:length size:nil];
             // Rotate 90 CW around origin, then translate by y+height
             // (x,y) -> (y, -x) -> (x, h+y) = (y, h+(-x)) = (y, h-x)
             // x2 = y, x3 = x2 = y
