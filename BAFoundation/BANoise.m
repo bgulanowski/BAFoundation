@@ -449,6 +449,28 @@ static inline BOOL equalMatrices(double m1[16], double m2[16]) {
 @end
 
 
+@implementation BABlendedNoise
+
+@synthesize noises=_noises;
+
+- (double)evaluateX:(double)x Y:(double)y Z:(double)z {
+    
+    double result = 0;
+    NSEnumerator *noiseIter = [_noises objectEnumerator];
+    NSEnumerator *ratioIter = [_ratios objectEnumerator];
+    
+    id<BANoise>noise;
+    
+    while (noise = [noiseIter nextObject]) {
+        result += [noise evaluateX:x Y:y Z:z] * [[ratioIter nextObject] doubleValue];
+    }
+    
+    return result;
+}
+
+@end
+
+
 @implementation NSData (BANoise)
 
 - (id)initWithSeed:(unsigned)seed {
@@ -469,6 +491,53 @@ static inline BOOL equalMatrices(double m1[16], double m2[16]) {
 + (NSData *)randomNoiseData {
     srandom(time(NULL));
     return [[[self alloc] initWithSeed:random()] autorelease];
+}
+
+@end
+
+
+@implementation NSObject (BANoise)
+
+- (NSData *)mapSize:(NSSize)size min:(double)min max:(double)max {
+    
+    if(![self conformsToProtocol:@protocol(BANoise)])
+        [NSException raise:NSInternalInconsistencyException format:@"Only BANoise adopters can use this method"];
+    
+    id<BANoise>noise = (id<BANoise>)self;
+    size_t alloc_size = sizeof(BOOL)*floor(size.width)*floor(size.height);
+    BOOL *map = malloc(alloc_size);
+    
+    if(!map)
+        exit(1);
+    
+    NSUInteger index = 0;
+    
+    for (double j=0; j<size.height; ++j) {
+        for (double i=0; i<size.width; ++i) {
+            double val = [noise evaluateX:i Y:j Z:0];
+            map[index] = val >= min && val <= max;
+        }
+    }
+    
+    return [NSData dataWithBytesNoCopy:map length:alloc_size freeWhenDone:YES];
+}
+
+@end
+
+
+@implementation BABitArray (BANoiseInitializing)
+
+- (id)initWithSize:(NSSize)initSize noise:(id<BANoise>)noise min:(double)min max:(double)max {
+    self = [self initWithSize:initSize];
+    if(self) {
+        [self writeBits:(BOOL *)[[(NSObject *)noise mapSize:initSize min:min max:max] bytes]
+                  range:NSMakeRange(0, floor(initSize.height) * floor(initSize.width))];
+    }
+    return nil;
+}
+
++ (BABitArray *)bitArrayWithSize:(NSSize)size noise:(id<BANoise>)noise min:(double)min max:(double)max {
+    return [[[self alloc] initWithSize:size noise:noise min:min max:max] autorelease];
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <BAFoundation/BABitArray.h>
+
 
 typedef struct {
     double x;
@@ -87,9 +89,13 @@ extern const int BADefaultPermutation[512];
 @end
 
 
-@interface BABlendedNoise : NSObject<BANoise>
+@interface BABlendedNoise : NSObject<BANoise> {
+    NSArray *_noises;
+    NSArray *_ratios;
+}
 
 @property (nonatomic, readonly) NSArray *noises;
+@property (nonatomic, readonly) NSArray *ratios; // nsnumber doubles from (0, 1]
 
 @end
 
@@ -101,4 +107,10 @@ extern const int BADefaultPermutation[512];
 + (NSData *)defaultNoiseData;
 + (NSData *)randomNoiseData;
 
+@end
+
+
+@interface BABitArray (BANoiseInitializing)
+- (id)initWithSize:(NSSize)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
++ (BABitArray *)bitArrayWithSize:(NSSize)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
 @end
