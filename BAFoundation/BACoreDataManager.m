@@ -107,12 +107,6 @@
 	if(self) {
         self.storeURL = url;
         self.saveDelay = 5;
-#if TARGET_OS_IPHONE
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(appWillResignActive:)
-                                                     name:UIApplicationWillResignActiveNotification
-                                                   object:nil];
-#endif
 	}
 	return self;
 }
@@ -121,7 +115,7 @@
 #pragma mark - BACoreDataManager
 - (BOOL)save {
 	
-    [scheduledSaveTimer invalidate];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:_cmd object:nil];
 
 	if(readOnly)
 		return YES;
@@ -162,7 +156,6 @@
     static SEL saveSelector;
     if(!saveSelector)
         saveSelector = @selector(save);
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:saveSelector object:nil];
     [self performSelector:saveSelector withObject:nil afterDelay:saveDelay];
 }
 
@@ -306,12 +299,6 @@
     NSLog(@"Merging changes from editing context");
     [context mergeChangesFromContextDidSaveNotification:note];
 }
-
-#if TARGET_OS_IPHONE
-- (void)appWillResignActive:(NSNotification *)note {
-    [scheduledSaveTimer invalidate];
-}
-#endif
 
 @end
 
