@@ -242,10 +242,25 @@ static inline BOOL equalMatrices(double m1[16], double m2[16]) {
     return YES;
 }
 
+static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
+    
+    BANoiseVector r;
+    
+    r.x = vector.x * matrix[0] + vector.y * matrix[4] + vector.z * matrix[8];
+    r.y = vector.x * matrix[1] + vector.y * matrix[5] + vector.z * matrix[9];
+    r.z = vector.x * matrix[2] + vector.y * matrix[6] + vector.z * matrix[10];
+    
+    return r;
+}
+
 
 @implementation BANoiseTransform
 
 @synthesize scale=_scale, rotationAxis=_rotationAxis, rotationAngle=_rotationAngle, translation=_translation;
+
+- (double *)matrix {
+    return _matrix;
+}
 
 - (BOOL)isEqualToTransform:(BANoiseTransform *)transform {
     return equalMatrices(_matrix, transform->_matrix);
@@ -326,14 +341,7 @@ static inline BOOL equalMatrices(double m1[16], double m2[16]) {
 }
 
 - (BANoiseVector)transformVector:(BANoiseVector)vector {
-    
-    BANoiseVector r;
-    
-    r.x = vector.x * _matrix[0] + vector.y * _matrix[4] + vector.z * _matrix[8];
-    r.y = vector.x * _matrix[1] + vector.y * _matrix[5] + vector.z * _matrix[9];
-    r.z = vector.x * _matrix[2] + vector.y * _matrix[6] + vector.z * _matrix[10];
-    
-    return r;
+    return transformVector(vector, _matrix);
 }
 
 @end
@@ -412,6 +420,26 @@ static inline BOOL equalMatrices(double m1[16], double m2[16]) {
         return BANoiseBlend((int *)[_data bytes], x, y, z, _octaves, _persistence);
 }
 
+- (void)iterateRange:(BANoiseRegion)range block:(BANoiseRangeEvaluatorBlock)block {
+    
+    double maxX = range.origin.x + range.size.x;
+    double maxY = range.origin.y + range.size.y;
+    double maxZ = range.origin.z + range.size.z;
+    
+    int *p = (int *)[_data bytes];
+    double *m = [_transform matrix];
+    
+    for (double z = range.origin.z; z < maxZ; ++z) {
+        for (double y = range.origin.y; y < maxY; ++y) {
+            for (double x = range.origin.z; x < maxX; ++x) {
+                BANoiseVector v = transformVector(BANoiseVectorMake(x, y, z), m);
+                if(block(v, BANoiseBlend(p, v.x, v.y, v.z, _octaves, _persistence)))
+                    return;
+            }
+        }
+    }
+}
+
 
 #pragma mark - BANoise
 
@@ -452,6 +480,19 @@ static inline BOOL equalMatrices(double m1[16], double m2[16]) {
 @implementation BABlendedNoise
 
 @synthesize noises=_noises;
+@synthesize ratios=_ratios;
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
 
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z {
     

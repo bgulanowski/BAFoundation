@@ -21,6 +21,18 @@ typedef struct {
 extern inline BANoiseVector BANoiseVectorMake(double x, double y, double z);
 
 
+typedef struct {
+    BANoiseVector origin;
+    BANoiseVector size;
+} BANoiseRegion;
+
+
+extern inline BANoiseRegion BANoiseRangeMake(BANoiseVector o, BANoiseVector s);
+
+
+typedef BOOL (^BANoiseRangeEvaluatorBlock)(BANoiseVector position, double value);
+
+
 @interface BANoiseTransform : NSObject {
 @private
     BANoiseVector _scale;
@@ -52,10 +64,12 @@ extern inline BANoiseVector BANoiseVectorMake(double x, double y, double z);
 @end
 
 
-@protocol BANoise <NSObject>
+@protocol BANoise <NSObject, NSCoding, NSCopying>
 
 // Returns a value in [-1.0,1.0]
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z;
+@optional
+- (void)iterateRange:(BANoiseRegion)range block:(BANoiseRangeEvaluatorBlock)block;
 
 @end
 
@@ -66,7 +80,7 @@ extern double BANoiseBlend(int *p, double x, double y, double z, double octave_c
 extern const int BADefaultPermutation[512];
 
 
-@interface BANoise : NSObject<BANoise, NSCoding, NSCopying> {
+@interface BANoise : NSObject<BANoise> {
 @private
     BANoiseTransform *_transform;
     NSData *_data;
