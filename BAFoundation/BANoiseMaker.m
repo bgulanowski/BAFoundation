@@ -26,6 +26,22 @@
 	return [self initWithSeed:0];
 }
 
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [self init];
+    if(self) {
+        
+    }
+    return self;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
 - (id)initWithSeed:(unsigned)seed {
     self = [super init];
     if(self) {
