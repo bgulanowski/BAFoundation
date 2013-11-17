@@ -49,6 +49,7 @@
 		842C153015FD9BE600D5AE05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842C152F15FD9BE600D5AE05 /* CoreData.framework */; };
 		842C154B15FDA19C00D5AE05 /* BAUUID.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C154915FDA19C00D5AE05 /* BAUUID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		842C154C15FDA19C00D5AE05 /* BAUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C154A15FDA19C00D5AE05 /* BAUUID.m */; };
+		84357BA318381F8600664A68 /* BANoiseMakerTester.m in Sources */ = {isa = PBXBuildFile; fileRef = 84357BA218381F8600664A68 /* BANoiseMakerTester.m */; };
 		848699461707AC0C00727A5D /* BAFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8428532E16F3A4BE00BD7A71 /* BAFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
 		8486D1091600F3810065DEFF /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F030FE14300C9C0087940B /* BANoiseMaker.m */; };
@@ -149,6 +150,7 @@
 		842C152F15FD9BE600D5AE05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		842C154915FDA19C00D5AE05 /* BAUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAUUID.h; sourceTree = "<group>"; };
 		842C154A15FDA19C00D5AE05 /* BAUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAUUID.m; sourceTree = "<group>"; };
+		84357BA218381F8600664A68 /* BANoiseMakerTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BANoiseMakerTester.m; sourceTree = "<group>"; };
 		84A0D20416E271110010D80D /* BASparseBitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseBitArray.h; sourceTree = "<group>"; };
 		84A0D20516E271110010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASparseBitArray.m; sourceTree = "<group>"; };
 		84A0D20816E271380010D80D /* BAMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMacros.h; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */,
 				84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */,
 				84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */,
+				84357BA218381F8600664A68 /* BANoiseMakerTester.m */,
 			);
 			name = "Unit Tests";
 			path = BAFoundationTests;
@@ -591,6 +594,7 @@
 				84A0D25E16E27E270010D80D /* SparseBitArrayTest2D.m in Sources */,
 				84A0D25F16E27E270010D80D /* SparseBitArrayTest3D.m in Sources */,
 				84A0D26016E27E270010D80D /* SparseBitArrayTestBasic.m in Sources */,
+				84357BA318381F8600664A68 /* BANoiseMakerTester.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
