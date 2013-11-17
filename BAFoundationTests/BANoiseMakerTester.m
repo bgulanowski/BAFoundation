@@ -8,7 +8,7 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-#import "BANoiseMaker.h"
+#import "BANoise.h"
 
 static inline BOOL boundary(double x, double y, double z) {
 	return x == floor(x) && y == floor(y) && z == floor(z);
@@ -183,9 +183,9 @@ static __strong NSData *sampleData;
 
 - (void)testBasicSampleAccuracy
 {
-    BANoiseMaker *noisemaker = [[BANoiseMaker alloc] init];
+	BANoise *noise = [[BANoise alloc] init];
 	
-	STAssertNotNil(noisemaker, @"BANoiseMaker returned nil from init");
+	STAssertNotNil(noise, @"BANoiseMaker returned nil from init");
 	
 	double *samples = (double *)[sampleData bytes];
 	double *sampleCursor = samples;
@@ -196,8 +196,8 @@ static __strong NSData *sampleData;
 	for (double x = start; x < finish && !breakout; x += increments) {
 		for (double y = start; y < finish && !breakout; y += increments) {
 			for (double z = start; z < finish && !breakout; z += increments) {
-				double noiseSample = [noisemaker evaluateX:x Y:y Z:z];
-				STAssertEquals(*sampleCursor, noiseSample, @"Mismatched sample data for (%f,%f,%f)", x, y, z);
+				double noiseSample = [noise evaluateX:x Y:y Z:z];
+				STAssertEquals(noiseSample, *sampleCursor, @"Mismatched sample data for (%f,%f,%f)", x, y, z);
 				breakout = *sampleCursor != noiseSample;
 				sampleCursor++;
 				if (noiseSample == 0.) {
