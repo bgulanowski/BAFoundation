@@ -45,7 +45,6 @@
 		B6AAB6E314C21BC20007A0A4 /* BABitArray.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DB14C21BC20007A0A4 /* BABitArray.m */; };
 		B6AAB6E414C21BC20007A0A4 /* BAGraphNode.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6DC14C21BC20007A0A4 /* BAGraphNode.h */; };
 		B6AAB6E514C21BC20007A0A4 /* BAGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */; };
-		B6AAB6E614C21BC20007A0A4 /* BANoiseMaker.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6DE14C21BC20007A0A4 /* BANoiseMaker.h */; };
 		B6AAB6E714C21BC20007A0A4 /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DF14C21BC20007A0A4 /* BANoiseMaker.m */; };
 		B6AAB6E814C21BC20007A0A4 /* BATextIOHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = B6AAB6E014C21BC20007A0A4 /* BATextIOHandler.h */; };
 		B6AAB6E914C21BC20007A0A4 /* BATextIOHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6E114C21BC20007A0A4 /* BATextIOHandler.m */; };
@@ -211,7 +210,6 @@
 				84A0D22616E2724F0010D80D /* BASampleArray.h in Headers */,
 				84A0D22816E2724F0010D80D /* BASparseBitArray.h in Headers */,
 				84AEC9CD184BB6C9002AC8D0 /* BASparseArrayPrivate.h in Headers */,
-				84AEC9D2184BB807002AC8D0 /* BANoiseMaker.h in Headers */,
 				84A0D22A16E2724F0010D80D /* BAUUID.h in Headers */,
 				84AEC9CB184BB6C9002AC8D0 /* BASparseArray.h in Headers */,
 				84A0D22C16E2724F0010D80D /* DateTransformer.h in Headers */,
@@ -251,7 +249,7 @@
 		B6AAB6C114C21B9A0007A0A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Marketcircle Inc";
 			};
 			buildConfigurationList = B6AAB6C414C21B9A0007A0A4 /* Build configuration list for PBXProject "BAFoundation" */;
@@ -305,7 +303,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -316,10 +319,15 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -328,12 +336,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
