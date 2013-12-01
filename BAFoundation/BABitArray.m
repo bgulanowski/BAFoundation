@@ -805,11 +805,11 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 }
 
 
-#define BIT_ARRAY_RECT_ASSERT() NSAssert(NSMinX(rect) >= 0 && NSMinY(rect) >= 0 && NSMaxX(rect) <= targetSize.width && NSMaxY(rect) <= targetSize.height, @"error")
+#define BIT_ARRAY_RECT_ASSERT() NSAssert(CGRectGetMinX(rect) >= 0 && CGRectGetMinY(rect) >= 0 && CGRectGetMaxX(rect) <= targetSize.width && CGRectGetMaxY(rect) <= targetSize.height, @"error")
 
-- (void)updateRect:(NSRect)rect set:(BOOL)set {
+- (void)updateRect:(CGRect)rect set:(BOOL)set {
     
-    NSSize targetSize = self.size.size2d;
+    CGSize targetSize = self.size.size2d;
     
     BIT_ARRAY_SIZE_ASSERT();
     BIT_ARRAY_RECT_ASSERT();
@@ -829,18 +829,18 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     NSAssert([self checkCount], @"count incorrect");
 }
 
-- (void)setRect:(NSRect)rect {
+- (void)setRect:(CGRect)rect {
     [self updateRect:rect set:YES];
 }
 
-- (void)clearRect:(NSRect)rect {
+- (void)clearRect:(CGRect)rect {
     [self updateRect:rect set:NO];
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
+- (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin {
     
-    NSSize sourceSize = bitArray.size.size2d;
-    NSSize targetSize = self.size.size2d;
+    CGSize sourceSize = bitArray.size.size2d;
+    CGSize targetSize = self.size.size2d;
     
     BIT_ARRAY_SIZE_ASSERT();
     BIT_ARRAY_RECT_ASSERT();
@@ -861,42 +861,42 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     free(bits);
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray {
-    [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
+- (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray {
+    [self writeRect:rect fromArray:bitArray offset:CGPointZero];
 }
 
-- (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
+- (id<BABitArray2D>)subArrayWithRect:(CGRect)rect {
     
     BABitArray *result = [BABitArray bitArrayWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
-    NSPoint origin = rect.origin;
+    CGPoint origin = rect.origin;
     
-    rect.origin = NSZeroPoint;
+    rect.origin = CGPointZero;
     
     [result writeRect:rect fromArray:self offset:origin];
     
     return result;
 }
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(CGRect)rect {
     self = [self initWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
     if(self) {
 
-        NSPoint origin = rect.origin;
+        CGPoint origin = rect.origin;
         
-        rect.origin = NSZeroPoint;
+        rect.origin = CGPointZero;
         
         [self writeRect:rect fromArray:otherArray offset:origin];
     }
     return self;
 }
 
-- (NSArray *)rowStringsForRect:(NSRect)rect {
+- (NSArray *)rowStringsForRect:(CGRect)rect {
     
     NSMutableArray *rows = [NSMutableArray array];
     
-    NSSize size2d = [[self size] size2d];
+    CGSize size2d = [[self size] size2d];
     
-    if(NSEqualRects(rect, NSZeroRect))
+    if(CGRectEqualToRect(rect, CGRectZero))
         rect.size = size2d;
     
     NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
@@ -910,15 +910,15 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     return [[rows copy] autorelease];
 }
 
-- (NSString *)stringForRect:(NSRect)rect {
+- (NSString *)stringForRect:(CGRect)rect {
     return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
 }
 
 - (NSString *)stringForRect {
-    return [[self rowStringsForRect:NSZeroRect] componentsJoinedByString:@"\n"];
+    return [[self rowStringsForRect:CGRectZero] componentsJoinedByString:@"\n"];
 }
 
-- (id)initWithSize:(NSSize)initSize {
+- (id)initWithSize:(CGSize)initSize {
     return [self initWithLength:initSize.width*initSize.height size:[BASampleArray sampleArrayForSize2d:initSize]];
 }
 
@@ -929,7 +929,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     
     BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
     
-    NSSize size2d = self.size.size2d;
+    CGSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     
@@ -949,7 +949,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         return [[self copy] autorelease];
     
     BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
-    NSSize size2d = self.size.size2d;
+    CGSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     
@@ -984,7 +984,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         quarters += 4;
     
     BABitArray *copy = nil;
-    NSSize size2d = self.size.size2d;
+    CGSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     
@@ -1036,14 +1036,14 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     
     if(quarters == 1 || quarters == 3) {
         // swap height and width in size
-        copy->size = [[BASampleArray sampleArrayForSize2d:NSMakeSize(height, width)] retain];
+        copy->size = [[BASampleArray sampleArrayForSize2d:CGSizeMake(height, width)] retain];
         [copy refreshCount];
     }
     
     return copy;
 }
 
-+ (BABitArray *)bitArrayWithSize:(NSSize)initSize {
++ (BABitArray *)bitArrayWithSize:(CGSize)initSize {
     return [[[self alloc] initWithSize:initSize] autorelease];
 }
 
@@ -1052,8 +1052,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 
 @implementation BASampleArray (BABitArraySupport)
 
-- (NSSize)size2d {
-    NSSize result;
+- (CGSize)size2d {
+    CGSize result;
     [self readSamples:(UInt8 *)&result range:NSMakeRange(0, 2)];
     return result;
 }
@@ -1062,7 +1062,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     [self readSamples:(UInt8 *)&size range:NSMakeRange(0, 3)];
 }
 
-+ (BASampleArray *)sampleArrayForSize2d:(NSSize)size {
++ (BASampleArray *)sampleArrayForSize2d:(CGSize)size {
     BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(CGFloat)/sizeof(UInt8)] autorelease];
     [result writeSamples:(UInt8 *)&size range:NSMakeRange(0, 2)];
     return result;

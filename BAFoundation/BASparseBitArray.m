@@ -97,7 +97,7 @@
 #pragma mark - Accessors
 + (BASampleArray *)sampleArrayForBase:(NSUInteger)base power:(NSUInteger)power {
     if(power == 2)
-        return [BASampleArray sampleArrayForSize2d:NSMakeSize(base, base)];
+        return [BASampleArray sampleArrayForSize2d:CGSizeMake(base, base)];
     
     BASampleArray *sa = [BASampleArray sampleArrayWithPower:1 order:power size:sizeof(NSUInteger)];
     for(NSUInteger i=0; i<power; ++i)
@@ -345,7 +345,7 @@
 
 
 @interface BABitArray (ExposedPrivates)
-- (void)updateRect:(NSRect)rect set:(BOOL)set;
+- (void)updateRect:(CGRect)rect set:(BOOL)set;
 @end
 
 
@@ -391,7 +391,7 @@
     [self updateBitAtX:x y:y z:z set:NO];
 }
 
-- (void)recursiveUpdateRect:(NSRect)rect set:(BOOL)set {
+- (void)recursiveUpdateRect:(CGRect)rect set:(BOOL)set {
     
     if(0 == _level) {
         [self.bits updateRect:rect set:set];
@@ -404,9 +404,9 @@
         
         for (NSUInteger i=0; i<4; ++i) {
             
-            NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+            CGRect subRect = CGRectIntersection(rect, CGRectMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
             
-            if(NSIsEmptyRect(subRect))
+            if(CGRectIsEmpty(subRect))
                 continue;
             
             if(i&1)
@@ -419,9 +419,9 @@
     }
 }
 
-- (void)updateRect:(NSRect)rect set:(BOOL)set {
+- (void)updateRect:(CGRect)rect set:(BOOL)set {
     
-    NSUInteger maxIndex = StorageIndexFor2DCoordinates(NSMaxX(rect), NSMaxY(rect), _treeBase);
+    NSUInteger maxIndex = StorageIndexFor2DCoordinates(CGRectGetMaxX(rect), CGRectGetMaxY(rect), _treeBase);
     
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex+1];
@@ -429,15 +429,15 @@
     [self recursiveUpdateRect:rect set:set];
 }
 
-- (void)setRect:(NSRect)rect {
+- (void)setRect:(CGRect)rect {
     [self updateRect:rect set:YES];
 }
 
-- (void)clearRect:(NSRect)rect {
+- (void)clearRect:(CGRect)rect {
     [self updateRect:rect set:NO];
 }
 
-- (void)recursiveWriteRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
+- (void)recursiveWriteRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin {
     
     if(0 == _level) {
         [self.bits writeRect:rect fromArray:bitArray offset:origin];
@@ -456,10 +456,10 @@
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 
-                NSRect subRect = NSIntersectionRect(rect, NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
-                NSPoint offset = origin;
+                CGRect subRect = CGRectIntersection(rect, CGRectMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+                CGPoint offset = origin;
                 
-                if(!NSIsEmptyRect(subRect)) {
+                if(!CGRectIsEmpty(subRect)) {
                     
                     if(i&1) {
                         subRect.origin.x -= childBase;
@@ -525,9 +525,9 @@
     return count;
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray offset:(NSPoint)origin {
+- (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin {
 
-    NSUInteger maxIndex = StorageIndexFor2DCoordinates(NSMaxX(rect), NSMaxY(rect), _treeBase);
+    NSUInteger maxIndex = StorageIndexFor2DCoordinates(CGRectGetMaxX(rect), CGRectGetMaxY(rect), _treeBase);
     
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex+1];
@@ -535,11 +535,11 @@
     [self recursiveWriteRect:rect fromArray:bitArray offset:origin];
 }
 
-- (void)writeRect:(NSRect)rect fromArray:(BABitArray *)bitArray {
-    [self writeRect:rect fromArray:bitArray offset:NSZeroPoint];
+- (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray {
+    [self writeRect:rect fromArray:bitArray offset:CGPointZero];
 }
 
-- (id<BABitArray2D>)subArrayWithRect:(NSRect)rect {
+- (id<BABitArray2D>)subArrayWithRect:(CGRect)rect {
     
     BABitArray *subArray = [[BABitArray alloc] initWithLength:rect.size.height*rect.size.width size:[BASampleArray sampleArrayForSize2d:rect.size]];
     NSUInteger width = rect.size.width;
@@ -559,7 +559,7 @@
     return [subArray autorelease];
 }
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(NSRect)rect {
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(CGRect)rect {
 
     NSUInteger base = NextPowerOf2((uint32_t)(rect.size.height > rect.size.width ? rect.size.height : rect.size.width));
 
@@ -571,8 +571,8 @@
     
     self = [self initWithBase:base power:2 level:0];
     if(self) {
-        NSPoint origin = rect.origin;
-        rect.origin = NSZeroPoint;
+        CGPoint origin = rect.origin;
+        rect.origin = CGPointZero;
         
         [self writeRect:rect fromArray:otherArray offset:origin];
     }
@@ -581,7 +581,7 @@
 }
 
 
-static NSArray *BlanksForRect(NSRect rect) {
+static NSArray *BlanksForRect(CGRect rect) {
     
     NSUInteger count = rect.size.width;
     char *str = malloc(sizeof(char)*count+1);
@@ -597,7 +597,7 @@ static NSArray *BlanksForRect(NSRect rect) {
     return [[array copy] autorelease];
 }
 
-- (NSArray *)rowStringsForRect:(NSRect)rect {
+- (NSArray *)rowStringsForRect:(CGRect)rect {
     
     // Recursion through children, or iteration over the included leaves?
     // Either way, we have to do some stitching as we convert between coordinate systems
@@ -606,7 +606,7 @@ static NSArray *BlanksForRect(NSRect rect) {
     // I vote for recursion: we re-stitch the row strings at each level
     
     // We don't need to expand -- uninitialized space is filled with blanks ('_' characters)
-    if(NSIsEmptyRect(rect))
+    if(CGRectIsEmpty(rect))
         return nil;
     
     if(0 == _level) {
@@ -622,10 +622,10 @@ static NSArray *BlanksForRect(NSRect rect) {
     
     for (NSUInteger i=0; i<4; ++i) {
         
-        NSRect childRect = NSMakeRect(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase);
-        NSRect subRect = NSIntersectionRect(rect, childRect);
+        CGRect childRect = CGRectMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase);
+        CGRect subRect = CGRectIntersection(rect, childRect);
         
-        if(NSIsEmptyRect(subRect)) {
+        if(CGRectIsEmpty(subRect)) {
             childStrings[i] = NULL;
             continue;
         }
@@ -671,12 +671,12 @@ static NSArray *BlanksForRect(NSRect rect) {
     return [[rowStrings copy] autorelease];
 }
 
-- (NSString *)stringForRect:(NSRect)rect {
+- (NSString *)stringForRect:(CGRect)rect {
     return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
 }
 
 - (NSString *)stringForRect {
-    return [[self rowStringsForRect:NSMakeRect(0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
+    return [[self rowStringsForRect:CGRectMake(0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
 }
 
 @end

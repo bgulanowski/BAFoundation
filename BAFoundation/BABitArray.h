@@ -46,7 +46,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @protocol BABitArray2D <BABitArray>
 
-- (id)initWithBitArray:(id<BABitArray>)otherArray rect:(NSRect)rect;
+- (id)initWithBitArray:(id<BABitArray>)otherArray rect:(CGRect)rect;
 
 - (BASampleArray *)size;
 
@@ -60,16 +60,16 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 
-- (void)setRect:(NSRect)rect;
-- (void)clearRect:(NSRect)rect;
+- (void)setRect:(CGRect)rect;
+- (void)clearRect:(CGRect)rect;
 
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(NSPoint)origin;
+- (void)writeRect:(CGRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(CGPoint)origin;
 
-- (id<BABitArray2D>)subArrayWithRect:(NSRect)rect;
+- (id<BABitArray2D>)subArrayWithRect:(CGRect)rect;
 
 @optional
-- (NSArray *)rowStringsForRect:(NSRect)rect;
-- (NSString *)stringForRect:(NSRect)rect;
+- (NSArray *)rowStringsForRect:(CGRect)rect;
+- (NSString *)stringForRect:(CGRect)rect;
 - (NSString *)stringForRect;
 
 @end
@@ -129,18 +129,18 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
 @interface BABitArray (SpatialStorage) <BABitArray2D>
-- (id)initWithSize:(NSSize)initSize;
+- (id)initWithSize:(CGSize)initSize;
 - (BABitArray *)bitArrayByFlippingColumns;
 - (BABitArray *)bitArrayByFlippingRows;
 - (BABitArray *)bitArrayByRotating:(NSInteger)quarters; // "quarters" are increments are 90 degrees
-- (void)writeRect:(NSRect)rect fromArray:(id<BABitArray2D>)bitArray;
-+ (BABitArray *)bitArrayWithSize:(NSSize)initSize;
+- (void)writeRect:(CGRect)rect fromArray:(id<BABitArray2D>)bitArray;
++ (BABitArray *)bitArrayWithSize:(CGSize)initSize;
 @end
 
 
 @interface BASampleArray (BABitArraySupport)
-- (NSSize)size2d;
+- (CGSize)size2d;
 - (void)size3d:(NSUInteger*)size;
-+ (BASampleArray *)sampleArrayForSize2d:(NSSize)size;
++ (BASampleArray *)sampleArrayForSize2d:(CGSize)size;
 + (BASampleArray *)sampleArrayForSize3d:(NSUInteger *)size;
 @end
