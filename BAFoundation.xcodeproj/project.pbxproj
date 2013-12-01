@@ -41,7 +41,6 @@
 		842C152715FD9BC900D5AE05 /* BACoreDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C151F15FD9BC900D5AE05 /* BACoreDataManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		842C152815FD9BC900D5AE05 /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
 		842C152915FD9BC900D5AE05 /* DateTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C152115FD9BC900D5AE05 /* DateTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		842C152A15FD9BC900D5AE05 /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152215FD9BC900D5AE05 /* DateTransformer.m */; };
 		842C152B15FD9BC900D5AE05 /* FloatNumberTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C152315FD9BC900D5AE05 /* FloatNumberTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		842C152C15FD9BC900D5AE05 /* FloatNumberTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152415FD9BC900D5AE05 /* FloatNumberTransformer.m */; };
 		842C152D15FD9BC900D5AE05 /* IntegerNumberTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 842C152515FD9BC900D5AE05 /* IntegerNumberTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -54,7 +53,6 @@
 		8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
 		8486D1091600F3810065DEFF /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F030FE14300C9C0087940B /* BANoiseMaker.m */; };
 		8486D10A1600F3810065DEFF /* BAUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C154A15FDA19C00D5AE05 /* BAUUID.m */; };
-		8486D10B1600F3810065DEFF /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152215FD9BC900D5AE05 /* DateTransformer.m */; };
 		8486D10C1600F3810065DEFF /* FloatNumberTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152415FD9BC900D5AE05 /* FloatNumberTransformer.m */; };
 		8486D10D1600F3810065DEFF /* IntegerNumberTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152615FD9BC900D5AE05 /* IntegerNumberTransformer.m */; };
 		8486D10E1600F3810065DEFF /* NSManagedObject+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */; };
@@ -67,6 +65,11 @@
 		84A0D25E16E27E270010D80D /* SparseBitArrayTest2D.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25916E27E270010D80D /* SparseBitArrayTest2D.m */; };
 		84A0D25F16E27E270010D80D /* SparseBitArrayTest3D.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */; };
 		84A0D26016E27E270010D80D /* SparseBitArrayTestBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */; };
+		84AECAF6184BC9FA002AC8D0 /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152215FD9BC900D5AE05 /* DateTransformer.m */; };
+		84AECAF7184BC9FB002AC8D0 /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152215FD9BC900D5AE05 /* DateTransformer.m */; };
+		84AECAF8184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */; };
+		84AECAF9184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */; };
+		84AECAFA184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */; };
 		84BBE63C16E8E35800AF371A /* NSData+GZip.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE63A16E8E35800AF371A /* NSData+GZip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84BBE63D16E8E35800AF371A /* NSData+GZip.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE63A16E8E35800AF371A /* NSData+GZip.h */; };
 		84BBE63E16E8E35800AF371A /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE63B16E8E35800AF371A /* NSData+GZip.m */; };
@@ -125,22 +128,22 @@
 		4E792B04133A3195003C9B3E /* BAFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFT.h; sourceTree = "<group>"; };
 		4E792B05133A3195003C9B3E /* BAFT.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAFT.m; sourceTree = "<group>"; };
 		4E870CF012F1090100017473 /* BABitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABitArray.h; sourceTree = "<group>"; };
-		4E870CF112F1090100017473 /* BABitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABitArray.m; sourceTree = "<group>"; };
+		4E870CF112F1090100017473 /* BABitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BABitArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4E98F9CE0F92E29B0085B8EC /* BATextIOHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATextIOHandler.h; sourceTree = "<group>"; };
-		4E98F9CF0F92E29B0085B8EC /* BATextIOHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATextIOHandler.m; sourceTree = "<group>"; };
+		4E98F9CF0F92E29B0085B8EC /* BATextIOHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BATextIOHandler.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		4EF2B51A104D60C9000C8EE2 /* BAGraphNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAGraphNode.h; sourceTree = "<group>"; };
-		4EF2B51B104D60C9000C8EE2 /* BAGraphNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAGraphNode.m; sourceTree = "<group>"; };
+		4EF2B51B104D60C9000C8EE2 /* BAGraphNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BAGraphNode.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		841944EC1637322B0036C725 /* BASampleArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASampleArray.h; sourceTree = "<group>"; };
-		841944ED1637322B0036C725 /* BASampleArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASampleArray.m; sourceTree = "<group>"; };
+		841944ED1637322B0036C725 /* BASampleArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASampleArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8428532E16F3A4BE00BD7A71 /* BAFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BAFunctions.h; sourceTree = "<group>"; };
 		842C151315FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+BAAdditions.h"; sourceTree = "<group>"; };
-		842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+BAAdditions.m"; sourceTree = "<group>"; };
+		842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSManagedObject+BAAdditions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		842C151515FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+BAAdditions.h"; sourceTree = "<group>"; };
 		842C151615FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+BAAdditions.m"; sourceTree = "<group>"; };
 		842C151715FD9BAC00D5AE05 /* NSObject+PlistTransforming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+PlistTransforming.h"; sourceTree = "<group>"; };
 		842C151815FD9BAC00D5AE05 /* NSObject+PlistTransforming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+PlistTransforming.m"; sourceTree = "<group>"; };
 		842C151F15FD9BC900D5AE05 /* BACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACoreDataManager.h; sourceTree = "<group>"; };
-		842C152015FD9BC900D5AE05 /* BACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BACoreDataManager.m; sourceTree = "<group>"; };
+		842C152015FD9BC900D5AE05 /* BACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BACoreDataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		842C152115FD9BC900D5AE05 /* DateTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTransformer.h; sourceTree = "<group>"; };
 		842C152215FD9BC900D5AE05 /* DateTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateTransformer.m; sourceTree = "<group>"; };
 		842C152315FD9BC900D5AE05 /* FloatNumberTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatNumberTransformer.h; sourceTree = "<group>"; };
@@ -149,10 +152,10 @@
 		842C152615FD9BC900D5AE05 /* IntegerNumberTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntegerNumberTransformer.m; sourceTree = "<group>"; };
 		842C152F15FD9BE600D5AE05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		842C154915FDA19C00D5AE05 /* BAUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAUUID.h; sourceTree = "<group>"; };
-		842C154A15FDA19C00D5AE05 /* BAUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAUUID.m; sourceTree = "<group>"; };
+		842C154A15FDA19C00D5AE05 /* BAUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BAUUID.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84357BA218381F8600664A68 /* BANoiseMakerTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BANoiseMakerTester.m; sourceTree = "<group>"; };
 		84A0D20416E271110010D80D /* BASparseBitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseBitArray.h; sourceTree = "<group>"; };
-		84A0D20516E271110010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASparseBitArray.m; sourceTree = "<group>"; };
+		84A0D20516E271110010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseBitArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84A0D20816E271380010D80D /* BAMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMacros.h; sourceTree = "<group>"; };
 		84A0D25816E27E270010D80D /* SparseBitArrayTest2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparseBitArrayTest2D.h; sourceTree = "<group>"; };
 		84A0D25916E27E270010D80D /* SparseBitArrayTest2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTest2D.m; sourceTree = "<group>"; };
@@ -160,22 +163,23 @@
 		84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTest3D.m; sourceTree = "<group>"; };
 		84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparseBitArrayTestBasic.h; sourceTree = "<group>"; };
 		84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTestBasic.m; sourceTree = "<group>"; };
+		84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		84BBE63A16E8E35800AF371A /* NSData+GZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GZip.h"; sourceTree = "<group>"; };
 		84BBE63B16E8E35800AF371A /* NSData+GZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GZip.m"; sourceTree = "<group>"; };
 		84BBE64016E8EDBD00AF371A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
 		84BBE64216E932F000AF371A /* BASparseSampleArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseSampleArray.h; sourceTree = "<group>"; };
-		84BBE64316E932F000AF371A /* BASparseSampleArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASparseSampleArray.m; sourceTree = "<group>"; };
+		84BBE64316E932F000AF371A /* BASparseSampleArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseSampleArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84BBE64616E934C500AF371A /* BASparseArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseArray.h; sourceTree = "<group>"; };
-		84BBE64716E934C500AF371A /* BASparseArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASparseArray.m; sourceTree = "<group>"; };
+		84BBE64716E934C500AF371A /* BASparseArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84BBE64A16E938FB00AF371A /* BASparseArrayPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BASparseArrayPrivate.h; sourceTree = "<group>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
-		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BARelationshipProxy.m; sourceTree = "<group>"; };
+		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BARelationshipProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84F9EE8317909D5A005B6DD1 /* BANoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
-		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BANoise.m; sourceTree = "<group>"; };
+		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoise.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* BAFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BAFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6F030FD14300C9C0087940B /* BANoiseMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BANoiseMaker.h; sourceTree = "<group>"; };
-		B6F030FE14300C9C0087940B /* BANoiseMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BANoiseMaker.m; sourceTree = "<group>"; };
+		B6F030FE14300C9C0087940B /* BANoiseMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoiseMaker.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +187,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84AECAF9184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */,
 				4E4CC5191338D436007AD580 /* Foundation.framework in Frameworks */,
 				4E4CC51A1338D436007AD580 /* SenTestingKit.framework in Frameworks */,
 				4E5CA8D81338D77F00F28C3C /* BAFoundation.framework in Frameworks */,
@@ -201,6 +206,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84AECAFA184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */,
 				8486D1121600F39A0065DEFF /* CoreData.framework in Frameworks */,
 				4E792AE3133A306D003C9B3E /* Foundation.framework in Frameworks */,
 			);
@@ -210,6 +216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84AECAF8184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */,
 				84BBE64116E8EDBD00AF371A /* libz.dylib in Frameworks */,
 				842C153015FD9BE600D5AE05 /* CoreData.framework in Frameworks */,
 				4E6B60981056B1E700027CCC /* Foundation.framework in Frameworks */,
@@ -247,6 +254,7 @@
 			children = (
 				4E4CC4F91338D37C007AD580 /* SenTestingKit.framework */,
 				842C152F15FD9BE600D5AE05 /* CoreData.framework */,
+				84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
 				84BBE64016E8EDBD00AF371A /* libz.dylib */,
 			);
@@ -613,13 +621,13 @@
 			files = (
 				842591061767850300BED70D /* BASampleArray.m in Sources */,
 				842591071767850300BED70D /* BASparseArray.m in Sources */,
+				84AECAF7184BC9FB002AC8D0 /* DateTransformer.m in Sources */,
 				842591081767850300BED70D /* BASparseBitArray.m in Sources */,
 				84259104176784D700BED70D /* BARelationshipProxy.m in Sources */,
 				84259105176784D700BED70D /* BASparseSampleArray.m in Sources */,
 				8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */,
 				8486D1091600F3810065DEFF /* BANoiseMaker.m in Sources */,
 				8486D10A1600F3810065DEFF /* BAUUID.m in Sources */,
-				8486D10B1600F3810065DEFF /* DateTransformer.m in Sources */,
 				8486D10C1600F3810065DEFF /* FloatNumberTransformer.m in Sources */,
 				8486D10D1600F3810065DEFF /* IntegerNumberTransformer.m in Sources */,
 				8486D10E1600F3810065DEFF /* NSManagedObject+BAAdditions.m in Sources */,
@@ -639,13 +647,13 @@
 			files = (
 				4E98F9D10F92E29B0085B8EC /* BATextIOHandler.m in Sources */,
 				4EF2B51D104D60C9000C8EE2 /* BAGraphNode.m in Sources */,
+				84AECAF6184BC9FA002AC8D0 /* DateTransformer.m in Sources */,
 				4E870CF312F1090100017473 /* BABitArray.m in Sources */,
 				B6F0310014300C9C0087940B /* BANoiseMaker.m in Sources */,
 				842C151A15FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m in Sources */,
 				842C151C15FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.m in Sources */,
 				842C151E15FD9BAC00D5AE05 /* NSObject+PlistTransforming.m in Sources */,
 				842C152815FD9BC900D5AE05 /* BACoreDataManager.m in Sources */,
-				842C152A15FD9BC900D5AE05 /* DateTransformer.m in Sources */,
 				842C152C15FD9BC900D5AE05 /* FloatNumberTransformer.m in Sources */,
 				842C152E15FD9BC900D5AE05 /* IntegerNumberTransformer.m in Sources */,
 				842C154C15FDA19C00D5AE05 /* BAUUID.m in Sources */,
