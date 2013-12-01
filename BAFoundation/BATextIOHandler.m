@@ -6,7 +6,7 @@
 //  Copyright 2005 Bored Astronaut. All rights reserved.
 //
 
-#import "BATextIOHandler.h"
+#import <BAFoundation/BATextIOHandler.h>
 
 
 @interface BATextIOHandler (BATextIOHandler_private)

@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Lichen Labs. All rights reserved.
 //
 
-#import "BASampleArray.h"
+#import <BAFoundation/BASampleArray.h>
 
-#import "BAFunctions.h"
+#import <BAFoundation/BAFunctions.h>
 
 
 #pragma mark -

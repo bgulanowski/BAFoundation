@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Lichen Labs. All rights reserved.
 //
 
-#import "BANoise.h"
+#import <BAFoundation/BANoise.h>
 
 
 static inline double fade(double t) { return t * t * t * (t * (t * 6 - 15) + 10); }

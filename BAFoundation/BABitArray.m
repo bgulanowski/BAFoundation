@@ -5,10 +5,10 @@
 //  Copyright 2009 Bored Astronaut. All rights reserved.
 //
 
-#import "BABitArray.h"
+#import <BAFoundation/BABitArray.h>
 
-#import "NSData+GZip.h"
-#import "BAFunctions.h"
+#import <BAFoundation/BAFunctions.h>
+#import <BAFoundation/NSData+GZip.h>
 
 
 // Set/clear a range of bit positions in a single byte

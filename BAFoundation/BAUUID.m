@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Lichen Labs. All rights reserved.
 //
 
-#import "BAUUID.h"
+#import <BAFoundation/BAUUID.h>
 
 #import <uuid/uuid.h>
 

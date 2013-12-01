@@ -6,8 +6,8 @@
 //  Copyright 2008 Bored Astronaut. All rights reserved.
 //
 
-#import "NSManagedObjectContext+BAAdditions.h"
-#import "NSManagedObject+BAAdditions.h"
+#import <BAFoundation/NSManagedObjectContext+BAAdditions.h>
+#import <BAFoundation/NSManagedObject+BAAdditions.h>
 
 
 NSString *defaultStoreName = @"Data Store";

@@ -6,7 +6,7 @@
 //
 
 
-#import "BASampleArray.h"
+#import <BAFoundation/BASampleArray.h>
 
 
 typedef void (^BABitArrayEnumerator) (NSUInteger bit);

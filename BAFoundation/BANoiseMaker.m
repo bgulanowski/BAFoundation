@@ -6,11 +6,11 @@
 //  Copyright 2011 Bored Astronaut. All rights reserved.
 //
 
-#import "BANoiseMaker.h"
+#import <BAFoundation/BANoiseMaker.h>
 
 #include <math.h>
 
-#import "BASampleArray.h"
+#import <BAFoundation/BASampleArray.h>
 
 
 

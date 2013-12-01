@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Lichen Labs. All rights reserved.
 //
 
-#import "BASparseSampleArray.h"
+#import <BAFoundation/BASparseSampleArray.h>
 
 #import "BASparseArrayPrivate.h"
-#import "BASampleArray.h"
-#import "BAFunctions.h"
+#import <BAFoundation/BASampleArray.h>
+#import <BAFoundation/BAFunctions.h>
 
 
 static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger base, NSUInteger power) {

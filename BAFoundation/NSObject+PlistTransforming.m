@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Lichen Labs. All rights reserved.
 //
 
-#import "NSObject+PlistTransforming.h"
+#import <BAFoundation/NSObject+PlistTransforming.h>
 
 @implementation NSObject (PlistTransforming)
 - (id)propertyListRepresentation { return nil; }

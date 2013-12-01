@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Bored Astronaut. All rights reserved.
 //
 
-#import "BARelationshipProxy.h"
-#import "NSManagedObject+BAAdditions.h"
+#import <BAFoundation/BARelationshipProxy.h>
+#import <BAFoundation/NSManagedObject+BAAdditions.h>
 
 
 @implementation BARelationshipProxy

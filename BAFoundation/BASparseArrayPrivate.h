@@ -7,7 +7,7 @@
 //
 
 
-#import "BASparseArray.h"
+#import <BAFoundation/BASparseArray.h>
 
 
 static inline uint32_t StorageIndexFor2DCoordinates( uint32_t x, uint32_t y, uint32_t base ) {

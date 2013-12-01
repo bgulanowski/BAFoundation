@@ -5,9 +5,9 @@
 //  Copyright 2009 Bored Astronaut. All rights reserved.
 //
 
-#import "BACoreDataManager.h"
+#import <BAFoundation/BACoreDataManager.h>
 
-#import "NSManagedObjectContext+BAAdditions.h"
+#import <BAFoundation/NSManagedObjectContext+BAAdditions.h>
 
 
 @interface BACoreDataManager ()

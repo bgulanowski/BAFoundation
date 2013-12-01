@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Lichen Labs. All rights reserved.
 //
 
-#import "BASparseArray.h"
+#import <BAFoundation/BASparseArray.h>
 
 #import "BASparseArrayPrivate.h"
-#import "BAFunctions.h"
+#import <BAFoundation/BAFunctions.h>
 
 
 uint32_t powersOf2[TABLE_SIZE];

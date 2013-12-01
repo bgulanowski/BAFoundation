@@ -6,14 +6,12 @@
 //  Copyright (c) 2012 Lichen Labs. All rights reserved.
 //
 
-#import "BASparseBitArray.h"
+#import <BAFoundation/BASparseBitArray.h>
 
 #import "BASparseArrayPrivate.h"
 
-#import "NSData+GZip.h"
-
-#import "BABitArray.h"
-#import "BAFunctions.h"
+#import <BAFoundation/NSData+GZip.h>
+#import <BAFoundation/BAFunctions.h>
 
 
 #pragma mark -

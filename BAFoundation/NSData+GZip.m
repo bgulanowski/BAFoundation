@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Lichen Labs. All rights reserved.
 //
 
-#import "NSData+GZip.h"
+#import <BAFoundation/NSData+GZip.h>
 
 #import <zlib.h>
 

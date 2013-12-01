@@ -6,7 +6,7 @@
 //  Copyright 2008 Bored Astronaut. All rights reserved.
 //
 
-#import "BAGraphNode.h"
+#import <BAFoundation/BAGraphNode.h>
 
 
 @implementation BAGraphNode

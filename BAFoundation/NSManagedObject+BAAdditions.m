@@ -6,16 +6,16 @@
 //  Copyright 2008 Bored Astronaut. All rights reserved.
 //
 
-#import "NSManagedObject+BAAdditions.h"
-#import "NSManagedObjectContext+BAAdditions.h"
+#import <BAFoundation/NSManagedObjectContext+BAAdditions.h>
+#import <BAFoundation/NSManagedObject+BAAdditions.h>
 
-#import "NSObject+PlistTransforming.h"
+#import <BAFoundation/NSObject+PlistTransforming.h>
 
-#import "IntegerNumberTransformer.h"
-#import "FloatNumberTransformer.h"
-#import "DateTransformer.h"
+#import <BAFoundation/IntegerNumberTransformer.h>
+#import <BAFoundation/FloatNumberTransformer.h>
+#import <BAFoundation/DateTransformer.h>
 
-#import "BARelationshipProxy.h"
+#import <BAFoundation/BARelationshipProxy.h>
 
 
 NSString *kBAIntegerTransformerName = @"NuIntegerTransformer";
