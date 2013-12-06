@@ -1044,7 +1044,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 }
 
 + (BABitArray *)bitArrayWithSize:(CGSize)initSize {
-    return [[[self alloc] initWithSize:initSize] autorelease];
+    return [[(BABitArray *)[self alloc] initWithSize:initSize] autorelease];
 }
 
 @end
