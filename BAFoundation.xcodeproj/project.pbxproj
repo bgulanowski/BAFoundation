@@ -67,9 +67,6 @@
 		84A0D26016E27E270010D80D /* SparseBitArrayTestBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */; };
 		84AECAF6184BC9FA002AC8D0 /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152215FD9BC900D5AE05 /* DateTransformer.m */; };
 		84AECAF7184BC9FB002AC8D0 /* DateTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152215FD9BC900D5AE05 /* DateTransformer.m */; };
-		84AECAF8184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */; };
-		84AECAF9184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */; };
-		84AECAFA184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */; };
 		84BBE63C16E8E35800AF371A /* NSData+GZip.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE63A16E8E35800AF371A /* NSData+GZip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84BBE63D16E8E35800AF371A /* NSData+GZip.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE63A16E8E35800AF371A /* NSData+GZip.h */; };
 		84BBE63E16E8E35800AF371A /* NSData+GZip.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE63B16E8E35800AF371A /* NSData+GZip.m */; };
@@ -81,6 +78,8 @@
 		84BBE64916E934C500AF371A /* BASparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64716E934C500AF371A /* BASparseArray.m */; };
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
+		84F9A3F21851A28B004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
+		84F9A3F31851A298004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
 		84F9EE8517909D83005B6DD1 /* BANoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F9EE8317909D5A005B6DD1 /* BANoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84F9EE8617909D83005B6DD1 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9EE8417909D5A005B6DD1 /* BANoise.m */; };
 		84F9EE8717909D87005B6DD1 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9EE8417909D5A005B6DD1 /* BANoise.m */; };
@@ -163,7 +162,6 @@
 		84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTest3D.m; sourceTree = "<group>"; };
 		84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SparseBitArrayTestBasic.h; sourceTree = "<group>"; };
 		84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SparseBitArrayTestBasic.m; sourceTree = "<group>"; };
-		84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		84BBE63A16E8E35800AF371A /* NSData+GZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GZip.h"; sourceTree = "<group>"; };
 		84BBE63B16E8E35800AF371A /* NSData+GZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GZip.m"; sourceTree = "<group>"; };
 		84BBE64016E8EDBD00AF371A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /usr/lib/libz.dylib; sourceTree = "<absolute>"; };
@@ -174,6 +172,7 @@
 		84BBE64A16E938FB00AF371A /* BASparseArrayPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BASparseArrayPrivate.h; sourceTree = "<group>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BARelationshipProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		84F9EE8317909D5A005B6DD1 /* BANoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
 		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoise.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -187,7 +186,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84AECAF9184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */,
 				4E4CC5191338D436007AD580 /* Foundation.framework in Frameworks */,
 				4E4CC51A1338D436007AD580 /* SenTestingKit.framework in Frameworks */,
 				4E5CA8D81338D77F00F28C3C /* BAFoundation.framework in Frameworks */,
@@ -206,8 +204,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84AECAFA184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */,
 				8486D1121600F39A0065DEFF /* CoreData.framework in Frameworks */,
+				84F9A3F31851A298004E31E4 /* ApplicationServices.framework in Frameworks */,
 				4E792AE3133A306D003C9B3E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,8 +214,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84AECAF8184BCA11002AC8D0 /* CoreGraphics.framework in Frameworks */,
 				84BBE64116E8EDBD00AF371A /* libz.dylib in Frameworks */,
+				84F9A3F21851A28B004E31E4 /* ApplicationServices.framework in Frameworks */,
 				842C153015FD9BE600D5AE05 /* CoreData.framework in Frameworks */,
 				4E6B60981056B1E700027CCC /* Foundation.framework in Frameworks */,
 			);
@@ -252,9 +250,9 @@
 		0867D69AFE84028FC02AAC07 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */,
 				4E4CC4F91338D37C007AD580 /* SenTestingKit.framework */,
 				842C152F15FD9BE600D5AE05 /* CoreData.framework */,
-				84AECAE9184BC0D9002AC8D0 /* CoreGraphics.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
 				84BBE64016E8EDBD00AF371A /* libz.dylib */,
 			);
