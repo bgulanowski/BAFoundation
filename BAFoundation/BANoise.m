@@ -579,7 +579,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     for (double j=0; j<size.height; ++j) {
         for (double i=0; i<size.width; ++i) {
             double val = [noise evaluateX:i Y:j Z:0];
-            map[index] = val >= min && val <= max;
+            map[index++] = val >= min && val <= max;
         }
     }
     
