@@ -502,6 +502,12 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 @synthesize noises=_noises;
 @synthesize ratios=_ratios;
 
+- (void)dealloc {
+	[_noises release], _noises = nil;
+	[_ratios release], _ratios = nil;
+	[super dealloc];
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     return self;
 }
@@ -517,16 +523,28 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z {
     
     double result = 0;
-    NSEnumerator *noiseIter = [_noises objectEnumerator];
-    NSEnumerator *ratioIter = [_ratios objectEnumerator];
-    
-    id<BANoise>noise;
-    
-    while (noise = [noiseIter nextObject]) {
-        result += [noise evaluateX:x Y:y Z:z] * [[ratioIter nextObject] doubleValue];
+	NSUInteger index = 0;
+	for (id<BANoise> noise in _noises) {
+		double ratio = [[_ratios objectAtIndex:index++] doubleValue];
+        result += [noise evaluateX:x Y:y Z:z] * ratio;
     }
     
     return result;
+}
+
+- (instancetype)initWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {
+	self = [self init];
+	if (self) {
+		NSAssert([noises count] == [ratios count], @"Unmatched noise ratios");
+		_count = [noises count];
+		_noises = [noises copy];
+		_ratios = [ratios copy];
+	}
+	return self;
+}
+
++ (BABlendedNoise *)blendedNoiseWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {
+	return [[[self alloc] initWithNoises:noises ratios:ratios] autorelease];
 }
 
 @end

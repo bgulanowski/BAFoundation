@@ -106,10 +106,14 @@ extern const int BADefaultPermutation[512];
 @interface BABlendedNoise : NSObject<BANoise> {
     NSArray *_noises;
     NSArray *_ratios;
+	NSUInteger _count;
 }
 
 @property (nonatomic, readonly) NSArray *noises;
 @property (nonatomic, readonly) NSArray *ratios; // nsnumber doubles from (0, 1]
+
+- (instancetype)initWithNoises:(NSArray *)noises ratios:(NSArray *)ratios;
++ (BABlendedNoise *)blendedNoiseWithNoises:(NSArray *)noises ratios:(NSArray *)ratios;
 
 @end
 
