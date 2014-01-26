@@ -29,8 +29,9 @@ typedef struct {
 
 extern inline BANoiseRegion BANoiseRangeMake(BANoiseVector o, BANoiseVector s);
 
-
-typedef BOOL (^BANoiseRangeEvaluatorBlock)(BANoiseVector position, double value);
+typedef BANoiseVector (^BAVectorTransformer)(BANoiseVector vector);
+typedef double (^BANoiseEvaluator)(double x, double y, double z);
+typedef BOOL (^BANoiseIteratorBlock)(BANoiseVector position, double value);
 
 
 @interface BANoiseTransform : NSObject {
@@ -60,6 +61,7 @@ typedef BOOL (^BANoiseRangeEvaluatorBlock)(BANoiseVector position, double value)
 - (BANoiseTransform *)transformByPremultiplyingTransform:(BANoiseTransform *)transform;
 
 - (BANoiseVector)transformVector:(BANoiseVector)vector;
+- (BAVectorTransformer)transformer;
 
 @end
 
@@ -69,7 +71,8 @@ typedef BOOL (^BANoiseRangeEvaluatorBlock)(BANoiseVector position, double value)
 // Returns a value in [-1.0,1.0]
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z;
 @optional
-- (void)iterateRange:(BANoiseRegion)range block:(BANoiseRangeEvaluatorBlock)block;
+- (BANoiseEvaluator)evaluator;
+- (void)iterateRange:(BANoiseRegion)range block:(BANoiseIteratorBlock)block;
 
 @end
 

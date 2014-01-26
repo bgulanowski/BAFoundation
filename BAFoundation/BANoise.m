@@ -361,6 +361,10 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     return transformVector(vector, _matrix);
 }
 
+- (BAVectorTransformer)transformer {
+	return [^(BANoiseVector vector) { return transformVector(vector, _matrix); } copy];
+}
+
 @end
 
 
@@ -440,7 +444,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
         return BANoiseBlend((int *)[_data bytes], x, y, z, _octaves, _persistence);
 }
 
-- (void)iterateRange:(BANoiseRegion)range block:(BANoiseRangeEvaluatorBlock)block {
+- (void)iterateRange:(BANoiseRegion)range block:(BANoiseIteratorBlock)block {
     
     double maxX = range.origin.x + range.size.x;
     double maxY = range.origin.y + range.size.y;
@@ -462,6 +466,22 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 
 
 #pragma mark - BANoise
+
+- (BANoiseEvaluator)evaluator {
+	int *bytes = (int *)[_data bytes];
+	if(_transform) {
+		BAVectorTransformer transformer = [_transform transformer];
+		return [^(double x, double y, double z) {
+			BANoiseVector v = transformer(BANoiseVectorMake(x, y, z));
+			return BANoiseBlend(bytes, v.x, v.y, v.z, _octaves, _persistence);
+		} copy];
+	}
+	else {
+		return [^(double x, double y, double z) {
+			return BANoiseBlend(bytes, x, y, z, _octaves, _persistence);
+		} copy];
+	}
+}
 
 - (BOOL)isEqualToNoise:(BANoise *)other {
     return other->_seed == _seed && other->_octaves == _octaves && other->_persistence == _persistence && [other->_data isEqualToData:_data];
