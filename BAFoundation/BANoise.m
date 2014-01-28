@@ -73,12 +73,12 @@ double BANoiseEvaluate(int *p, double x, double y, double z) {
 
 double BANoiseBlend(int *p, double x, double y, double z, double octave_count, double persistence) {
     
-	double component = 0, result = 0, amplitude = 0;
+	double result = BANoiseEvaluate(p, x, y, z);
+	double amplitude = persistence;
     
-	for(unsigned i=0; i<octave_count; i++) {
-		amplitude = i>0 ? pow(persistence, i) : 1;
-		component = BANoiseEvaluate(p, x, y, z) * amplitude;
-		result += component;
+	for(unsigned i=1; i<octave_count; i++) {
+		result += BANoiseEvaluate(p, x, y, z) * amplitude;
+		amplitude *= persistence;
 	}
 	
 	return result;
