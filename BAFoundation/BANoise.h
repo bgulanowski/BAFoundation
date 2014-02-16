@@ -80,6 +80,9 @@ typedef BOOL (^BANoiseIteratorBlock)(BANoiseVector position, double value);
 extern double BANoiseEvaluate(int *p, double x, double y, double z);
 extern double BANoiseBlend(int *p, double x, double y, double z, double octave_count, double persistence);
 
+extern double BASimplexNoise2DEvaluate(int *p, int *pmod, double xin, double  yin);
+extern double BASimpleNoise3DEvaluate(int *perm, int *permMod12, double xin, double  yin, double zin);
+
 extern const int BADefaultPermutation[512];
 
 
