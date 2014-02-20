@@ -91,6 +91,7 @@ double BANoiseBlend(const int *p, double x, double y, double z, double octave_co
 	double amplitude = persistence;
     
 	for(unsigned i=1; i<octave_count; i++) {
+		x *= 2.; y *= 2.; z *= 2.;
 		result += BANoiseEvaluate(p, x, y, z) * amplitude;
 		amplitude *= persistence;
 	}
@@ -104,6 +105,7 @@ double BASimplexNoise3DBlend(const int *p, const int *mod, double x, double y, d
 	double amplitude = persistence;
     
 	for(unsigned i=1; i<octave_count; i++) {
+		x *= 2.; y *= 2.; z *= 2.;
 		result += BASimplexNoise3DEvaluate(p, mod, x, y, z) * amplitude;
 		amplitude *= persistence;
 	}
@@ -743,7 +745,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     return copy;
 }
 
-- (id)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
     self = [super init];
     if(self) {
         _seed = seed;
@@ -755,44 +757,51 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     return self;
 }
 
-+ (BANoise *)noiseWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
-    return [[[BANoise alloc] initWithSeed:seed octaves:octaves persistence:persistence transform:transform] autorelease];
++ (instancetype)noiseWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+    return [[[[self class] alloc] initWithSeed:seed octaves:octaves persistence:persistence transform:transform] autorelease];
 }
 
 @end
 
 
+@interface BASimplexNoise ()
+@property (nonatomic, strong) NSData *mod;
+@end
+
+
 @implementation BASimplexNoise
+
+@synthesize mod=_mod;
 
 - (void)dealloc {
 	[super dealloc];
 	[_mod release];
 }
 
-- (id)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
 	self = [super initWithSeed:seed octaves:octaves persistence:persistence transform:transform];
 	if (self) {
-		_mod = [_data noiseModulusData];
+		self.mod = [_data noiseModulusData];
 	}
 	return self;
 }
 
 - (double)evaluateX:(double)x Y:(double)y {
-	return BASimplexNoise2DEvaluate([_data bytes], [_mod bytes], x, y);
+	return BASimplexNoise3DBlend([_data bytes], [_mod bytes], x, y, 0, _octaves, _persistence);
 }
 
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z {
-	return BASimplexNoise3DEvaluate([_data bytes], [_mod bytes], x, y, z);
+	return BASimplexNoise3DBlend([_data bytes], [_mod bytes], x, y, z, _octaves, _persistence);
 }
 
 - (BANoiseEvaluator)evaluator {
 	int *bytes = (int *)[_data bytes];
-	int *modulus = (int *)[_data bytes];
+	int *modulus = (int *)[_mod bytes];
 	if(_transform) {
 		BAVectorTransformer transformer = [_transform transformer];
 		return [^(double x, double y, double z) {
 			BANoiseVector v = transformer(BANoiseVectorMake(x, y, z));
-			return BANoiseBlend(bytes, v.x, v.y, v.z, _octaves, _persistence);
+			return BASimplexNoise3DBlend(bytes, modulus, v.x, v.y, v.z, _octaves, _persistence);
 		} copy];
 	}
 	else {
@@ -873,7 +882,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 	for (NSUInteger i=0; i<512; ++i) {
 		m[i] = p[i]%12;
 	}
-	return [[[self class] alloc] initWithBytes:m length:512*sizeof(int)];
+	return [NSData dataWithBytes:m length:512*sizeof(int)];
 }
 
 + (NSData *)noiseDataWithSeed:(unsigned int)seed {
