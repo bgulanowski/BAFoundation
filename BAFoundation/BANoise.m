@@ -22,7 +22,7 @@ static inline double grad(int hash, double x, double y, double z) {
 	return ((h&1) == 0 ? u : -u) + ((h&2) == 0 ? v : -v);
 }
 
-double BANoiseEvaluate(int *p, double x, double y, double z) {
+double BANoiseEvaluate(const int *p, double x, double y, double z) {
     
     int X; int Y; int Z;
     double u; double v; double w;
@@ -85,13 +85,26 @@ static double G3;
 static double F4;
 static double G4;
 
-double BANoiseBlend(int *p, double x, double y, double z, double octave_count, double persistence) {
-    
+double BANoiseBlend(const int *p, double x, double y, double z, double octave_count, double persistence) {
+	
 	double result = BANoiseEvaluate(p, x, y, z);
 	double amplitude = persistence;
     
 	for(unsigned i=1; i<octave_count; i++) {
 		result += BANoiseEvaluate(p, x, y, z) * amplitude;
+		amplitude *= persistence;
+	}
+	
+	return result;
+}
+
+double BASimplexNoise3DBlend(const int *p, const int *mod, double x, double y, double z, double octave_count, double persistence) {
+	
+	double result = BASimplexNoise3DEvaluate(p, mod, x, y, z);
+	double amplitude = persistence;
+    
+	for(unsigned i=1; i<octave_count; i++) {
+		result += BASimplexNoise3DEvaluate(p, mod, x, y, z) * amplitude;
 		amplitude *= persistence;
 	}
 	
@@ -112,7 +125,7 @@ inline static double dot3(BANoiseVector g, double x, double y, double z) {
 //}
 
 
-double BASimplexNoise2DEvaluate(int *p, int *pmod, double xin, double  yin) {
+double BASimplexNoise2DEvaluate(const int *p, const int *pmod, double xin, double  yin) {
 	
 	// Noise contributions from the three corners
 	double n0, n1, n2;
@@ -183,7 +196,7 @@ double BASimplexNoise2DEvaluate(int *p, int *pmod, double xin, double  yin) {
 	return 70.0 * (n0 + n1 + n2);
 }
 
-double BASimpleNoise3DEvaluate(int *perm, int *permMod12, double xin, double  yin, double zin) {
+double BASimplexNoise3DEvaluate(const int *p, const int *pmod, double xin, double  yin, double zin) {
 	
 	// Noise contributions from the four corners
 	double n0, n1, n2, n3;
@@ -258,10 +271,10 @@ double BASimpleNoise3DEvaluate(int *perm, int *permMod12, double xin, double  yi
 	int jj = j & 255;
 	int kk = k & 255;
 	
-	int gi0 = permMod12[ii+perm[jj+perm[kk]]];
-	int gi1 = permMod12[ii+i1+perm[jj+j1+perm[kk+k1]]];
-	int gi2 = permMod12[ii+i2+perm[jj+j2+perm[kk+k2]]];
-	int gi3 = permMod12[ii+1+perm[jj+1+perm[kk+1]]];
+	int gi0 = pmod[ii+p[jj+p[kk]]];
+	int gi1 = pmod[ii+i1+p[jj+j1+p[kk+k1]]];
+	int gi2 = pmod[ii+i2+p[jj+j2+p[kk+k2]]];
+	int gi3 = pmod[ii+1+p[jj+1+p[kk+1]]];
 	
 	// Calculate the contribution from the four corners
 	double t0 = 0.6 - x0*x0 - y0*y0 - z0*z0;
@@ -613,7 +626,20 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 	return [self initWithSeed:0 octaves:1 persistence:0 transform:nil];
 }
 
++ (void)initialize {
+	if (self == [BANoise class]) {
+		F2 = 0.5*(sqrt(3.0)-1.0);
+		G2 = (3.0-sqrt(3.0))/6.0;
+		F3 = 1.0/3.0;
+		G3 = 1.0/6.0;
+		F4 = (sqrt(5.0)-1.0)/4.0;
+		G4 = (5.0-sqrt(5.0))/20.0;
+	}
+}
+
+
 #pragma mark - NSCoding
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
     if(self) {
@@ -650,20 +676,6 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     
     return copy;
 }
-
-#pragma mark - NSObject
-
-+ (void)initialize {
-	if (self == [BANoise class]) {
-		F2 = 0.5*(sqrt(3.0)-1.0);
-		G2 = (3.0-sqrt(3.0))/6.0;
-		F3 = 1.0/3.0;
-		G3 = 1.0/6.0;
-		F4 = (sqrt(5.0)-1.0)/4.0;
-		G4 = (5.0-sqrt(5.0))/20.0;
-	}
-}
-
 
 #pragma mark - BANoise protocol
 
@@ -750,6 +762,49 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 @end
 
 
+@implementation BASimplexNoise
+
+- (void)dealloc {
+	[super dealloc];
+	[_mod release];
+}
+
+- (id)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+	self = [super initWithSeed:seed octaves:octaves persistence:persistence transform:transform];
+	if (self) {
+		_mod = [_data noiseModulusData];
+	}
+	return self;
+}
+
+- (double)evaluateX:(double)x Y:(double)y {
+	return BASimplexNoise2DEvaluate([_data bytes], [_mod bytes], x, y);
+}
+
+- (double)evaluateX:(double)x Y:(double)y Z:(double)z {
+	return BASimplexNoise3DEvaluate([_data bytes], [_mod bytes], x, y, z);
+}
+
+- (BANoiseEvaluator)evaluator {
+	int *bytes = (int *)[_data bytes];
+	int *modulus = (int *)[_data bytes];
+	if(_transform) {
+		BAVectorTransformer transformer = [_transform transformer];
+		return [^(double x, double y, double z) {
+			BANoiseVector v = transformer(BANoiseVectorMake(x, y, z));
+			return BANoiseBlend(bytes, v.x, v.y, v.z, _octaves, _persistence);
+		} copy];
+	}
+	else {
+		return [^(double x, double y, double z) {
+			return BASimplexNoise3DEvaluate(bytes, modulus, x, y, z);
+		} copy];
+	}
+}
+
+@end
+
+
 @implementation BABlendedNoise
 
 @synthesize noises=_noises;
@@ -810,6 +865,15 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     for(NSUInteger i=0; i<256; i++) p[i]=i;
     BANoiseDataShuffle(p, seed);
     return [self initWithBytes:p length:512*sizeof(int)];
+}
+
+- (NSData *)noiseModulusData {
+	int m[512];
+	const int *p = [self bytes];
+	for (NSUInteger i=0; i<512; ++i) {
+		m[i] = p[i]%12;
+	}
+	return [[[self class] alloc] initWithBytes:m length:512*sizeof(int)];
 }
 
 + (NSData *)noiseDataWithSeed:(unsigned int)seed {

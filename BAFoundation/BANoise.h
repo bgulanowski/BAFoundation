@@ -77,17 +77,17 @@ typedef BOOL (^BANoiseIteratorBlock)(BANoiseVector position, double value);
 @end
 
 
-extern double BANoiseEvaluate(int *p, double x, double y, double z);
-extern double BANoiseBlend(int *p, double x, double y, double z, double octave_count, double persistence);
+extern double BANoiseEvaluate(const int *p, double x, double y, double z);
+extern double BANoiseBlend(const int *p, double x, double y, double z, double octave_count, double persistence);
 
-extern double BASimplexNoise2DEvaluate(int *p, int *pmod, double xin, double  yin);
-extern double BASimpleNoise3DEvaluate(int *perm, int *permMod12, double xin, double  yin, double zin);
+extern double BASimplexNoise2DEvaluate(const int *p, const int *pmod, double xin, double  yin);
+extern double BASimplexNoise3DEvaluate(const int *p, const int *pmod, double xin, double  yin, double zin);
+extern double BASimplexNoise3DBlend(const int *p, const int *pmod, double x, double y, double z, double octave_count, double persistence);
 
 extern const int BADefaultPermutation[512];
 
 
 @interface BANoise : NSObject<BANoise> {
-@private
     BANoiseTransform *_transform;
     NSData *_data;
     unsigned long _seed;
@@ -105,6 +105,13 @@ extern const int BADefaultPermutation[512];
 // copies share underlying (immutable) noise data
 - (BANoise *)copyWithOctaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
 + (BANoise *)noiseWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
+
+@end
+
+
+@interface BASimplexNoise : BANoise {
+	NSData *_mod;
+}
 
 @end
 
@@ -127,6 +134,7 @@ extern const int BADefaultPermutation[512];
 @interface NSData (BANoise)
 
 - (id)initWithSeed:(unsigned)seed;
+- (NSData *)noiseModulusData;
 + (NSData *)noiseDataWithSeed:(unsigned)seed;
 + (NSData *)defaultNoiseData;
 + (NSData *)randomNoiseData;
