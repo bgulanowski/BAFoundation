@@ -120,7 +120,7 @@
     memcpy(_samples+range.location*_size, samples, _size*range.length);
 }
 
-static inline NSUInteger indexForCoordinates(uint32_t *coordinates, NSUInteger power) {
+static inline NSUInteger indexForCoordinates(NSUInteger *coordinates, NSUInteger power) {
     
     NSUInteger sampleIndex = 0;
     NSUInteger factor = 1;
@@ -132,11 +132,11 @@ static inline NSUInteger indexForCoordinates(uint32_t *coordinates, NSUInteger p
     return sampleIndex;
 }
 
-- (void)sample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates {
+- (void)sample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates {
      [self sample:sample atIndex:indexForCoordinates(coordinates, _power)];
 }
 
-- (void)setSample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates {
+- (void)setSample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates {
     [self setSample:sample atIndex:indexForCoordinates(coordinates, _power)];
 }
 

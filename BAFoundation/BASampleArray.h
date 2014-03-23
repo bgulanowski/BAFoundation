@@ -14,8 +14,8 @@
 
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index;
 - (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index;
-- (void)sample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates;
-- (void)setSample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates;
+- (void)sample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates;
+- (void)setSample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates;
 
 @optional
 - (void)readSamples:(UInt8 *)samples range:(NSRange)range;

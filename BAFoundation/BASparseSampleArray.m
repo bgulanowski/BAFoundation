@@ -13,8 +13,8 @@
 #import <BAFoundation/BAFunctions.h>
 
 
-static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger base, NSUInteger power) {
-    uint32_t leafIndex = LeafIndexForCoordinates(coords, base, power);
+static inline NSUInteger StorageIndexForCoordinates(NSUInteger *coords, NSUInteger base, NSUInteger power) {
+    NSUInteger leafIndex = LeafIndexForCoordinates(coords, base, power);
     NSUInteger result = leafIndex * powi(base, power);
     for(NSUInteger i=0; i<power; ++i)
         result += powi(base, power-1-i) + coords[i];
@@ -85,7 +85,7 @@ static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger
     [samples sample:sample atIndex:index - offset];
 }
 
-- (void)sample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates {
+- (void)sample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates {
     [self sample:sample atIndex:StorageIndexForCoordinates(coordinates, _base, _power)];
 }
 
@@ -103,7 +103,7 @@ static inline NSUInteger StorageIndexForCoordinates(uint32_t *coords, NSUInteger
         _updateBlock(self, index, sample);
 }
 
-- (void)setSample:(UInt8 *)sample atCoordinates:(uint32_t *)coordinates {
+- (void)setSample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates {
     [self setSample:sample atIndex:StorageIndexForCoordinates(coordinates, _base, _power)];
 }
 

@@ -185,8 +185,8 @@
 
 - (void)test99 {
     
-    uint32_t size = (uint32_t)powi(4, TABLE_SIZE-1);
-    uint32_t x, y;
+    NSUInteger size = (NSUInteger)powi(4, TABLE_SIZE-1);
+    NSUInteger x, y;
     LeafCoordinatesForIndex2D(size-1, &x, &y);
     NSLog(@"Last 2D coordinate for tree of size %d: {%d,%d}", size, x, y);
 }

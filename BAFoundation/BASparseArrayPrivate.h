@@ -10,13 +10,13 @@
 #import <BAFoundation/BASparseArray.h>
 
 
-static inline uint32_t StorageIndexFor2DCoordinates( uint32_t x, uint32_t y, uint32_t base ) {
-    uint32_t leafIndex = LeafIndexFor2DCoordinates(x, y, base);
+static inline NSUInteger StorageIndexFor2DCoordinates( NSUInteger x, NSUInteger y, NSUInteger base ) {
+    NSUInteger leafIndex = LeafIndexFor2DCoordinates(x, y, base);
     return leafIndex * base * base + (y%base)*base + x%base;
 }
 
-static inline uint32_t StorageIndexFor3DCoordinates( uint32_t x, uint32_t y, uint32_t z, uint32_t base ) {
-    uint32_t leafIndex = LeafIndexFor3DCoordinates(x, y, z, base);
+static inline NSUInteger StorageIndexFor3DCoordinates( NSUInteger x, NSUInteger y, NSUInteger z, NSUInteger base ) {
+    NSUInteger leafIndex = LeafIndexFor3DCoordinates(x, y, z, base);
     return leafIndex * base*base*base + (z%base)*base*base + (y%base)*base + x%base;
 }
 

@@ -38,23 +38,23 @@
         STAssertEquals(a, e, @"power of 2 calculator broken");
     }
     
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 1), 0u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 2), 0u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 4), 0u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 8), 0u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 16), 0u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 32), 0u, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 1), (NSUInteger) 0, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 2), (NSUInteger) 0, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 4), (NSUInteger) 0, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 8), (NSUInteger) 0, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 16), (NSUInteger) 0, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 0, 32), (NSUInteger) 0, @"");
     
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 3, 1), 10u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(3, 0, 1),  5u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(3, 3, 1), 15u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(0, 4, 1), 32u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(4, 0, 1), 16u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(4, 4, 1), 48u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(7, 5, 1), 55u, @"");
-    STAssertEquals(LeafIndexFor2DCoordinates(5, 7, 1), 59u, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 3, 1), (NSUInteger) 10, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(3, 0, 1), (NSUInteger) 5, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(3, 3, 1), (NSUInteger) 15, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(0, 4, 1), (NSUInteger) 32, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(4, 0, 1), (NSUInteger) 16, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(4, 4, 1), (NSUInteger) 48, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(7, 5, 1), (NSUInteger) 55, @"");
+    STAssertEquals(LeafIndexFor2DCoordinates(5, 7, 1), (NSUInteger) 59, @"");
     
-    uint32_t x, y;
+    NSUInteger x, y;
     
     LeafCoordinatesForIndex2D(3, &x, &y);
     STAssertTrue(x == 1 && y == 1, @"Reverse coordinates failed; expected (3,0); actual: (%u,%u)", x, y);
@@ -85,14 +85,14 @@
 }
 
 - (void)testSpeed01 {
-    for(uint32_t i=0; i<512; ++i)
-        for(uint32_t j=0; j<512; ++j)
+    for(NSUInteger i=0; i<512; ++i)
+        for(NSUInteger j=0; j<512; ++j)
             LeafIndexFor2DCoordinates(j, i, 1);
 }
 
 - (void)testSpeed02 {
-    uint32_t x, y;
-    for(uint32_t i=0; i<262144; ++i)
+    NSUInteger x, y;
+    for(NSUInteger i=0; i<262144; ++i)
         LeafCoordinatesForIndex2D(i, &x, &y);
 }
 

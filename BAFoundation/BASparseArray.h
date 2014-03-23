@@ -11,9 +11,9 @@
 
 #define TABLE_SIZE 10
 
-extern uint32_t powersOf2[TABLE_SIZE];
-extern uint32_t powersOf4[TABLE_SIZE];
-extern uint32_t powersOf8[TABLE_SIZE];
+extern NSUInteger powersOf2[TABLE_SIZE];
+extern NSUInteger powersOf4[TABLE_SIZE];
+extern NSUInteger powersOf8[TABLE_SIZE];
 
 
 @class BASparseArray;
@@ -102,14 +102,22 @@ typedef BOOL (^SparseArrayWalk)(BASparseArray *sparseArray, NSIndexPath *indexPa
  */
 
 
-extern uint32_t LeafIndexFor2DCoordinates(uint32_t x, uint32_t y, uint32_t base);
-extern void LeafCoordinatesForIndex2D(uint32_t leafIndex, uint32_t *px, uint32_t *py);
+extern NSUInteger LeafIndexFor2DCoordinates(NSUInteger x, NSUInteger y, NSUInteger base);
+extern void LeafCoordinatesForIndex2D(NSUInteger leafIndex, NSUInteger *px, NSUInteger *py);
 
-extern uint32_t LeafIndexFor3DCoordinates(uint32_t x, uint32_t y, uint32_t z, uint32_t base);
-extern void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, uint32_t *pz);
+extern NSUInteger LeafIndexFor3DCoordinates(NSUInteger x, NSUInteger y, NSUInteger z, NSUInteger base);
+extern void LeafCoordinatesForIndex3D(NSUInteger leafIndex, NSUInteger *px, NSUInteger *py, NSUInteger *pz);
 
-extern uint32_t LeafIndexForCoordinates(uint32_t *coords, uint32_t base, uint32_t power);
-extern void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t power);
+extern NSUInteger LeafIndexForCoordinates(NSUInteger *coords, NSUInteger base, NSUInteger power);
+extern void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUInteger power);
+
+inline NSUInteger LeafCoordinatesFromAbsolute3D(NSUInteger base, NSUInteger *x, NSUInteger *y, NSUInteger *z) {
+    NSUInteger index = LeafIndexFor3DCoordinates(*x, *y, *z, base);
+    *x = *x%base;
+    *y = *y%base;
+    *z = *z%base;
+    return index;
+}
 
 @interface BASparseArray : NSObject<NSCoding> {
     

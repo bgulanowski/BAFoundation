@@ -12,9 +12,9 @@
 #import <BAFoundation/BAFunctions.h>
 
 
-uint32_t powersOf2[TABLE_SIZE];
-uint32_t powersOf4[TABLE_SIZE];
-uint32_t powersOf8[TABLE_SIZE];
+NSUInteger powersOf2[TABLE_SIZE];
+NSUInteger powersOf4[TABLE_SIZE];
+NSUInteger powersOf8[TABLE_SIZE];
 
 
 #pragma mark - Private Functions
@@ -30,12 +30,12 @@ uint32_t powersOf8[TABLE_SIZE];
  */
 
 // Don't call recursive functions directly from class code
-static uint32_t LeafIndex2DRecursive(uint32_t x, uint32_t y, uint32_t l) {
+static NSUInteger LeafIndex2DRecursive(NSUInteger x, NSUInteger y, NSUInteger l) {
     
     l /= 2;
     
-    uint32_t result = 0;
-    uint32_t childIndex = 0;
+    NSUInteger result = 0;
+    NSUInteger childIndex = 0;
     
     if(x >= l) {
         x -= l; // or x%=l
@@ -54,12 +54,12 @@ static uint32_t LeafIndex2DRecursive(uint32_t x, uint32_t y, uint32_t l) {
     return result;
 }
 
-static uint32_t LeafIndex3DRecursive(uint32_t x, uint32_t y, uint32_t z, uint32_t l) {
+static NSUInteger LeafIndex3DRecursive(NSUInteger x, NSUInteger y, NSUInteger z, NSUInteger l) {
     
     l /= 2;
     
-    uint32_t result = 0;
-    uint32_t childIndex = 0;
+    NSUInteger result = 0;
+    NSUInteger childIndex = 0;
     
     if(x >= l) {
         x -= l; // or x%=l
@@ -82,13 +82,13 @@ static uint32_t LeafIndex3DRecursive(uint32_t x, uint32_t y, uint32_t z, uint32_
     return result;
 }
 
-static uint32_t LeafIndexRecursive(uint32_t *coords, uint32_t count, uint32_t l) {
+static NSUInteger LeafIndexRecursive(NSUInteger *coords, NSUInteger count, NSUInteger l) {
     
     l /= 2;
     
-    uint32_t result = 0;
-    uint32_t childIndex = 0;
-    uint32_t offset = 1;
+    NSUInteger result = 0;
+    NSUInteger childIndex = 0;
+    NSUInteger offset = 1;
 
     for (NSUInteger i=0; i<count; ++i) {
         if(coords[i] >= l) {
@@ -99,7 +99,7 @@ static uint32_t LeafIndexRecursive(uint32_t *coords, uint32_t count, uint32_t l)
     }
     
     if(l > 1)
-        result = powi(l, count)*childIndex + LeafIndexRecursive(coords, count, l);
+        result = (NSUInteger)powi(l, count)*childIndex + LeafIndexRecursive(coords, count, l);
     else
         result = childIndex;
     
@@ -109,13 +109,13 @@ static uint32_t LeafIndexRecursive(uint32_t *coords, uint32_t count, uint32_t l)
 
 #pragma mark - Functions
 // This expects sample coordinates for x,y
-uint32_t LeafIndexFor2DCoordinates(uint32_t x, uint32_t y, uint32_t base) {
+NSUInteger LeafIndexFor2DCoordinates(NSUInteger x, NSUInteger y, NSUInteger base) {
     
     // convert sample coordinates to leaf coordinates
     x /= base;
     y /= base;
     
-    uint32_t max = MAX(x,y);
+    NSUInteger max = MAX(x,y);
     
     // provide a power of 2 that will fit the current value, so increment max so 1->2, 2->4, 4->8, etc
     return (max == 0) ? 0 : LeafIndex2DRecursive(x, y, NextPowerOf2(max+1));
@@ -123,13 +123,13 @@ uint32_t LeafIndexFor2DCoordinates(uint32_t x, uint32_t y, uint32_t base) {
 
 // This is the reverse operation of LeafIndexFor2DCoordinates();
 // it's not used, so it's mostly to confirm I understand what's going on - at least theoretically
-void LeafCoordinatesForIndex2D(uint32_t leafIndex, uint32_t *px, uint32_t *py) {
+void LeafCoordinatesForIndex2D(NSUInteger leafIndex, NSUInteger *px, NSUInteger *py) {
     
     if(leafIndex < 1) return;
     
-    uint32_t x = 0;
-    uint32_t y = 0;
-    uint32_t i = 1;
+    NSUInteger x = 0;
+    NSUInteger y = 0;
+    NSUInteger i = 1;
     
     while (powersOf4[i] <= leafIndex && i < TABLE_SIZE) ++i;
     
@@ -137,8 +137,8 @@ void LeafCoordinatesForIndex2D(uint32_t leafIndex, uint32_t *px, uint32_t *py) {
     
     while (i-- > 0) {
         
-        uint32_t c = powersOf4[i];
-        uint32_t offset = leafIndex / c;
+        NSUInteger c = powersOf4[i];
+        NSUInteger offset = leafIndex / c;
         
         if(offset & 0x02)
             y += powersOf2[i];
@@ -152,41 +152,33 @@ void LeafCoordinatesForIndex2D(uint32_t leafIndex, uint32_t *px, uint32_t *py) {
     *py = y;
 }
 
-uint32_t LeafIndexFor3DCoordinates(uint32_t x, uint32_t y, uint32_t z, uint32_t base) {
+NSUInteger LeafIndexFor3DCoordinates(NSUInteger x, NSUInteger y, NSUInteger z, NSUInteger base) {
     
     // convert sample coordinates to leaf coordinates
     x /= base;
     y /= base;
     z /= base;
     
-    uint32_t max = MAX(MAX(x,y), z);
+    NSUInteger max = MAX(MAX(x,y), z);
     
     // provide a power of 2 that will fit the current value, so increment max so 1->2, 2->4, 4->8, etc
     return (max == 0) ? 0 : LeafIndex3DRecursive(x, y, z, NextPowerOf2(max+1));
 }
 
-static inline uint32_t LeafCoordinatesFromAbsolute3D(uint32_t base, uint32_t *x, uint32_t *y, uint32_t *z) {
-    uint32_t index = LeafIndexFor3DCoordinates(*x, *y, *z, base);
-    *x = *x%base;
-    *y = *y%base;
-    *z = *z%base;
-    return index;
-}
-
 // As with the 2D equivalent, this is not used, just important to understand
-void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, uint32_t *pz) {
+void LeafCoordinatesForIndex3D(NSUInteger leafIndex, NSUInteger *px, NSUInteger *py, NSUInteger *pz) {
     
     if(leafIndex < 1) return;
     
-    uint32_t x = 0, y = 0, z = 0;
-    uint32_t i = 1;
+    NSUInteger x = 0, y = 0, z = 0;
+    NSUInteger i = 1;
     
     while (powersOf4[i] <= leafIndex) ++i;
     
     while (i-- > 0) {
         
-        uint32_t c = powersOf8[i];
-        uint32_t offset = leafIndex / c;
+        NSUInteger c = powersOf8[i];
+        NSUInteger offset = leafIndex / c;
         
         if(offset & 0x04)
             z += powersOf2[i];
@@ -203,7 +195,7 @@ void LeafCoordinatesForIndex3D(uint32_t leafIndex, uint32_t *px, uint32_t *py, u
     *pz = z;
 }
 
-uint32_t LeafIndexForCoordinates(uint32_t *coords, uint32_t base, uint32_t power) {
+NSUInteger LeafIndexForCoordinates(NSUInteger *coords, NSUInteger base, NSUInteger power) {
     
     if(power == 2)
         return LeafIndexFor2DCoordinates(coords[0], coords[1], base);
@@ -211,7 +203,7 @@ uint32_t LeafIndexForCoordinates(uint32_t *coords, uint32_t base, uint32_t power
     if(power == 3)
         return LeafIndexFor3DCoordinates(coords[0], coords[1], coords[2], base);
     
-    uint32_t max = 0;
+    NSUInteger max = 0;
     
     for(NSUInteger i=0; i<power; ++i) {
         max = MAX(max, coords[i]);
@@ -221,7 +213,7 @@ uint32_t LeafIndexForCoordinates(uint32_t *coords, uint32_t base, uint32_t power
     return max == 0 ? 0 : LeafIndexRecursive(coords, power, NextPowerOf2(max+1));
 }
 
-void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t power) {
+void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUInteger power) {
     // TODO:
 }
 
@@ -396,8 +388,8 @@ void LeafCoordinatesForIndex(uint32_t leafIndex, uint32_t *coords, uint32_t powe
 + (void)initialize {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        uint32_t power = 1, square;
-        for (uint32_t i=0; i<TABLE_SIZE; ++i) {
+        NSUInteger power = 1, square;
+        for (NSUInteger i=0; i<TABLE_SIZE; ++i) {
             square = power * power;
             powersOf2[i] = power;
             powersOf4[i] = square;

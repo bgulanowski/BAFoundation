@@ -356,11 +356,11 @@
 #pragma mark - 2D translation conveniences
 
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y {
-    return [self bit:StorageIndexFor2DCoordinates((uint32_t)x, (uint32_t)y, (uint32_t)_base)];
+    return [self bit:StorageIndexFor2DCoordinates(x, y, _base)];
 }
 
 - (void)updateBitAtX:(NSUInteger)x y:(NSUInteger)y set:(BOOL)set {
-    [self updateBit:StorageIndexFor2DCoordinates((uint32_t)x, (uint32_t)y, (uint32_t)_base) set:set];
+    [self updateBit:StorageIndexFor2DCoordinates(x, y, _base) set:set];
 }
 
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y {
@@ -374,11 +374,11 @@
 
 #pragma mark - 3D translation conveniences
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
-    return [self bit:StorageIndexFor3DCoordinates((uint32_t)x, (uint32_t)y, (uint32_t)z, (uint32_t)_base)];
+    return [self bit:StorageIndexFor3DCoordinates(x, y, z, _base)];
 }
 
 - (void)updateBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z set:(BOOL)set {
-    [self updateBit:StorageIndexFor3DCoordinates((uint32_t)x, (uint32_t)y, (uint32_t)z, (uint32_t)_base) set:set];
+    [self updateBit:StorageIndexFor3DCoordinates(x, y, z, _base) set:set];
 }
 
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z {
@@ -559,7 +559,7 @@
 
 - (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(CGRect)rect {
 
-    NSUInteger base = NextPowerOf2((uint32_t)(rect.size.height > rect.size.width ? rect.size.height : rect.size.width));
+    NSUInteger base = NextPowerOf2((NSUInteger)(rect.size.height > rect.size.width ? rect.size.height : rect.size.width));
 
 #if 0
     // be strict, no ambiguity
