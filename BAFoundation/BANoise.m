@@ -745,7 +745,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     return copy;
 }
 
-- (instancetype)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
     self = [super init];
     if(self) {
         _seed = seed;
@@ -757,7 +757,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     return self;
 }
 
-+ (instancetype)noiseWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
++ (instancetype)noiseWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
     return [[[[self class] alloc] initWithSeed:seed octaves:octaves persistence:persistence transform:transform] autorelease];
 }
 
@@ -778,7 +778,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 	[_mod release];
 }
 
-- (instancetype)initWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
 	self = [super initWithSeed:seed octaves:octaves persistence:persistence transform:transform];
 	if (self) {
 		self.mod = [_data noiseModulusData];
@@ -871,7 +871,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 
 - (id)initWithSeed:(unsigned)seed {
     int p[512];
-    for(NSUInteger i=0; i<256; i++) p[i]=i;
+    for(int i=0; i<256; i++) p[i]=i;
     BANoiseDataShuffle(p, seed);
     return [self initWithBytes:p length:512*sizeof(int)];
 }
@@ -885,7 +885,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 	return [NSData dataWithBytes:m length:512*sizeof(int)];
 }
 
-+ (NSData *)noiseDataWithSeed:(unsigned int)seed {
++ (NSData *)noiseDataWithSeed:(unsigned)seed {
 	if (seed == 0) {
 		return [self defaultNoiseData];
 	}
@@ -897,8 +897,8 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 }
 
 + (NSData *)randomNoiseData {
-    srandom(time(NULL));
-    return [[[self alloc] initWithSeed:random()] autorelease];
+    srandom((unsigned)time(NULL));
+    return [[[self alloc] initWithSeed:(unsigned)random()] autorelease];
 }
 
 @end

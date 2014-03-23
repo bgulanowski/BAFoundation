@@ -115,7 +115,7 @@
 }
 
 + (BANoiseMaker *)randomNoise {
-    srandom(time(NULL));
+    srandom((unsigned int)time(NULL));
     return [[[self alloc] initWithSeed:(unsigned)random()] autorelease];
 }
 

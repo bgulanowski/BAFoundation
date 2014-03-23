@@ -104,7 +104,7 @@ extern const int BADefaultPermutation[512];
 - (BOOL)isEqualToNoise:(BANoise *)other;
 // copies share underlying (immutable) noise data
 - (BANoise *)copyWithOctaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
-+ (BANoise *)noiseWithSeed:(unsigned long)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
++ (BANoise *)noiseWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
 
 @end
 
