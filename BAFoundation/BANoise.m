@@ -392,6 +392,7 @@ static inline BANoiseVector BANormalizeNoiseVector(BANoiseVector v) {
 	return r;
 }
 
+/*
 static inline void makeIdentityMatrix(double *m) {
     m[ 0] = 1.;
     m[ 1] = 0;
@@ -413,6 +414,7 @@ static inline void makeIdentityMatrix(double *m) {
     m[14] = 0;
     m[15] = 1.;
 }
+*/
 
 static inline void makeScaleMatrix(double m[16], BANoiseVector s) {
     m[ 0] = s.x;
