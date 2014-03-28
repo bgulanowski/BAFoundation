@@ -559,7 +559,7 @@
 
 - (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(CGRect)rect {
 
-    NSUInteger base = NextPowerOf2((NSUInteger)(rect.size.height > rect.size.width ? rect.size.height : rect.size.width));
+    NSUInteger base = NextPowerOf2((uint32_t)(rect.size.height > rect.size.width ? rect.size.height : rect.size.width));
 
 #if 0
     // be strict, no ambiguity

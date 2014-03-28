@@ -118,7 +118,7 @@ NSUInteger LeafIndexFor2DCoordinates(NSUInteger x, NSUInteger y, NSUInteger base
     NSUInteger max = MAX(x,y);
     
     // provide a power of 2 that will fit the current value, so increment max so 1->2, 2->4, 4->8, etc
-    return (max == 0) ? 0 : LeafIndex2DRecursive(x, y, NextPowerOf2(max+1));
+    return (max == 0) ? 0 : LeafIndex2DRecursive(x, y, NextPowerOf2((uint32_t)max+1));
 }
 
 // This is the reverse operation of LeafIndexFor2DCoordinates();
@@ -162,7 +162,7 @@ NSUInteger LeafIndexFor3DCoordinates(NSUInteger x, NSUInteger y, NSUInteger z, N
     NSUInteger max = MAX(MAX(x,y), z);
     
     // provide a power of 2 that will fit the current value, so increment max so 1->2, 2->4, 4->8, etc
-    return (max == 0) ? 0 : LeafIndex3DRecursive(x, y, z, NextPowerOf2(max+1));
+    return (max == 0) ? 0 : LeafIndex3DRecursive(x, y, z, NextPowerOf2((uint32_t)max+1));
 }
 
 // As with the 2D equivalent, this is not used, just important to understand
@@ -210,7 +210,7 @@ NSUInteger LeafIndexForCoordinates(NSUInteger *coords, NSUInteger base, NSUInteg
         coords[i]/=base;
     }
     
-    return max == 0 ? 0 : LeafIndexRecursive(coords, power, NextPowerOf2(max+1));
+    return max == 0 ? 0 : LeafIndexRecursive(coords, power, NextPowerOf2((uint32_t)max+1));
 }
 
 void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUInteger power) {
