@@ -82,7 +82,7 @@
     if(!editingContext) {
         @synchronized(self) {
             if(!editingContext)
-                editingContext = [self.context editingContext];
+                editingContext = [[self.context editingContext] retain];
         };
     }
     
