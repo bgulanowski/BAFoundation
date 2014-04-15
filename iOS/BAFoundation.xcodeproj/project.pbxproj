@@ -221,6 +221,7 @@
 				B6AAB6CB14C21B9A0007A0A4 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		B6AAB6CB14C21B9A0007A0A4 /* Products */ = {
 			isa = PBXGroup;
