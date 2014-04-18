@@ -33,6 +33,7 @@
 
 - (NSArray *)entityNames;
 - (NSEntityDescription *)entityForName:(NSString *)entityName;
+- (Class)classForEntityName:(NSString *)entityName;
 
 - (NSUInteger)countOfEntity:(NSString *)entityName withPredicate:(NSPredicate *)predicate;
 - (NSUInteger)countOfEntity:(NSString *)entityName withValue:(id)value forKey:(NSString *)key;

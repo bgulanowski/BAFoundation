@@ -123,7 +123,6 @@ Class numberClass;
     return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:key ascending:[self defaultSortAscending]]];
 }
 
-
 #pragma mark - Property Value Conversion
 - (id)valueForDataKey:(NSString *)aKey {
 	id dataObject = [self valueForKey:aKey];

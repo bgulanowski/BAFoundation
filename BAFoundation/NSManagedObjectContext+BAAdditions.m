@@ -131,6 +131,11 @@ static NSManagedObjectContext *activeContext;
     return result;
 }
 
+- (Class)classForEntityName:(NSString *)entityName {
+    NSEntityDescription *entity = [self entityForName:entityName];
+    return NSClassFromString([entity managedObjectClassName]);
+}
+
 - (NSUInteger)countOfEntity:(NSString *)entityName withValue:(id)value forKey:(NSString *)key {
     return [self countOfEntity:entityName withPredicate:[NSPredicate predicateWithFormat:@"%K = %@", key, value]];
 }
