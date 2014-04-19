@@ -24,12 +24,17 @@
 
 
 #pragma mark - NSObject
+
 - (void)dealloc {
     self.model = nil;
     self.context = nil;
     self.editingContext = nil;
     self.storeURL = nil;
     [super dealloc];
+}
+
+- (id)init {
+    return [self initWithStoreURL:nil];
 }
 
 - (NSURL *)modelURL {
@@ -307,9 +312,13 @@
 @implementation UIApplication (BAAdditions)
 
 - (BACoreDataManager *)modelManager {
-    if([[self delegate] conformsToProtocol:@protocol(BAApplicationDelegateAdditions)])
-        return [(id<BAApplicationDelegateAdditions>)[self delegate] modelManager];
-    return nil;
+    id<UIApplicationDelegate> delegate = [self delegate];
+    if([delegate conformsToProtocol:@protocol(BAApplicationDelegateAdditions)])
+        return [(id<BAApplicationDelegateAdditions>)delegate modelManager];
+    else if([delegate isKindOfClass:[BACoreDataManager class]])
+        return delegate;
+    else
+        return nil;
 }
 
 + (BACoreDataManager *)modelManager {
