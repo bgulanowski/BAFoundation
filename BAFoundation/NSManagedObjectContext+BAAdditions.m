@@ -45,7 +45,8 @@ static NSManagedObjectContext *activeContext;
             NSLog(@"Error creating directory: %@", error);
     }
 
-    NSPersistentStore *store = [coord addPersistentStoreWithType:storeType configuration:nil URL:url options:nil error:&error];
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES, NSInferMappingModelAutomaticallyOption: @YES };
+    NSPersistentStore *store = [coord addPersistentStoreWithType:storeType configuration:nil URL:url options:options error:&error];
 	
 	if(nil == store)
 		NSLog(@"Error creating persistent store at path '%@'. Error: '%@'.", url, error);
