@@ -117,7 +117,7 @@ Class numberClass;
     static NSMutableDictionary *sortKeyCache;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sortKeyCache = [NSMutableDictionary dictionary];
+        sortKeyCache = [[NSMutableDictionary alloc] init];
     });
     
     NSString *cacheKey = [self entityName];
