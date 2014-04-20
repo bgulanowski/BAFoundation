@@ -17,6 +17,8 @@
 
 #import <BAFoundation/BARelationshipProxy.h>
 
+#include <objc/runtime.h>
+
 
 NSString *kBAIntegerTransformerName = @"NuIntegerTransformer";
 //NSString *kBADecimalTransformerName = @"NuDecimalTransformer";
@@ -107,7 +109,53 @@ Class numberClass;
 
 #pragma mark - Sorting
 + (NSString *)defaultSortKey {
-    return nil;
+    
+    if (self == [NSManagedObject class]) {
+        return nil;
+    }
+
+    static NSMutableDictionary *sortKeyCache;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sortKeyCache = [NSMutableDictionary dictionary];
+    });
+    
+    NSString *cacheKey = [self entityName];
+    id sortKey = sortKeyCache[cacheKey];
+    
+    if (sortKey == [NSNull null]) {
+        return nil;
+    }
+    
+    unsigned int count;
+    Class class = self;
+    
+    while (self != [NSManagedObject class] && sortKey == nil) {
+        
+        objc_property_t *properties = class_copyPropertyList(class, &count);
+        
+        for (NSUInteger i=0; i<count; ++i) {
+            const char *propertyName = property_getName(properties[i]);
+            if(0 == strcmp("name", propertyName)) {
+                sortKey = @"name";
+                break;
+            }
+            if (0 == strcmp("title", propertyName)) {
+                sortKey = @"title";
+                break;
+            }
+        }
+        
+        if (properties) {
+            free(properties);
+        }
+        
+        class = [self superclass];
+    }
+    
+    sortKeyCache[NSStringFromClass(self)] = sortKey ?: [NSNull null];
+   
+    return sortKey;
 }
 
 + (BOOL)defaultSortAscending {
