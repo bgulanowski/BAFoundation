@@ -18,10 +18,10 @@
 #import <BAFoundation/BARelationshipProxy.h>
 
 
-NSString *kBAIntegerTransformerName = @"NuIntegerTransformer";
-//NSString *kBADecimalTransformerName = @"NuDecimalTransformer";
-NSString *kBAFloatTransformerName = @"NuFloatTransformer";
-NSString *kBADateTransformerName = @"NuDateTransformer";
+NSString *kBAIntegerTransformerName = @"BAIntegerTransformer";
+//NSString *kBADecimalTransformerName = @"BADecimalTransformer";
+NSString *kBAFloatTransformerName = @"BAFloatTransformer";
+NSString *kBADateTransformerName = @"BADateTransformer";
 
 
 static NSMutableDictionary *sortKeyCache;
