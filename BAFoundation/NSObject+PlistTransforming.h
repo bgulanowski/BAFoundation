@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface NSObject (PlistTransforming)
-
+- (id)propertyListRepresentation;
+- (BOOL)supportsPlistTransforming;
 @end

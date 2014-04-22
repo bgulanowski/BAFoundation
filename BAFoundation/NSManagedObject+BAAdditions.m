@@ -17,14 +17,16 @@
 
 #import <BAFoundation/BARelationshipProxy.h>
 
-#include <objc/runtime.h>
-
 
 NSString *kBAIntegerTransformerName = @"NuIntegerTransformer";
 //NSString *kBADecimalTransformerName = @"NuDecimalTransformer";
 NSString *kBAFloatTransformerName = @"NuFloatTransformer";
 NSString *kBADateTransformerName = @"NuDateTransformer";
 
+
+static NSMutableDictionary *sortKeyCache;
+
+NSSet *sortingKeys;
 
 @implementation NSManagedObject (BAAdditions)
 
@@ -43,6 +45,9 @@ Class numberClass;
     transformer = [[DateTransformer alloc] init];
     [NSValueTransformer setValueTransformer:transformer forName:kBADateTransformerName];
     [transformer release];
+    
+    sortKeyCache = [[NSMutableDictionary alloc] init];
+    sortingKeys = [[NSSet alloc] initWithArray:@[@"create", @"created", @"createdAt", @"creation", @"update", @"updated", @"updatedAt", @"revise", @"revised", @"revisedAt", @"revision", @"title", @"name"]];
 }
 
 
@@ -108,67 +113,13 @@ Class numberClass;
 
 
 #pragma mark - Sorting
-+ (NSString *)defaultSortKey {
-    
-    if (self == [NSManagedObject class]) {
-        return nil;
-    }
 
-    static NSMutableDictionary *sortKeyCache;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sortKeyCache = [[NSMutableDictionary alloc] init];
-    });
-    
-    NSString *cacheKey = [self entityName];
-    id sortKey = sortKeyCache[cacheKey];
-    
-    if (sortKey == [NSNull null]) {
-        return nil;
-    }
-    
-    unsigned int count;
-    Class class = self;
-    
-    while (self != [NSManagedObject class] && sortKey == nil) {
-        
-        objc_property_t *properties = class_copyPropertyList(class, &count);
-        
-        for (NSUInteger i=0; i<count; ++i) {
-            const char *propertyName = property_getName(properties[i]);
-            if(0 == strcmp("name", propertyName)) {
-                sortKey = @"name";
-                break;
-            }
-            if (0 == strcmp("title", propertyName)) {
-                sortKey = @"title";
-                break;
-            }
-        }
-        
-        if (properties) {
-            free(properties);
-        }
-        
-        class = [self superclass];
-    }
-    
-    sortKeyCache[NSStringFromClass(self)] = sortKey ?: [NSNull null];
-   
-    return sortKey;
++ (NSString *)defaultSortKey {
+    return nil;
 }
 
 + (BOOL)defaultSortAscending {
     return YES;
-}
-
-+ (NSArray *)defaultSortDescriptors {
-    
-    NSString *key = [self defaultSortKey];
-    
-    if(!key) return nil;
-    
-    return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:key ascending:[self defaultSortAscending]]];
 }
 
 #pragma mark - Property Value Conversion

@@ -36,7 +36,6 @@ extern NSString *kBADateTransformerName;
 
 + (NSString *)defaultSortKey;
 + (BOOL)defaultSortAscending;
-+ (NSArray *)defaultSortDescriptors;
 
 - (id)valueForDataKey:(NSString *)aKey;
 - (void)setValue:(id)anObj forDataKey:(NSString *)aKey;

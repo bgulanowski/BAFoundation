@@ -8,7 +8,7 @@
 
 #import <BAFoundation/NSManagedObjectContext+BAAdditions.h>
 #import <BAFoundation/NSManagedObject+BAAdditions.h>
-
+#import <BAFoundation/NSEntityDescription+BAAdditions.h>
 
 NSString *defaultStoreName = @"Data Store";
 
@@ -168,7 +168,7 @@ static NSManagedObjectContext *activeContext;
 	NSArray *result = nil;
 	NSFetchRequest *fetch = [[[NSFetchRequest alloc] init] autorelease];
     NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:self];
-    Class class = NSClassFromString([entity managedObjectClassName]);
+    
 	NSError *error = nil;
 	
 	if(nil != aPredicate)
@@ -178,7 +178,7 @@ static NSManagedObjectContext *activeContext;
         [fetch setFetchLimit:limit];
 
 	[fetch setEntity:entity];
-    [fetch setSortDescriptors:[class defaultSortDescriptors]];
+    [fetch setSortDescriptors:[entity defaultSortDescriptors]];
 
 	result = [self executeFetchRequest:fetch error:&error];
 	if(nil != error) {
