@@ -144,15 +144,15 @@
             NSLog(@"Could not save context: %@", error);
         if(!editCount)
             [editingContext reset];
+        
+#ifdef DEBUG
+        NSLog(@"%@ saved", self);
+#endif
 	}
 	@catch (NSException * e) {
 		NSLog(@"Exception saving core data database: '%@'.", e);
 		[self setStoreUnreadable:YES];
 	}
-    
-#ifdef DEBUG
-    NSLog(@"%@ saved", self);
-#endif
     
 	return success;
 }
