@@ -49,7 +49,7 @@ extern NSSet *sortingKeys;
     if (!sortKey) {
         NSMutableSet *attributeNames = [NSMutableSet setWithArray:[[self attributesByName] allKeys]];
         [attributeNames intersectSet:sortingKeys];
-        sortKey = [attributeNames anyObject] ?: [NSNull null];
+        sortKey = [attributeNames anyObject];
     }
     
     if (!sortKey) {
