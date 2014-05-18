@@ -681,7 +681,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     return copy;
 }
 
-#pragma mark - BANoise protocol
+#pragma mark - BANoise
 
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z {
     if(_transform) {
@@ -712,9 +712,6 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
         }
     }
 }
-
-
-#pragma mark - BANoise
 
 - (BANoiseEvaluator)evaluator {
 	int *bytes = (int *)[_data bytes];
@@ -808,7 +805,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 	}
 	else {
 		return [^(double x, double y, double z) {
-			return BASimplexNoise3DEvaluate(bytes, modulus, x, y, z);
+			return BASimplexNoise3DBlend(bytes, modulus, x, y, z, _octaves, _persistence);
 		} copy];
 	}
 }
