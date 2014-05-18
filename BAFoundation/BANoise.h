@@ -18,7 +18,9 @@ typedef struct {
 } BANoiseVector;
 
 
-extern inline BANoiseVector BANoiseVectorMake(double x, double y, double z);
+static inline BANoiseVector BANoiseVectorMake(double x, double y, double z) {
+    return (BANoiseVector){ x, y, z };
+}
 
 
 typedef struct {
@@ -26,12 +28,14 @@ typedef struct {
     BANoiseVector size;
 } BANoiseRegion;
 
+static inline BANoiseRegion BANoiseRegionMake(BANoiseVector o, BANoiseVector s) {
+	return (BANoiseRegion){o,s};
+}
 
-extern inline BANoiseRegion BANoiseRangeMake(BANoiseVector o, BANoiseVector s);
 
 typedef BANoiseVector (^BAVectorTransformer)(BANoiseVector vector);
 typedef double (^BANoiseEvaluator)(double x, double y, double z);
-typedef BOOL (^BANoiseIteratorBlock)(BANoiseVector position, double value);
+typedef BOOL (^BANoiseIteratorBlock)(double x, double y, double z, double value);
 
 
 @interface BANoiseTransform : NSObject {
@@ -72,7 +76,7 @@ typedef BOOL (^BANoiseIteratorBlock)(BANoiseVector position, double value);
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z;
 @optional
 - (BANoiseEvaluator)evaluator;
-- (void)iterateRange:(BANoiseRegion)range block:(BANoiseIteratorBlock)block;
+- (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block;
 
 @end
 

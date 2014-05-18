@@ -373,10 +373,6 @@ static inline void BANoiseDataShuffle(int p[512], unsigned seed) {
 }
 
 
-inline BANoiseVector BANoiseVectorMake(double x, double y, double z) {
-    return (BANoiseVector){ x, y, z };
-}
-
 static inline double BANoiseVectorLength(BANoiseVector v) {
     return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
 }
@@ -693,20 +689,18 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
         return BANoiseBlend((int *)[_data bytes], x, y, z, _octaves, _persistence);
 }
 
-- (void)iterateRange:(BANoiseRegion)range block:(BANoiseIteratorBlock)block {
+- (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block {
     
-    double maxX = range.origin.x + range.size.x;
-    double maxY = range.origin.y + range.size.y;
-    double maxZ = range.origin.z + range.size.z;
+    double maxX = region.origin.x + region.size.x;
+    double maxY = region.origin.y + region.size.y;
+    double maxZ = region.origin.z + region.size.z;
     
-    int *p = (int *)[_data bytes];
-    double *m = [_transform matrix];
+    BANoiseEvaluator evaluator = self.evaluator;
     
-    for (double z = range.origin.z; z < maxZ; ++z) {
-        for (double y = range.origin.y; y < maxY; ++y) {
-            for (double x = range.origin.z; x < maxX; ++x) {
-                BANoiseVector v = transformVector(BANoiseVectorMake(x, y, z), m);
-                if(block(v, BANoiseBlend(p, v.x, v.y, v.z, _octaves, _persistence)))
+    for (double z = region.origin.z; z < maxZ; ++z) {
+        for (double y = region.origin.y; y < maxY; ++y) {
+            for (double x = region.origin.z; x < maxX; ++x) {
+                if(block(x, y, z, evaluator(x, y, z)))
                     return;
             }
         }
