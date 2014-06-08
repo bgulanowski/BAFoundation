@@ -206,9 +206,9 @@ double BASimplexNoise3DEvaluate(const int *p, const int *pmod, double xin, doubl
 	// Skew the input space to determine which simplex cell we're in
 	// Very nice and simple skew factor for 3D
 	double s = (xin+yin+zin)*F3;
-	int i = floor(xin+s);
-	int j = floor(yin+s);
-	int k = floor(zin+s);
+	double i = floor(xin+s);
+	double j = floor(yin+s);
+	double k = floor(zin+s);
 	
 	double t = (i+j+k)*G3;
 	// Unskew the cell origin back to (x,y,z) space
@@ -269,9 +269,9 @@ double BASimplexNoise3DEvaluate(const int *p, const int *pmod, double xin, doubl
 	double z3 = z0 - 1.0 + 3.0*G3;
 	
 	// Work out the hashed gradient indices of the four simplex corners
-	int ii = i & 255;
-	int jj = j & 255;
-	int kk = k & 255;
+	int ii = (int)i & 255;
+	int jj = (int)j & 255;
+	int kk = (int)k & 255;
 	
 	int gi0 = pmod[ii+p[jj+p[kk]]];
 	int gi1 = pmod[ii+i1+p[jj+j1+p[kk+k1]]];
