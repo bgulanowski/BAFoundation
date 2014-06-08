@@ -76,6 +76,8 @@
 		84BBE64516E932F000AF371A /* BASparseSampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64316E932F000AF371A /* BASparseSampleArray.m */; };
 		84BBE64816E934C500AF371A /* BASparseArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 84BBE64616E934C500AF371A /* BASparseArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84BBE64916E934C500AF371A /* BASparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64716E934C500AF371A /* BASparseArray.m */; };
+		84C1E65C1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 84C1E65A1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84C1E65D1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */; };
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
 		84F9A3F21851A28B004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
@@ -170,6 +172,8 @@
 		84BBE64616E934C500AF371A /* BASparseArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseArray.h; sourceTree = "<group>"; };
 		84BBE64716E934C500AF371A /* BASparseArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84BBE64A16E938FB00AF371A /* BASparseArrayPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BASparseArrayPrivate.h; sourceTree = "<group>"; };
+		84C1E65A1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription+BAAdditions.h"; sourceTree = "<group>"; };
+		84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+BAAdditions.m"; sourceTree = "<group>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BARelationshipProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
@@ -334,6 +338,8 @@
 			children = (
 				84BBE63A16E8E35800AF371A /* NSData+GZip.h */,
 				84BBE63B16E8E35800AF371A /* NSData+GZip.m */,
+				84C1E65A1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h */,
+				84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */,
 				842C151315FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h */,
 				842C151415FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m */,
 				842C151515FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h */,
@@ -439,6 +445,7 @@
 				4EF2B51C104D60C9000C8EE2 /* BAGraphNode.h in Headers */,
 				842C154B15FDA19C00D5AE05 /* BAUUID.h in Headers */,
 				4E870CF212F1090100017473 /* BABitArray.h in Headers */,
+				84C1E65C1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h in Headers */,
 				B6F030FF14300C9C0087940B /* BANoiseMaker.h in Headers */,
 				841944EE1637322B0036C725 /* BASampleArray.h in Headers */,
 				84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */,
@@ -653,6 +660,7 @@
 				842C151C15FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.m in Sources */,
 				842C151E15FD9BAC00D5AE05 /* NSObject+PlistTransforming.m in Sources */,
 				842C152815FD9BC900D5AE05 /* BACoreDataManager.m in Sources */,
+				84C1E65D1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m in Sources */,
 				842C152C15FD9BC900D5AE05 /* FloatNumberTransformer.m in Sources */,
 				842C152E15FD9BC900D5AE05 /* IntegerNumberTransformer.m in Sources */,
 				842C154C15FDA19C00D5AE05 /* BAUUID.m in Sources */,
