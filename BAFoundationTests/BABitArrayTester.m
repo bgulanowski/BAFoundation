@@ -249,8 +249,8 @@
     BABitArray *t1 = [[[BABitArray alloc] initWithData:a length:8] autorelease];
     BABitArray *t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(4, 8)] autorelease];
     
-    STAssertTrue([a isEqualToData:e], @"-dataForRange: failed.");
-    STAssertTrue([t1 isEqualToBitArray:t2], @"-initWithData:length: failed.");
+    STAssertEqualObjects(e, a, @"-dataForRange: failed.");
+	STAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
     
     c[0] = 0x03;
     c[1] = 0x54;
@@ -266,8 +266,8 @@
     t1 = [[[BABitArray alloc] initWithData:a length:15] autorelease];
     t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(10, 15)] autorelease];
 
-    STAssertTrue([a isEqualToData:e], @"-dataForRange: failed.");
-    STAssertTrue([t2 isEqualToBitArray:t1], @"-initWithData:length: failed. Expected: %@; actual: %@", t1, t2);
+    STAssertEqualObjects(e, a, @"-dataForRange: failed.");
+	STAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
 }
 
 - (void)test32SubArray {
