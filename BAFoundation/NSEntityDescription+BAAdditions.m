@@ -73,7 +73,7 @@ extern NSSet *sortingKeys;
 - (NSFetchRequest *)defaultFetchRequest {
     NSFetchRequest *fetch = [[NSFetchRequest alloc] initWithEntityName:[self name]];
     fetch.sortDescriptors = [self defaultSortDescriptors];
-    return fetch;
+    return [fetch autorelease];
 }
 
 @end
