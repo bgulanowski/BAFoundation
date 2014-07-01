@@ -130,6 +130,10 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 			[super description], (unsigned long)length, (unsigned long)count, state];
 }
 
+- (BOOL)isEqual:(id)object {
+	return [object isKindOfClass:[self class]] && [self isEqualToBitArray:object];
+}
+
 
 #pragma mark - NSCopying
 - (id)copyWithZone:(NSZone *)zone {
