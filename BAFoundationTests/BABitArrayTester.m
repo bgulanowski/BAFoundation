@@ -235,38 +235,75 @@
 }
 
 - (void)test31DataForRange {
-    
-    BABitArray *ba1 = [BABitArray bitArray64];
-    unsigned char c[2] = { 0xC1, 0x0 };
-    NSData *e = [NSData dataWithBytes:c length:1];
-    
-    [ba1 setBit:4];
-    [ba1 setBit:10];
-    [ba1 setBit:11];
-    
-    NSData *a = [ba1 dataForRange:NSMakeRange(4, 8)];
+		
+    BABitArray *ba = [BABitArray bitArray64];
+	
+	// 00001000 01100000
+    [ba setBit:4];
+    [ba setBit:10];
+    [ba setBit:11];
+	
+#if SEQUENTIAL_BIT_ORDER
+    unsigned char c[2] = { 0b00001000, 0b00110000 };
+	STAssertEquals(c[0], (unsigned char)0x08, @"Bit order mismatch");
+	STAssertEquals(c[1], (unsigned char)0x30, @"Bit order mismatch");
+#else
+    unsigned char c[2] = { 0b00010000, 0b00001100 };
+#endif
+
+	NSData *e = [NSData dataWithBytes:c length:2];
+    NSData *a = [ba dataForRange:NSMakeRange(0, 16)];
+	
+	STAssertEqualObjects(a, e, @"-dataForRange: failed.");
+
+#if SEQUENTIAL_BIT_ORDER
+    c[0] = 0b10000011;
+    c[1] = 0b00000000;
+	STAssertEquals(c[0], (unsigned char)0x83, @"Bit order mismatch");
+	STAssertEquals(c[1], (unsigned char)0x0, @"Bit order mismatch");
+#else
+    c[0] = 0b11000001;
+    c[1] = 0b00000000;
+#endif
+
+	e = [NSData dataWithBytes:c length:1];
+	// ----1000 0110----
+	// aka 10000110
+	a = [ba dataForRange:NSMakeRange(4, 8)];
     
     BABitArray *t1 = [[[BABitArray alloc] initWithData:a length:8] autorelease];
-    BABitArray *t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(4, 8)] autorelease];
+    BABitArray *t2 = [[[BABitArray alloc] initWithBitArray:ba range:NSMakeRange(4, 8)] autorelease];
     
-    STAssertEqualObjects(e, a, @"-dataForRange: failed.");
+    STAssertEqualObjects(a, e, @"-dataForRange: failed.");
 	STAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
-    
-    c[0] = 0x03;
-    c[1] = 0x54;
-    
-    [ba1 setBit:20];
-    [ba1 setBit:22];
-    [ba1 setBit:24];
-    [ba1 setBit:25];
+	
+	// 00010000 01100000 00010101 10000000
+    [ba setBit:20];
+    [ba setBit:22];
+    [ba setBit:24];
+    [ba setBit:25];
+
+#if SEQUENTIAL_BIT_ORDER
+    c[0] = 0b11000000;
+    c[1] = 0b00101010;
+	STAssertEquals(c[0], (unsigned char)0xC0, @"Bit order mismatch");
+	STAssertEquals(c[1], (unsigned char)0x2A, @"Bit order mismatch");
+#else
+    c[0] = 0b00000011;
+    c[1] = 0b01010100;
+	STAssertEquals(c[0], (unsigned char)0x03, @"Bit order mismatch");
+	STAssertEquals(c[1], (unsigned char)0x54, @"Bit order mismatch");
+#endif
     
     e = [NSData dataWithBytes:c length:2];
-    a = [ba1 dataForRange:NSMakeRange(10, 15)];
+	// -------- -1100000 00010101 -0000000
+	// aka      11000000 00101010
+    a = [ba dataForRange:NSMakeRange(10, 15)];
 
     t1 = [[[BABitArray alloc] initWithData:a length:15] autorelease];
-    t2 = [[[BABitArray alloc] initWithBitArray:ba1 range:NSMakeRange(10, 15)] autorelease];
+    t2 = [[[BABitArray alloc] initWithBitArray:ba range:NSMakeRange(10, 15)] autorelease];
 
-    STAssertEqualObjects(e, a, @"-dataForRange: failed.");
+    STAssertEqualObjects(a, e, @"-dataForRange: failed.");
 	STAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
 }
 

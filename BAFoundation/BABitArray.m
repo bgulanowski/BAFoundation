@@ -40,13 +40,18 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 
 NSUInteger bitsInChar = NSNotFound;
+NSUInteger maxBitOffset;
 
 
 static inline BOOL setBit(unsigned char *buffer, NSUInteger index) {
     
 	NSUInteger byte = index/bitsInChar;
 	NSUInteger bit = index%bitsInChar;
+#if SEQUENTIAL_BIT_ORDER
+	unsigned char mask = (1 << (maxBitOffset - bit));
+#else
 	unsigned char mask = (1 << bit);
+#endif
 	
     BOOL wasSet = buffer[byte] & mask;
     
@@ -56,11 +61,60 @@ static inline BOOL setBit(unsigned char *buffer, NSUInteger index) {
     return !wasSet;
 }
 
+static inline NSUInteger findNextSetBitInByte(unsigned char byte, NSUInteger start) {
+	assert(start < bitsInChar);
+	NSUInteger b = start;
+	
+#if SEQUENTIAL_BIT_ORDER
+	while(b<bitsInChar && !(byte>>(maxBitOffset-b)&1)) b++;
+#else
+	while(b<bitsInChar && !(byte>>b&1)) b++;
+#endif
+	return b >= bitsInChar ? NSNotFound : b;
+}
+
+static inline NSUInteger findPrevSetBitInByte(unsigned char byte, NSUInteger start) {
+	assert(start < bitsInChar);
+	NSUInteger b = start;
+#if SEQUENTIAL_BIT_ORDER
+	while(b>0 && !(byte>>(maxBitOffset - b)&1)) b--;
+#else
+	while(b>0 && !(byte>>b&1)) b--;
+#endif
+	return b >= bitsInChar ? NSNotFound : b;
+}
+
+static inline NSUInteger findNextClearBitInByte(unsigned char byte, NSUInteger start) {
+	assert(start < bitsInChar);
+	NSUInteger b = start;
+#if SEQUENTIAL_BIT_ORDER
+    while(b<bitsInChar && !(~byte>>(maxBitOffset-b)&1)) b++;
+#else
+    while(b<bitsInChar && !(~byte>>b&1)) b++;
+#endif
+	return b >= bitsInChar ? NSNotFound : b;
+}
+
+static inline NSUInteger findPrevClearBitInByte(unsigned char byte, NSUInteger start) {
+	assert(start < bitsInChar);
+	NSUInteger b = start;
+#if SEQUENTIAL_BIT_ORDER
+    while(b>0 && !(~byte>>(maxBitOffset-b)&1)) b--;
+#else
+	while(b>0 && !(~byte>>b&1)) b--;
+#endif
+	return b >= bitsInChar ? NSNotFound : b;
+}
+
 static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     
 	NSUInteger byte = index/bitsInChar;
 	NSUInteger bit = index%bitsInChar;
+#if SEQUENTIAL_BIT_ORDER
+	unsigned char mask = (1 << (maxBitOffset - bit));
+#else
 	unsigned char mask = (1 << bit);
+#endif
 	
     BOOL wasSet = buffer[byte] & mask;
     
@@ -71,7 +125,11 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 }
 
 // These macros are intended only for use within this file, as they refer to ivars directly
+#if SEQUENTIAL_BIT_ORDER
+#define GET_BIT(_index_) ((buffer[((_index_)/bitsInChar)] & (1 << (maxBitOffset - ((_index_)%bitsInChar)))) != 0)
+#else
 #define GET_BIT(_index_) ((buffer[((_index_)/bitsInChar)] & (1 << ((_index_)%bitsInChar))) != 0)
+#endif
 #define SET_BIT(_index_) do { if(setBit(buffer, _index_)) ++count; }while(0)
 #define CLR_BIT(_index_) do { if(clrBit(buffer, _index_)) --count; }while(0)
 
@@ -88,6 +146,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 + (void)initialize {
 	if(NSNotFound == bitsInChar) {
 		bitsInChar = sizeof(char)*8;
+		maxBitOffset = bitsInChar - 1;
 //		NSLog(@"bits in char: %u", bitsInChar);
 	}
 }
@@ -275,20 +334,12 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 
 - (NSUInteger)first:(unsigned char *)p {
     
-	unsigned char t=1;
-	NSUInteger b=0;
-	
 	while(!*p && p<buffer+bufferLength-1) p++;
     
     if(p-buffer>=bufferLength)
         return NSNotFound;
-    
-	while(b<bitsInChar && !(*p>>b&t)) b++;
-    
-    if(b>=bitsInChar)
-        return NSNotFound;
-	
-	return (p-buffer)*bitsInChar+b;
+
+	return (p-buffer)*bitsInChar + findNextSetBitInByte(*p, 0);
 }
 
 - (NSUInteger)firstSetBit {
@@ -307,19 +358,13 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
         return length-1;
 
 	unsigned char *p = buffer+bufferLength-1;
-	unsigned char b=(bitsInChar-1), t=1;
 
 	while(!*p && p>=buffer) p--;
     
     if(p < buffer)
         return NSNotFound;
 
-	while(b>0 && !(*p>>b&t)) b--;
-    
-    if(b>=bitsInChar)
-        return NSNotFound;
-
-	return (p-buffer)*bitsInChar+b;
+	return (p-buffer)*bitsInChar + findPrevSetBitInByte(*p, maxBitOffset);
 }
 
 - (NSUInteger)indexOfNthSetBit:(NSUInteger)n {
@@ -384,20 +429,28 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
         uint16_t c16;
     } pair;
     
-	NSUInteger first = bitRange.location/bitsInChar;
-	NSUInteger start = bitRange.location%bitsInChar;
-	NSUInteger last  = (bitRange.location+bitRange.length-1)/bitsInChar;
-	NSUInteger end   = (bitRange.length)%bitsInChar;
+	NSUInteger firstByte = bitRange.location/bitsInChar;
+	NSUInteger lastByte = (bitRange.location+bitRange.length-1)/bitsInChar;
+	NSUInteger firstBit = bitRange.location%bitsInChar;
     
-    for (NSUInteger i=first; i<last; ++i) {
+    for (NSUInteger i=firstByte; i<lastByte; ++i) {
+#if SEQUENTIAL_BIT_ORDER
+        pair.c8[0] = buffer[i+1];
+        pair.c8[1] = buffer[i];
+        pair.c16 <<= firstBit;
+        subBuffer[i-firstByte] = pair.c8[1];
+#else
         pair.c8[0] = buffer[i];
         pair.c8[1] = buffer[i+1];
-        pair.c16 >>= start;
-        subBuffer[i-first] = pair.c8[0];
+        pair.c16 >>= firstBit;
+        subBuffer[i-firstByte] = pair.c8[0];
+#endif
     }
     
+	NSUInteger lastBit = bitRange.length%bitsInChar;
+	
     if(bytesLength*bitsInChar > bitRange.length)
-        clearBits(subBuffer+bytesLength-1, end, bitsInChar-1);
+        clearBits(subBuffer+bytesLength-1, lastBit, bitsInChar-1);
     
     return [NSData dataWithBytesNoCopy:subBuffer length:bytesLength freeWhenDone:YES];
 }
@@ -410,19 +463,12 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
         return NSNotFound;
 	
 	unsigned char *p = buffer;
-	unsigned char b=0, t=1;
-
 	while(!(unsigned char)~*p && p<buffer+bufferLength-1) p++;
 
     if(p-buffer>=bufferLength)
         return NSNotFound;
     
-    while(b<bitsInChar && !(~*p>>b&t)) b++;
-
-    if(b>=bitsInChar)
-        return NSNotFound;
-    
-	return (p-buffer)*bitsInChar+b;
+	return (p-buffer)*bitsInChar + findNextClearBitInByte(*p, 0);
 }
 
 - (NSUInteger)lastClearBit {
@@ -433,19 +479,12 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
         return NSNotFound;
 	
 	unsigned char *p = buffer+bufferLength-1;
-	unsigned char b=(bitsInChar-1), t=1;
-	
     while(!(unsigned char)~*p && p-->=buffer);
     
     if(p < buffer)
         return NSNotFound;
     
-	while(b>0 && !(~*p>>b&t)) b--;
-    
-    if(b>=bitsInChar)
-        return NSNotFound;
-
-	return (p-buffer)*bitsInChar+b;
+	return (p-buffer)*bitsInChar + findPrevClearBitInByte(*p, maxBitOffset);
 }
 
 - (NSUInteger)indexOfNthClearBit:(NSUInteger)n {
@@ -484,11 +523,11 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 - (NSUInteger)nextAfter:(NSUInteger)prev {
     
 	unsigned char *p = buffer + prev/bitsInChar;
-    unsigned char t=1;
-	NSUInteger b=prev%bitsInChar+1;
+	NSUInteger b = prev%bitsInChar+1;
 	
-    while(b<bitsInChar && !(*p>>b&t)) b++;
-
+	if(b < bitsInChar)
+		b = findNextSetBitInByte(*p, b);
+	
     if(b < bitsInChar)
         return (p-buffer)*bitsInChar+b;
     
@@ -612,13 +651,23 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 
 
 inline static void setBits(unsigned char *byte, NSUInteger start, NSUInteger end) {
-	for(NSUInteger i=start; i<=end; ++i)
+	for(NSUInteger i=start; i<=end; ++i) {
+#if SEQUENTIAL_BIT_ORDER
+        *byte |= (1 << (maxBitOffset - i));
+#else
         *byte |= (1 << i);
+#endif
+	}
 }
 
 inline static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end) {
-	for(NSUInteger i=start; i<=end; ++i)
+	for(NSUInteger i=start; i<=end; ++i) {
+#if SEQUENTIAL_BIT_ORDER
+        *byte &= ~(1 << (maxBitOffset - i));
+#else
         *byte &= ~(1 << i);
+#endif
+	}
 }
 
 // Algorithm found on the web
@@ -733,14 +782,19 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         
         for (NSUInteger j=frstBit; j<=lastBit; ++j) {
             assert(k<range.length);
+#if SEQUENTIAL_BIT_ORDER
+			char mask = 1 << (maxBitOffset - j);
+#else
+			char mask = 1 << j;
+#endif
             if(write) {
                 if(bits[k])
-                    c |= 1<<j;
+                    c |= mask;
                 else
-                    c &= ~(1<<j);
+                    c &= ~mask;
             }
             else {
-                bits[k] = ((c & 1<<j) != 0);
+                bits[k] = ((c & mask) != 0);
             }
             k+=inc;
         }

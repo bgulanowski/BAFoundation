@@ -9,6 +9,8 @@
 #import <BAFoundation/BASampleArray.h>
 
 
+#define SEQUENTIAL_BIT_ORDER 1
+
 typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
