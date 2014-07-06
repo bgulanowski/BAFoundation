@@ -553,6 +553,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	if(self) {
 		length = bits; // never changes
         size = [vector copy]; // never changes
+		size2d = size.size2d;
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
 		self.count = 0;
 		if(length > 0) {
@@ -827,17 +828,17 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    return GET_BIT(x + y*(NSUInteger)size.size2d.width);
+    return GET_BIT(x + y*(NSUInteger)size2d.width);
 }
 
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    SET_BIT(x + y*(NSUInteger)size.size2d.width);
+    SET_BIT(x + y*(NSUInteger)size2d.width);
 }
 
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    SET_BIT(x + y*(NSUInteger)size.size2d.width);
+    SET_BIT(x + y*(NSUInteger)size2d.width);
 }
 
 
@@ -863,23 +864,21 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 }
 
 
-#define BIT_ARRAY_RECT_ASSERT() NSAssert(CGRectGetMinX(rect) >= 0 && CGRectGetMinY(rect) >= 0 && CGRectGetMaxX(rect) <= targetSize.width && CGRectGetMaxY(rect) <= targetSize.height, @"error")
+#define BIT_ARRAY_RECT_ASSERT() NSAssert(CGRectGetMinX(rect) >= 0 && CGRectGetMinY(rect) >= 0 && CGRectGetMaxX(rect) <= size2d.width && CGRectGetMaxY(rect) <= size2d.height, @"error")
 
 - (void)updateRect:(CGRect)rect set:(BOOL)set {
-    
-    CGSize targetSize = self.size.size2d;
     
     BIT_ARRAY_SIZE_ASSERT();
     BIT_ARRAY_RECT_ASSERT();
     
-    NSRange range = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
+    NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
     NSInteger delta = 0;
     
     NSAssert([self checkCount], @"count incorrect");
     
     for (NSUInteger i=0; i<rect.size.height; ++i) {
         delta += setRange(buffer, range, set);
-        range.location += targetSize.width;
+        range.location += size2d.width;
     }
     
     count += delta;
@@ -898,13 +897,12 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 - (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin {
     
     CGSize sourceSize = bitArray.size.size2d;
-    CGSize targetSize = self.size.size2d;
     
     BIT_ARRAY_SIZE_ASSERT();
     BIT_ARRAY_RECT_ASSERT();
 
     NSRange sourceRange = NSMakeRange(origin.x+sourceSize.width*origin.y, rect.size.width);
-    NSRange destRange = NSMakeRange(rect.origin.x+targetSize.width*rect.origin.y, rect.size.width);
+    NSRange destRange = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
     
     // TODO: Replace with more effective implementation
     BOOL *bits = malloc(rect.size.width*sizeof(BOOL));
@@ -913,7 +911,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         [bitArray readBits:bits range:sourceRange];
         sourceRange.location += sourceSize.width;
         [self writeBits:bits range:destRange];
-        destRange.location += targetSize.width;
+        destRange.location += size2d.width;
     }
     
     free(bits);
@@ -951,9 +949,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 - (NSArray *)rowStringsForRect:(CGRect)rect {
     
     NSMutableArray *rows = [NSMutableArray array];
-    
-    CGSize size2d = [[self size] size2d];
-    
+	
     if(CGRectEqualToRect(rect, CGRectZero))
         rect.size = size2d;
     
@@ -987,7 +983,6 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     
     BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
     
-    CGSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     
@@ -1007,7 +1002,6 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         return [[self copy] autorelease];
     
     BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
-    CGSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     
@@ -1042,7 +1036,6 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         quarters += 4;
     
     BABitArray *copy = nil;
-    CGSize size2d = self.size.size2d;
     NSUInteger width = size2d.width;
     NSUInteger height = size2d.height;
     

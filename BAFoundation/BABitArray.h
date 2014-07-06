@@ -80,6 +80,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @interface BABitArray : NSObject<NSCopying, NSCoding, BABitArray> {
     
     BASampleArray *size;
+	CGSize size2d;
     
 	unsigned char *buffer;
 	NSUInteger bufferLength; // in bytes, rounded up
