@@ -233,6 +233,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     if(self) {
         enableArchiveCompression = [aDecoder decodeBoolForKey:@"compressed"];
         size = [[aDecoder decodeObjectForKey:@"size"] retain];
+		size2d = size.size2d;
         
         NSUInteger storedCount = [aDecoder decodeIntegerForKey:@"count"];
         
