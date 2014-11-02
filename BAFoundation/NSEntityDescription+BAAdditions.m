@@ -19,7 +19,7 @@ static NSMutableDictionary *sortKeyCache;
 extern NSSet *sortingKeys;
 
 @interface NSManagedObject (BAAdditionsForEntity)
-+ (NSString *)guessedDefaultSortDescriptor;
++ (NSString *)guessedDefaultSortKey;
 @end
 
 @implementation NSEntityDescription (BAAdditions)
@@ -28,46 +28,46 @@ extern NSSet *sortingKeys;
     sortKeyCache = [[NSMutableDictionary alloc] init];
 }
 
-- (NSString *)defaultSortKey {
+- (id)findDefaultSortKey {
     
-    NSString *cacheKey = [self name];
-    id sortKey = sortKeyCache[cacheKey];
-    
-    if (sortKey == [NSNull null]) {
-        return nil;
-    }
+    id sortKey = [[self userInfo] objectForKey:@"sortKey"];
     
     if (!sortKey) {
-        sortKey = [[self userInfo] objectForKey:@"sortKey"];
+        sortKey = [NSClassFromString([self managedObjectClassName]) defaultSortKey];
     }
-    
-    if (!sortKey) {
-        Class class = NSClassFromString([self managedObjectClassName]);
-        sortKey = [class defaultSortKey];
-    }
-    
     if (!sortKey) {
         NSMutableSet *attributeNames = [NSMutableSet setWithArray:[[self attributesByName] allKeys]];
         [attributeNames intersectSet:sortingKeys];
         sortKey = [attributeNames anyObject];
     }
-    
     if (!sortKey) {
-        sortKey = [NSManagedObject guessedDefaultSortDescriptor];
+        sortKey = [NSManagedObject guessedDefaultSortKey];
     }
     
     return sortKey;
 }
 
+- (NSString *)defaultSortKey {
+    
+    id cacheKey = [self name];
+    id sortKey = sortKeyCache[cacheKey];
+    
+    if (!sortKey) {
+        sortKeyCache[cacheKey] = sortKey = [self findDefaultSortKey] ?: [NSNull null];
+    }
+    
+    return (sortKey == [NSNull null]) ? nil : sortKey;
+}
+
 - (NSArray *)defaultSortDescriptors {
     
     Class class = NSClassFromString([self managedObjectClassName]);
-    NSString *key = [self defaultSortKey] ?: [class defaultSortKey];
+    NSString *key = [self defaultSortKey];
     
-    if(key)
+    if(key) {
         return [NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:key ascending:[class defaultSortAscending]]];
-    else
-        return nil;
+    }
+    return nil;
 }
 
 - (NSFetchRequest *)defaultFetchRequest {
@@ -96,10 +96,9 @@ extern NSSet *sortingKeys;
     return propertyNames;
 }
 
-+ (NSString *)guessedDefaultSortDescriptor {
++ (NSString *)guessedDefaultSortKey {
     
-    NSString *className = NSStringFromClass(self);
-    id sortKey = [sortKeyCache objectForKey:className];
+    id sortKey = nil;
     Class class = self;
     
     if (nil == sortKey) {
@@ -110,8 +109,6 @@ extern NSSet *sortingKeys;
             sortKey = [propertyNames anyObject];
             class = [self superclass];
         }
-        
-        sortKeyCache[className] = sortKey ?: [NSNull null];
     }
     
     return sortKey;
