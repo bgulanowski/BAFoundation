@@ -275,6 +275,7 @@
 		08FB77AEFE84172EC02AAC07 /* BAFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				84780D5A197F3319000C3B9B /* Types */,
 				84A0D26216E27E8A0010D80D /* Categories */,
 				84A0D26116E27E480010D80D /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
@@ -319,6 +320,13 @@
 				4E792B05133A3195003C9B3E /* BAFT.m */,
 			);
 			path = baft;
+			sourceTree = "<group>";
+		};
+		84780D5A197F3319000C3B9B /* Types */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Types;
 			sourceTree = "<group>";
 		};
 		84A0D26116E27E480010D80D /* Classes */ = {
@@ -476,7 +484,7 @@
 			name = BAFoundationTests;
 			productName = BAFoundationTests;
 			productReference = 4E4CC4A51338D0F2007AD580 /* BAFoundationTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		4E792A91133A2E82003C9B3E /* baft */ = {
 			isa = PBXNativeTarget;
@@ -715,7 +723,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -742,7 +749,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
