@@ -9,6 +9,15 @@
 #ifndef BAFoundation_BAFunctions_h
 #define BAFoundation_BAFunctions_h
 
+#import <BAFoundation/BAMacros.h>
+
+static inline NSUInteger BARandomIntegerInRange(NSUInteger min, NSUInteger max) {
+	
+	NSUInteger result = (NSUInteger)BARandomCGFloatInRange(min, max+1);
+	
+	return result > max ? max : result;
+}
+
 static inline NSInteger powi ( NSInteger base, NSUInteger exp ) {
     NSInteger result = 1;
     while(exp) {
