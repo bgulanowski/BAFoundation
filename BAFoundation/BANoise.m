@@ -99,18 +99,30 @@ double BANoiseBlend(const int *p, double x, double y, double z, double octave_co
 	return result;
 }
 
-double BASimplexNoise3DBlend(const int *p, const int *mod, double x, double y, double z, double octave_count, double persistence) {
-	
-	double result = BASimplexNoise3DEvaluate(p, mod, x, y, z);
-	double amplitude = persistence;
+static double BASimplexNoise3DBlendInternal(const int *p, const int *mod, double x, double y, double z, double octave_count, double persistence, double (*function)(const int *p, const int *pmod, double xin, double  yin, double zin)) {
     
-	for(unsigned i=1; i<octave_count; i++) {
-		x *= 2.; y *= 2.; z *= 2.;
-		result += BASimplexNoise3DEvaluate(p, mod, x, y, z) * amplitude;
-		amplitude *= persistence;
-	}
-	
-	return result;
+    double result = function(p, mod, x, y, z);
+    double amplitude = persistence;
+    
+    for(unsigned i=1; i<octave_count; i++) {
+        x *= 2.; y *= 2.; z *= 2.;
+        result += function(p, mod, x, y, z) * amplitude;
+        amplitude *= persistence;
+    }
+    
+    return result;
+}
+
+double BASimplexNoise3DBlend(const int *p, const int *mod, double x, double y, double z, double octave_count, double persistence) {
+    return BASimplexNoise3DBlendInternal(p, mod, x, y, z, octave_count, persistence, BASimplexNoise3DEvaluate);
+}
+
+inline static double Identity(const int *p, const int *pmod, double xin, double  yin, double zin) {
+    return 1.0f;
+}
+
+double BASimplexNoiseMax(double octave_count, double persistence) {
+    return BASimplexNoise3DBlendInternal(NULL, NULL, 0, 0, 0, octave_count, persistence, Identity);
 }
 
 inline static double dot2(BANoiseVector g, double x, double y) {
@@ -699,7 +711,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     
     for (double z = region.origin.z; z < maxZ; ++z) {
         for (double y = region.origin.y; y < maxY; ++y) {
-            for (double x = region.origin.z; x < maxX; ++x) {
+            for (double x = region.origin.x; x < maxX; ++x) {
                 if(block(x, y, z, evaluator(x, y, z)))
                     return;
             }

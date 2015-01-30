@@ -87,6 +87,7 @@ extern double BANoiseBlend(const int *p, double x, double y, double z, double oc
 extern double BASimplexNoise2DEvaluate(const int *p, const int *pmod, double xin, double  yin);
 extern double BASimplexNoise3DEvaluate(const int *p, const int *pmod, double xin, double  yin, double zin);
 extern double BASimplexNoise3DBlend(const int *p, const int *pmod, double x, double y, double z, double octave_count, double persistence);
+double BASimplexNoiseMax(double octave_count, double persistence);
 
 extern const int BADefaultPermutation[512];
 
