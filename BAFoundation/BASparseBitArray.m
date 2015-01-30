@@ -435,7 +435,7 @@
     [self updateRect:rect set:NO];
 }
 
-- (void)recursiveWriteRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin {
+- (void)recursiveWriteRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin dispatchGroup:(dispatch_group_t)group {
     
     if(0 == _level) {
         [self.bits writeRect:rect fromArray:bitArray offset:origin];
@@ -443,15 +443,14 @@
             _refreshBlock(self);
     }
     else {
-        
-        dispatch_group_t group = dispatch_group_create();
-        
+		
         NSUInteger childBase = _treeBase/2;
         
         for (NSUInteger i=0; i<4; ++i) {
+			
+			BASparseBitArray *child = (BASparseBitArray *)[self childAtIndex:i create:YES];
             
-            dispatch_group_enter(group);
-            
+			dispatch_group_enter(group);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 
                 CGRect subRect = CGRectIntersection(rect, CGRectMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
@@ -470,14 +469,11 @@
                             offset.y += (childBase - rect.origin.y);
                     }
                     
-                    [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveWriteRect:subRect fromArray:bitArray offset:offset];
+                    [child recursiveWriteRect:subRect fromArray:bitArray offset:offset dispatchGroup:group];
                 }
                 dispatch_group_leave(group);
             });
         }
-        
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        dispatch_release(group);
     }
 }
 
@@ -530,7 +526,10 @@
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex+1];
     
-    [self recursiveWriteRect:rect fromArray:bitArray offset:origin];
+	dispatch_group_t group = dispatch_group_create();
+    [self recursiveWriteRect:rect fromArray:bitArray offset:origin dispatchGroup:group];
+	dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+	dispatch_release(group);
 }
 
 - (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray {
