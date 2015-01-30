@@ -314,20 +314,24 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     NSAssert(index < _scale, @"child index calculation error; no child with index %u", (unsigned)index);
     NSAssert(_children, @"No children!");
     
-    id child = [_children objectAtIndex:index];
-    
-    if(child == [NSNull null]) {
-        if(create) {
-            child = [[[self class] alloc] initWithParent:self];
-            [_children replaceObjectAtIndex:index withObject:child];
-            [child release];
-            if(_enlargeBlock)
-                _enlargeBlock(self, index);
-        }
-        else
-            child = nil;
-    }
-    
+	id child;
+	
+	@synchronized(_children) {
+		child = [_children objectAtIndex:index];
+	
+		if(child == [NSNull null]) {
+			if(create) {
+				child = [[[self class] alloc] initWithParent:self];
+				[_children replaceObjectAtIndex:index withObject:child];
+				[child release];
+				if(_enlargeBlock)
+					_enlargeBlock(self, index);
+			}
+			else
+				child = nil;
+		}
+	}
+ 
     return child;
 }
 
