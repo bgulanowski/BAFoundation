@@ -16,11 +16,11 @@
 typedef void(^SparseRangeUpdate)(BASparseBitArray *bitArray, NSRange range, BOOL set);
 
 
-@interface BASparseBitArray : BASparseArray<NSCoding, BABitArray> {
+@interface BASparseBitArray : BASparseArray<BABitArray> {
     SparseRangeUpdate _rangeUpdateBlock;
-    BABitArray *_bits; // storage for leaf data
 }
 
+@property (nonatomic) Class bitArrayClass;
 @property (nonatomic, strong) BABitArray *bits;
 
 // Add new category to BAScene and move there

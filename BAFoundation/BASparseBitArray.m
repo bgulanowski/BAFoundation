@@ -16,12 +16,13 @@
 
 #pragma mark -
 
+@interface BASampleArray (BASparseBitArraySize)
++ (BASampleArray *)sampleArrayForBase:(NSUInteger)base power:(NSUInteger)power;
+@end
+
+#pragma mark -
+
 @implementation BASparseBitArray
-
-#pragma mark - Properties
-
-@synthesize bits=_bits;
-
 
 #pragma mark - Private
 
@@ -93,22 +94,17 @@
 
 
 #pragma mark - Accessors
-+ (BASampleArray *)sampleArrayForBase:(NSUInteger)base power:(NSUInteger)power {
-    if(power == 2)
-        return [BASampleArray sampleArrayForSize2d:CGSizeMake(base, base)];
-    
-    BASampleArray *sa = [BASampleArray sampleArrayWithPower:1 order:power size:sizeof(NSUInteger)];
-    for(NSUInteger i=0; i<power; ++i)
-        [sa setSample:(UInt8 *)&base atIndex:i];
-    
-    return sa;
+
+- (void)setBitArrayClass:(Class)bitArrayClass {
+	NSAssert([bitArrayClass isSubclassOfClass:[BABitArray class]], @"bitArrayClass %@ does not inherit from BABitArray", bitArrayClass);
+	_bitArrayClass = bitArrayClass;
 }
 
 - (BABitArray *)bits {
     if(!_bits && _level == 0) {
         @synchronized(self) {
             if(!_bits) {
-                _bits = [[BABitArray alloc] initWithLength:_leafSize size:[[self class] sampleArrayForBase:_base power:_power]];
+                _bits = [[_bitArrayClass alloc] initWithLength:_leafSize size:[BASampleArray sampleArrayForBase:_base power:_power]];
                 _bits.enableArchiveCompression = self.enableArchiveCompression;
             }
         }
@@ -136,9 +132,27 @@
 
 
 #pragma mark - NSObject
+
+- (id)initWithBase:(NSUInteger)base power:(NSUInteger)power level:(NSUInteger)level {
+	self = [super initWithBase:base power:power level:level];
+	if (self) {
+		_bitArrayClass = [BABitArray class];
+	}
+	return self;
+}
 - (void)dealloc {
     self.bits = nil;
     [super dealloc];
+}
+
+#pragma mark - BASparseArray
+
+- (id)initWithParent:(BASparseArray *)parent {
+	self = [super initWithParent:parent];
+	if (self) {
+		_bitArrayClass = [(BASparseBitArray *)parent bitArrayClass];
+	}
+	return self;
 }
 
 
@@ -147,14 +161,19 @@
     self = [super initWithCoder:aDecoder];
     if(self) {
         _bits = [[aDecoder decodeObjectForKey:@"bits"] retain];
+		_bitArrayClass = NSClassFromString([aDecoder decodeObjectForKey:@"bitArrayClass"]);
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
     [super encodeWithCoder:aCoder];
-    if(_bits)
+	if(_bits) {
         [aCoder encodeObject:_bits forKey:@"bits"];
+	}
+	if (_bitArrayClass) {
+		[aCoder encodeObject:NSStringFromClass(_bitArrayClass) forKey:@"bitArrayClass"];
+	}
 }
 
 
@@ -348,7 +367,7 @@
 @implementation BASparseBitArray (SpatialStorage)
 
 - (BASampleArray *)size {
-    return [[self class] sampleArrayForBase:_treeBase power:_power];
+    return [BASampleArray sampleArrayForBase:_treeBase power:_power];
 }
 
 #pragma mark - 2D translation conveniences
@@ -672,6 +691,25 @@ static NSArray *BlanksForRect(CGRect rect) {
 
 - (NSString *)stringForRect {
     return [[self rowStringsForRect:CGRectMake(0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
+}
+
+@end
+
+
+#pragma mark -
+
+@implementation BASampleArray (BASparseBitArraySize)
+
+// This creates the sizing information for a bit array
++ (BASampleArray *)sampleArrayForBase:(NSUInteger)base power:(NSUInteger)power {
+	if(power == 2)
+		return [BASampleArray sampleArrayForSize2d:CGSizeMake(base, base)];
+	
+	BASampleArray *sa = [BASampleArray sampleArrayWithPower:1 order:power size:sizeof(NSUInteger)];
+	for(NSUInteger i=0; i<power; ++i)
+		[sa setSample:(UInt8 *)&base atIndex:i];
+	
+	return sa;
 }
 
 @end
