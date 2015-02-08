@@ -13,6 +13,9 @@
 
 typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
+/**
+ * A bit array is an array of indexable bit values.
+ */
 
 @protocol BABitArray <NSObject>
 
@@ -77,6 +80,16 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @end
 
 
+/**
+ * The BABitArray class implements the BABitArray protocol. It extends the protocol with
+ * support for multi-dimensional arrays of custom size (fixed at creation).
+ *
+ * BABitArray adopts NSCopying and NSCoding, and supports equality checking. It has a variety
+ * of conveniences for reading and writing ranges of bits, and initializing new bit arrays.
+ *
+ * The dimensions are stored in a sample array.
+ */
+
 @interface BABitArray : NSObject<NSCopying, NSCoding, BABitArray> {
     
     BASampleArray *size;
@@ -116,7 +129,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (id)initWithLength:(NSUInteger)bits size:(BASampleArray *)vector;
 - (id)initWithLength:(NSUInteger)bits;
 - (id)initWithData:(NSData *)data length:(NSUInteger)length;
-// otherArray must be of equal or greater length; bitRange must fit within otherArray length
+// bitRange.location + bitRange.length <= otherArray.length
 - (id)initWithBitArray:(BABitArray *)otherArray range:(NSRange)bitRange;
 
 - (BABitArray *)reverseBitArray;

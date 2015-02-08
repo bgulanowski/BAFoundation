@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ * A Sample Array encapsulates an indexed block of memory. The length of the array and the size (in bytes) of
+ * array elements are set at creation. The Sample Array interface takes care of calculating offsets. Values
+ * are written to or read from the array by reference.
+ *
+ * A sample array can be multi-dimensional, and defined by its power. For a one-dimensional array, the order
+ * is its length. For a multi-dimensional array, the length is the order raised to the power.
+ *
+ * The BASampleArray protocol defines the minimal interface for a sample array.
+ */
+
 @protocol BASampleArray <NSObject>
 
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
@@ -22,6 +33,14 @@
 - (void)writeSamples:(UInt8 *)samples range:(NSRange)range;
 
 @end
+
+/**
+ * The BASampleArray class realizes the BASampleArray protocol. It extend the protocol with read-only
+ * accessors to the fundamental properties of the array, as well as a derived count of elements.
+ *
+ * In addition, BASampleArray (class) defines convenience methods for a specialized 2- and 3-dimensional
+ * versions called "page" and "block". A page is a 32x32 array of 4-byte samples. A block is 32x32x32.
+ */
 
 @interface BASampleArray : NSObject<NSCoding, NSCopying, BASampleArray> {
     
