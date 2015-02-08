@@ -430,6 +430,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     [aCoder encodeInteger:_leafSize forKey:@"leafSize"];
     [aCoder encodeInteger:_treeSize forKey:@"treeSize"];
     [aCoder encodeInteger:_treeBase forKey:@"treeBase"];
+	[aCoder encodeObject:_children forKey:@"children"];
 }
 
 

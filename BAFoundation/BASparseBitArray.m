@@ -155,8 +155,6 @@
     [super encodeWithCoder:aCoder];
     if(_bits)
         [aCoder encodeObject:_bits forKey:@"bits"];
-    else if(_level > 0)
-        [aCoder encodeObject:_children forKey:@"children"];
 }
 
 
