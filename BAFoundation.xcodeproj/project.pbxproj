@@ -26,7 +26,6 @@
 		4EF2B51C104D60C9000C8EE2 /* BAGraphNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EF2B51A104D60C9000C8EE2 /* BAGraphNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EF2B51D104D60C9000C8EE2 /* BAGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4EF2B51B104D60C9000C8EE2 /* BAGraphNode.m */; };
 		84058EE51A8852DC009E2D04 /* BABitArray+Rectangles.h in Headers */ = {isa = PBXBuildFile; fileRef = 84058EE31A8852DC009E2D04 /* BABitArray+Rectangles.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		84058EE61A8852DC009E2D04 /* BABitArray+Rectangles.h in Headers */ = {isa = PBXBuildFile; fileRef = 84058EE31A8852DC009E2D04 /* BABitArray+Rectangles.h */; };
 		84058EE71A8852DC009E2D04 /* BABitArray+Rectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = 84058EE41A8852DC009E2D04 /* BABitArray+Rectangles.m */; };
 		84058EE81A8852DC009E2D04 /* BABitArray+Rectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = 84058EE41A8852DC009E2D04 /* BABitArray+Rectangles.m */; };
 		841944EE1637322B0036C725 /* BASampleArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 841944EC1637322B0036C725 /* BASampleArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -440,7 +439,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84BBE63D16E8E35800AF371A /* NSData+GZip.h in Headers */,
-				84058EE61A8852DC009E2D04 /* BABitArray+Rectangles.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

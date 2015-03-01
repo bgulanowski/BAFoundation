@@ -141,6 +141,8 @@ inline NSUInteger LeafCoordinatesFromAbsolute3D(NSUInteger base, NSUInteger *x, 
     BOOL _enableArchiveCompression;
 }
 
+@property (nonatomic, assign) BASparseArray *parent;
+
 @property (nonatomic, copy) SparseArrayBuild buildBlock;
 @property (nonatomic, copy) SparseArrayExpand expandBlock;
 @property (nonatomic, copy) SparseArrayUpdate updateBlock;
@@ -154,9 +156,18 @@ inline NSUInteger LeafCoordinatesFromAbsolute3D(NSUInteger base, NSUInteger *x, 
 @property (nonatomic, readonly) NSUInteger power;
 @property (nonatomic, readonly) NSUInteger level;
 @property (nonatomic, readonly) NSUInteger scale;
+/* The meaning of the index depends on the level, but it never changes.
+ * At level 0, it is a leaf. At higher levels, it is a branch node.
+ * The relative path can be derived from the indexes, but is not constant.
+ */
+@property (nonatomic, readonly) NSUInteger index;
 @property (nonatomic, readonly) NSUInteger leafSize;
 @property (nonatomic, readonly) NSUInteger treeSize;
 @property (nonatomic, readonly) NSUInteger treeBase;
+/*
+ * The offset of the first child
+ */
+@property (nonatomic, readonly) NSUInteger offset;
 
 @property (nonatomic) BOOL enableArchiveCompression;
 
@@ -170,6 +181,8 @@ inline NSUInteger LeafCoordinatesFromAbsolute3D(NSUInteger base, NSUInteger *x, 
 
 - (BASparseArray *)childAtIndex:(NSUInteger)index;
 - (BASparseArray *)leafForIndex:(NSUInteger)index;
+
+// Find the leaf that holds the datum at the given index; leaves store leafSize worth of data
 - (BASparseArray *)leafForStorageIndex:(NSUInteger)index offset:(NSUInteger *)pOffset;
 
 @end

@@ -125,7 +125,11 @@ NSUInteger LeafIndexFor2DCoordinates(NSUInteger x, NSUInteger y, NSUInteger base
 // it's not used, so it's mostly to confirm I understand what's going on - at least theoretically
 void LeafCoordinatesForIndex2D(NSUInteger leafIndex, NSUInteger *px, NSUInteger *py) {
     
-    if(leafIndex < 1) return;
+	if(leafIndex == 0) {
+		*px = 0;
+		*py = 0;
+		return;
+	}
     
     NSUInteger x = 0;
     NSUInteger y = 0;
@@ -270,18 +274,25 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     return self;
 }
 
-- (id)initWithChild:(BASparseArray *)child position:(NSUInteger)position {
+- (id)initWithChild:(BASparseArray *)child index:(NSUInteger)index {
     
     self = [self initWithBase:child.base power:child.power level:child.level + 1];
     
     if(self) {
-        [_children replaceObjectAtIndex:position withObject:child];
+		_index = index;
+		child.parent = self;
+        [_children replaceObjectAtIndex:index withObject:child];
     }
     return self;
 }
 
-- (id)initWithParent:(BASparseArray *)parent {
-    return [self initWithBase:parent.base power:parent.power level:parent.level-1];
+- (id)initWithParent:(BASparseArray *)parent index:(NSUInteger)index {
+    self = [self initWithBase:parent.base power:parent.power level:parent.level-1];
+	if (self) {
+		_index = index;
+		_parent = parent;
+	}
+	return self;
 }
 
 - (NSUInteger)treeSizeForStorageIndex:(NSUInteger)index depth:(NSUInteger *)pDepth {
@@ -314,14 +325,14 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     NSAssert(index < _scale, @"child index calculation error; no child with index %u", (unsigned)index);
     NSAssert(_children, @"No children!");
     
-	id child;
+	BASparseArray *child;
 	
 	@synchronized(_children) {
 		child = [_children objectAtIndex:index];
 	
-		if(child == [NSNull null]) {
+		if((id)child == [NSNull null]) {
 			if(create) {
-				child = [[[self class] alloc] initWithParent:self];
+				child = [[[self class] alloc] initWithParent:self index:self.offset + index];
 				[_children replaceObjectAtIndex:index withObject:child];
 				[child release];
 				if(_enlargeBlock)
@@ -338,7 +349,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 - (BASparseArray *)childForStorageIndex:(NSUInteger)storageIndex offset:(NSUInteger*)pOffset {
     
     if(!_level) {
-        NSAssert(storageIndex < _leafSize, @"node traversal error; locating child for bit %u", (unsigned)storageIndex);
+        NSAssert(storageIndex < _leafSize, @"node traversal error; locating child for bit %tu", storageIndex);
         if(pOffset)
             *pOffset = 0;
         return self;
@@ -376,10 +387,16 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 }
 
+#pragma mark - Derived Accessors
+
+- (NSUInteger)offset {
+	return _scale * _index;
+}
 
 #pragma mark - NSObject
 
 - (void)dealloc {
+	self.parent = nil;
     self.buildBlock = nil;
     self.expandBlock = nil;
     self.updateBlock = nil;
@@ -387,6 +404,12 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     self.userObject = nil;
     [_children release], _children = nil;
     [super dealloc];
+}
+
+- (NSString *)description {
+	NSUInteger px, py;
+	LeafCoordinatesForIndex2D(_index, &px, &py);
+	return [NSString stringWithFormat:@"%@ index: %tu. level: %tu. Coords: (%tu,%tu)", NSStringFromClass([self class]), _index, _level, px, py];
 }
 
 + (void)initialize {
@@ -402,8 +425,6 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
         }
     });
 }
-
-
 
 #pragma mark - NSCoding
 
@@ -465,24 +486,33 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     return [self initWithBase:base power:power level:1];
 }
 
+- (void)insertGeneration {
+	
+	BASparseArray *newChild = [[[self class] alloc] initWithParent:self index:self.offset];
+	
+	// Change our now grandchildren's parent to be our new child
+	for (BASparseArray *child in _children) {
+		if ((id)child != [NSNull null]) {
+			child.parent = newChild;
+		}
+	}
+	newChild->_children = _children;
+	
+	// Create new children with new child at index 0
+	_children = [[NSMutableArray alloc] initWithObjects:newChild, nil];
+	for (NSUInteger i=1; i<_scale; ++i)
+		[_children addObject:[NSNull null]];
+}
+
 - (void)expandToFitSize:(NSUInteger)newTreeSize {
-    
+	
     NSUInteger oldLevel = _level;
     
     while(newTreeSize > _treeSize) {
         ++_level;
         _treeBase = _treeBase << 1;
         _treeSize = _treeSize << _power;
-        
-        BASparseArray *newChild = [[[self class] alloc] initWithParent:self];
-        
-        newChild->_children = _children;
-        _children = [[NSMutableArray alloc] init];
-        [_children addObject:newChild];
-        [newChild release];
-        
-        for (NSUInteger i=1; i<_scale; ++i)
-            [_children addObject:[NSNull null]];
+		[self insertGeneration];
     }
     
     if(_level > oldLevel && _expandBlock)
