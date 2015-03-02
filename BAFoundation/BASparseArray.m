@@ -326,6 +326,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     NSAssert(_children, @"No children!");
     
 	BASparseArray *child;
+	BOOL enlarged = NO;
 	
 	@synchronized(_children) {
 		child = [_children objectAtIndex:index];
@@ -335,14 +336,18 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 				child = [[[self class] alloc] initWithParent:self index:self.offset + index];
 				[_children replaceObjectAtIndex:index withObject:child];
 				[child release];
-				if(_enlargeBlock)
-					_enlargeBlock(self, index);
+				enlarged = YES;
 			}
-			else
+			else {
 				child = nil;
+			}
 		}
 	}
- 
+	
+	if(enlarged && _enlargeBlock) {
+		_enlargeBlock(self, index);
+	}
+	
     return child;
 }
 
@@ -408,6 +413,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 
 - (NSString *)description {
 	NSUInteger px, py;
+	// FIXME: should not assume a 2D index - use the _power property
 	LeafCoordinatesForIndex2D(_index, &px, &py);
 	return [NSString stringWithFormat:@"%@ index: %tu. level: %tu. Coords: (%tu,%tu)", NSStringFromClass([self class]), _index, _level, px, py];
 }
