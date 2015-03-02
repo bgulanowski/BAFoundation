@@ -542,11 +542,13 @@
     
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex+1];
-    
-	dispatch_group_t group = dispatch_group_create();
-    [self recursiveWriteRect:rect fromArray:bitArray offset:origin dispatchGroup:group];
-	dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-	dispatch_release(group);
+	
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		dispatch_group_t group = dispatch_group_create();
+		[self recursiveWriteRect:rect fromArray:bitArray offset:origin dispatchGroup:group];
+		dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+		dispatch_release(group);
+	});
 }
 
 - (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray {
