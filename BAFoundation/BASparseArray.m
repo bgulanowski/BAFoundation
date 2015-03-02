@@ -435,6 +435,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
         _power = [aDecoder decodeIntegerForKey:@"power"];
         _level = [aDecoder decodeIntegerForKey:@"level"];
         _scale = [aDecoder decodeIntegerForKey:@"scale"];
+		_index = [aDecoder decodeIntegerForKey:@"index"];
         _leafSize = [aDecoder decodeIntegerForKey:@"leafSize"];
         _treeSize = [aDecoder decodeIntegerForKey:@"treeSize"];
         _treeBase = [aDecoder decodeIntegerForKey:@"treeBase"];
@@ -448,6 +449,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     [aCoder encodeInteger:_power forKey:@"power"];
     [aCoder encodeInteger:_level forKey:@"level"];
     [aCoder encodeInteger:_scale forKey:@"scale"];
+	[aCoder encodeInteger:_index forKey:@"index"];
     [aCoder encodeInteger:_leafSize forKey:@"leafSize"];
     [aCoder encodeInteger:_treeSize forKey:@"treeSize"];
     [aCoder encodeInteger:_treeBase forKey:@"treeBase"];
