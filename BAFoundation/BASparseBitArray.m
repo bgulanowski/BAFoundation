@@ -43,7 +43,7 @@
     else
         [bits clearBit:index];
     if(updateBlock)
-        updateBlock(self, index, (void *)&setBit);
+        updateBlock(leaf, index, (void *)&setBit);
 }
 
 - (void)recursiveUpdateRange:(NSRange)range set:(BOOL)setBits {
