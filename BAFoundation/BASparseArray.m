@@ -446,6 +446,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
         _treeSize = [aDecoder decodeIntegerForKey:@"treeSize"];
         _treeBase = [aDecoder decodeIntegerForKey:@"treeBase"];
         _children = [[aDecoder decodeObjectForKey:@"children"] retain];
+        _userObject = [[aDecoder decodeObjectForKey:@"userObject"] retain];
     }
     return self;
 }
@@ -460,6 +461,9 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     [aCoder encodeInteger:_treeSize forKey:@"treeSize"];
     [aCoder encodeInteger:_treeBase forKey:@"treeBase"];
 	[aCoder encodeObject:_children forKey:@"children"];
+    if ([_userObject conformsToProtocol:@protocol(NSCoding)]) {
+        [aCoder encodeObject:_userObject forKey:@"userObject"];
+    }
 }
 
 

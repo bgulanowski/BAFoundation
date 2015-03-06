@@ -150,7 +150,7 @@ inline NSUInteger LeafCoordinatesFromAbsolute3D(NSUInteger base, NSUInteger *x, 
 
 @property (nonatomic, readonly) NSArray *children;
 
-@property (nonatomic, weak) id userObject;
+@property (nonatomic, retain) id userObject; // If object adopts NSCoding, will be serialized
 
 @property (nonatomic, readonly) NSUInteger base;
 @property (nonatomic, readonly) NSUInteger power;
