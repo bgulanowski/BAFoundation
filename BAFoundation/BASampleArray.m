@@ -88,6 +88,10 @@
     return self;
 }
 
+- (instancetype)init {
+    return [self initWithPower:3 order:32 size:1];
+}
+
 - (BOOL)isEqualToSampleArray:(BASampleArray *)other {
     
     if(other == self)
