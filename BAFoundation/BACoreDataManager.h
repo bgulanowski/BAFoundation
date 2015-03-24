@@ -55,6 +55,7 @@
 // convenience: objectURIs must contain string URLs (Not NSURLs)
 - (void)refreshObjectsWithURIs:(NSArray *)objectURIs;
 
++ (NSArray *)modelBundles;
 + (NSString *)defaultStoreType;      // default is "NSSQLiteStoreType"
 + (NSString *)defaultStoreExtension; // default depends on store type: either "sqlite", "coredata" (for binary stores), or "xml"
 + (NSString *)defaultStoreFileName;  // default is the value returned by [[NSProcessInfo processInfo] processName]

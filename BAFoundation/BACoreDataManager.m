@@ -58,8 +58,15 @@
 	
     if(!model) {
         @synchronized(self) {
-            if(!model)
-                model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[self modelURL]];
+            if(!model) {
+                NSArray *bundles = [[self class] modelBundles];
+                if (bundles.count) {
+                    model = [NSManagedObjectModel mergedModelFromBundles:bundles];
+                }
+                else {
+                    model = [[NSManagedObjectModel alloc] initWithContentsOfURL:[self modelURL]];
+                }
+            }
         }
 	}
     
@@ -260,6 +267,8 @@
 		[self save];
 	}
 }
+
++ (NSArray *)modelBundles { return @[]; }
 
 + (NSString *)defaultStoreType { return NSSQLiteStoreType; }
 
