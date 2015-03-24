@@ -128,7 +128,7 @@ inline NSUInteger LeafCoordinatesFromAbsolute3D(NSUInteger base, NSUInteger *x, 
     
     NSMutableArray *_children; // interior nodes
     
-    __weak id _userObject;
+    id _userObject;
     
     NSUInteger _base;  // size of each dimensions of each leaf node
     NSUInteger _power; // number of dimensions, usually 1 for line, 2 for plane, 3 for volume
