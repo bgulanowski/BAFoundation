@@ -83,6 +83,7 @@
 		84C1E65D1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */; };
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
+		84F246431ADCB03300D3C499 /* BATypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F246411ADCAFB400D3C499 /* BATypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84F9A3F21851A28B004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
 		84F9A3F31851A298004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
 		84F9EE8517909D83005B6DD1 /* BANoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F9EE8317909D5A005B6DD1 /* BANoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -181,6 +182,7 @@
 		84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+BAAdditions.m"; sourceTree = "<group>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BARelationshipProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		84F246411ADCAFB400D3C499 /* BATypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATypes.h; sourceTree = "<group>"; };
 		84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		84F9EE8317909D5A005B6DD1 /* BANoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
 		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoise.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -280,7 +282,6 @@
 		08FB77AEFE84172EC02AAC07 /* BAFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				84780D5A197F3319000C3B9B /* Types */,
 				84A0D26216E27E8A0010D80D /* Categories */,
 				84A0D26116E27E480010D80D /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
@@ -292,9 +293,10 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				84A0D20816E271380010D80D /* BAMacros.h */,
-				32DBCF5E0370ADEE00C91783 /* BAFoundation_Prefix.pch */,
 				8428532E16F3A4BE00BD7A71 /* BAFunctions.h */,
+				84A0D20816E271380010D80D /* BAMacros.h */,
+				84F246411ADCAFB400D3C499 /* BATypes.h */,
+				32DBCF5E0370ADEE00C91783 /* BAFoundation_Prefix.pch */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -325,13 +327,6 @@
 				4E792B05133A3195003C9B3E /* BAFT.m */,
 			);
 			path = baft;
-			sourceTree = "<group>";
-		};
-		84780D5A197F3319000C3B9B /* Types */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Types;
 			sourceTree = "<group>";
 		};
 		84A0D26116E27E480010D80D /* Classes */ = {
@@ -469,6 +464,7 @@
 				84BBE64416E932F000AF371A /* BASparseSampleArray.h in Headers */,
 				84BBE64816E934C500AF371A /* BASparseArray.h in Headers */,
 				848699461707AC0C00727A5D /* BAFunctions.h in Headers */,
+				84F246431ADCB03300D3C499 /* BATypes.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,7 +551,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0610;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Lichen Labs";
 				TargetAttributes = {
 					8DC2EF4F0486A6940098B216 = {
@@ -791,6 +787,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -818,6 +815,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

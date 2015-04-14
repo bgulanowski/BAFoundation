@@ -911,13 +911,13 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 
 @implementation NSObject (BANoise)
 
-- (NSData *)mapSize:(CGSize)size min:(double)min max:(double)max {
+- (NSData *)mapSize2:(BASize2)size min:(double)min max:(double)max {
     
     if(![self conformsToProtocol:@protocol(BANoise)])
         [NSException raise:NSInternalInconsistencyException format:@"Only BANoise adopters can use this method"];
     
     id<BANoise>noise = (id<BANoise>)self;
-    size_t alloc_size = sizeof(BOOL)*floor(size.width)*floor(size.height);
+    size_t alloc_size = sizeof(BOOL) * size.width * size.height;
     BOOL *map = malloc(alloc_size);
     
     if(!map)
@@ -940,17 +940,17 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 
 @implementation BABitArray (BANoiseInitializing)
 
-- (id)initWithSize:(CGSize)initSize noise:(id<BANoise>)noise min:(double)min max:(double)max {
-    self = [self initWithSize:initSize];
+- (id)initWithSize2:(BASize2)initSize noise:(id<BANoise>)noise min:(double)min max:(double)max {
+    self = [self initWithSize2:initSize];
     if(self) {
-        [self writeBits:(BOOL *)[[(NSObject *)noise mapSize:initSize min:min max:max] bytes]
+        [self writeBits:(BOOL *)[[(NSObject *)noise mapSize2:initSize min:min max:max] bytes]
                   range:NSMakeRange(0, floor(initSize.height) * floor(initSize.width))];
     }
     return self;
 }
 
-+ (BABitArray *)bitArrayWithSize:(CGSize)size noise:(id<BANoise>)noise min:(double)min max:(double)max {
-    return [[[self alloc] initWithSize:size noise:noise min:min max:max] autorelease];
++ (BABitArray *)bitArrayWithSize2:(BASize2)size noise:(id<BANoise>)noise min:(double)min max:(double)max {
+    return [[[self alloc] initWithSize2:size noise:noise min:min max:max] autorelease];
 }
 
 @end

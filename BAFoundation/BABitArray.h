@@ -8,6 +8,7 @@
 
 #import <BAFoundation/BASampleArray.h>
 
+#import <BAFoundation/BATypes.h>
 
 #define SEQUENTIAL_BIT_ORDER 1
 
@@ -51,7 +52,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @protocol BABitArray2D <BABitArray>
 
-- (id)initWithBitArray:(id<BABitArray>)otherArray rect:(CGRect)rect;
+- (id)initWithBitArray:(id<BABitArray>)otherArray region:(BARegion2)region;
 
 - (BASampleArray *)size;
 
@@ -60,22 +61,26 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y;
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y;
 
+- (BOOL)bitAtPoint2:(BAPoint2)point;
+- (void)setPoint2:(BAPoint2)point;
+- (void)clearPoint2:(BAPoint2)point;
+
 // power 3 conveniences
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 
-- (void)setRect:(CGRect)rect;
-- (void)clearRect:(CGRect)rect;
+- (void)setRegion2:(BARegion2)region;
+- (void)clearRegion2:(BARegion2)region;
 
-- (void)writeRect:(CGRect)rect fromArray:(id<BABitArray2D>)bitArray offset:(CGPoint)origin;
+- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin;
 
-- (id<BABitArray2D>)subArrayWithRect:(CGRect)rect;
+- (id<BABitArray2D>)subArrayWithRegion:(BARegion2)region;
 
 @optional
-- (NSArray *)rowStringsForRect:(CGRect)rect;
-- (NSString *)stringForRect:(CGRect)rect;
-- (NSString *)stringForRect;
+- (NSArray *)rowStringsForRegion2:(BARegion2)region;
+- (NSString *)stringForRegion2:(BARegion2)region;
+- (NSString *)stringForRegion2;
 
 @end
 
@@ -93,7 +98,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 @interface BABitArray : NSObject<NSCopying, NSCoding, BABitArray> {
     
     BASampleArray *size;
-	CGSize size2d;
+	BASize2 size2;
     
 	unsigned char *buffer;
 	NSUInteger bufferLength; // in bytes, rounded up
@@ -145,18 +150,18 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 
 @interface BABitArray (SpatialStorage) <BABitArray2D>
-- (id)initWithSize:(CGSize)initSize;
+- (id)initWithSize2:(BASize2)initSize;
 - (BABitArray *)bitArrayByFlippingColumns;
 - (BABitArray *)bitArrayByFlippingRows;
 - (BABitArray *)bitArrayByRotating:(NSInteger)quarters; // "quarters" are increments are 90 degrees
-- (void)writeRect:(CGRect)rect fromArray:(id<BABitArray2D>)bitArray;
-+ (BABitArray *)bitArrayWithSize:(CGSize)initSize;
+- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray;
++ (BABitArray *)bitArrayWithSize2:(BASize2)initSize;
 @end
 
 
 @interface BASampleArray (BABitArraySupport)
-- (CGSize)size2d;
-- (void)size3d:(NSUInteger*)size;
-+ (BASampleArray *)sampleArrayForSize2d:(CGSize)size;
+- (BASize2)size2;
+- (void)size3d:(NSUInteger *)size;
++ (BASampleArray *)sampleArrayForSize2:(BASize2)size2;
 + (BASampleArray *)sampleArrayForSize3d:(NSUInteger *)size;
 @end

@@ -148,6 +148,6 @@ extern const int BADefaultPermutation[512];
 
 
 @interface BABitArray (BANoiseInitializing)
-- (id)initWithSize:(CGSize)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
-+ (BABitArray *)bitArrayWithSize:(CGSize)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
+- (id)initWithSize2:(BASize2)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
++ (BABitArray *)bitArrayWithSize2:(BASize2)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
 @end

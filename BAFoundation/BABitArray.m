@@ -233,7 +233,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
     if(self) {
         enableArchiveCompression = [aDecoder decodeBoolForKey:@"compressed"];
         size = [[aDecoder decodeObjectForKey:@"size"] retain];
-		size2d = size.size2d;
+		size2 = size.size2;
         
         NSUInteger storedCount = [aDecoder decodeIntegerForKey:@"count"];
         
@@ -554,7 +554,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	if(self) {
 		length = bits; // never changes
         size = [vector copy]; // never changes
-		size2d = size.size2d;
+		size2 = size.size2;
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
 		self.count = 0;
 		if(length > 0) {
@@ -829,17 +829,32 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 
 - (BOOL)bitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    return GET_BIT(x + y*(NSUInteger)size2d.width);
+    return GET_BIT(x + y * size2.width);
 }
 
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    SET_BIT(x + y*(NSUInteger)size2d.width);
+    SET_BIT(x + y * size2.width);
 }
 
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y {
     BIT_ARRAY_SIZE_ASSERT();
-    SET_BIT(x + y*(NSUInteger)size2d.width);
+    CLR_BIT(x + y * size2.width);
+}
+
+- (BOOL)bitAtPoint2:(BAPoint2)point {
+    BIT_ARRAY_SIZE_ASSERT();
+    return GET_BIT(point.x + point.y * size2.width);
+}
+
+- (void)setPoint2:(BAPoint2)point {
+    BIT_ARRAY_SIZE_ASSERT();
+    SET_BIT(point.x + point.y * size2.width);
+}
+
+- (void)clearPoint2:(BAPoint2)point {
+    BIT_ARRAY_SIZE_ASSERT();
+    CLR_BIT(point.x + point.y * size2.width);
 }
 
 
@@ -865,21 +880,21 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 }
 
 
-#define BIT_ARRAY_RECT_ASSERT() NSAssert(CGRectGetMinX(rect) >= 0 && CGRectGetMinY(rect) >= 0 && CGRectGetMaxX(rect) <= size2d.width && CGRectGetMaxY(rect) <= size2d.height, @"error")
+#define REGION2_ASSERT(region, size2) NSAssert(BARegionGetQuadrant(region) == BAQuadrant0 && BARegion2ContainsRegion2(region, BARegion2Make(BAPoint2Make(0,0), size2)), @"error")
 
-- (void)updateRect:(CGRect)rect set:(BOOL)set {
+- (void)updateRegion2:(BARegion2)region set:(BOOL)set {
     
     BIT_ARRAY_SIZE_ASSERT();
-    BIT_ARRAY_RECT_ASSERT();
+    REGION2_ASSERT(region, self.size.size2);
     
-    NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
+    NSRange range = NSMakeRange(region.origin.x+size2.width*region.origin.y, region.size.width);
     NSInteger delta = 0;
     
     NSAssert([self checkCount], @"count incorrect");
     
-    for (NSUInteger i=0; i<rect.size.height; ++i) {
+    for (NSInteger i=0; i<region.size.height; ++i) {
         delta += setRange(buffer, range, set);
-        range.location += size2d.width;
+        range.location += size2.width;
     }
     
     count += delta;
@@ -887,94 +902,89 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     NSAssert([self checkCount], @"count incorrect");
 }
 
-- (void)setRect:(CGRect)rect {
-    [self updateRect:rect set:YES];
+- (void)setRegion2:(BARegion2)region {
+    [self updateRegion2:region set:YES];
 }
 
-- (void)clearRect:(CGRect)rect {
-    [self updateRect:rect set:NO];
+- (void)clearRegion2:(BARegion2)region {
+    [self updateRegion2:region set:NO];
 }
 
-- (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray offset:(CGPoint)origin {
+- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin {
     
-    CGSize sourceSize = bitArray.size.size2d;
+    BASize2 sourceSize = bitArray.size.size2;
     
     BIT_ARRAY_SIZE_ASSERT();
-    BIT_ARRAY_RECT_ASSERT();
+    REGION2_ASSERT(region, self.size.size2);
 
-    NSRange sourceRange = NSMakeRange(origin.x+sourceSize.width*origin.y, rect.size.width);
-    NSRange destRange = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
+    NSRange sourceRange = NSMakeRange(origin.x + sourceSize.width * origin.y, BARegion2GetWidth(region));
+    NSRange destRange = NSMakeRange(region.origin.x + size2.width * region.origin.y, BARegion2GetWidth(region));
     
     // TODO: Replace with more effective implementation
-    BOOL *bits = malloc(rect.size.width*sizeof(BOOL));
+    BOOL *bits = malloc(region.size.width*sizeof(BOOL));
     
-    for (NSUInteger i=0; i<rect.size.height; ++i) {
+    for (NSInteger i=0; i<region.size.height; ++i) {
         [bitArray readBits:bits range:sourceRange];
         sourceRange.location += sourceSize.width;
         [self writeBits:bits range:destRange];
-        destRange.location += size2d.width;
+        destRange.location += size2.width;
     }
     
     free(bits);
 }
 
-- (void)writeRect:(CGRect)rect fromArray:(BABitArray *)bitArray {
-    [self writeRect:rect fromArray:bitArray offset:CGPointZero];
+- (void)writeRegion2:(BARegion2)rect fromArray:(BABitArray *)bitArray {
+    [self writeRegion2:rect fromArray:bitArray offset:BAPoint2Zero()];
 }
 
-- (id<BABitArray2D>)subArrayWithRect:(CGRect)rect {
+- (id<BABitArray2D>)subArrayWithRegion:(BARegion2)region {
     
-    BABitArray *result = [BABitArray bitArrayWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
-    CGPoint origin = rect.origin;
-    
-    rect.origin = CGPointZero;
-    
-    [result writeRect:rect fromArray:self offset:origin];
-    
+    BABitArray *result = [BABitArray bitArrayWithLength:BARegion2Area(region) size:[BASampleArray sampleArrayForSize2:region.size]];
+    BAPoint2 origin = region.origin;
+    region.origin = BAPoint2Zero();
+    [result writeRegion2:region fromArray:self offset:origin];
     return result;
 }
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray rect:(CGRect)rect {
-    self = [self initWithLength:rect.size.width*rect.size.height size:[BASampleArray sampleArrayForSize2d:rect.size]];
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray region:(BARegion2)region {
+    self = [self initWithLength:BARegion2Area(region) size:[BASampleArray sampleArrayForSize2:region.size]];
     if(self) {
-
-        CGPoint origin = rect.origin;
-        
-        rect.origin = CGPointZero;
-        
-        [self writeRect:rect fromArray:otherArray offset:origin];
+        BAPoint2 origin = region.origin;
+        region.origin = BAPoint2Zero();
+        [self writeRegion2:region fromArray:otherArray offset:origin];
     }
     return self;
 }
 
-- (NSArray *)rowStringsForRect:(CGRect)rect {
+- (NSArray *)rowStringsForRegion2:(BARegion2)region {
     
     NSMutableArray *rows = [NSMutableArray array];
 	
-    if(CGRectEqualToRect(rect, CGRectZero))
-        rect.size = size2d;
+    if (BARegion2EqualToRegion2(region, BARegion2Zero())) {
+        region.size = size2;
+    }
+
+    NSRange range = NSMakeRange(region.origin.x + size2.width * region.origin.y, region.size.width);
+    NSInteger maxY = region.origin.y + region.size.height;
     
-    NSRange range = NSMakeRange(rect.origin.x+size2d.width*rect.origin.y, rect.size.width);
-    NSUInteger maxY = rect.origin.y + rect.size.height;
-    
-    for (NSUInteger i=rect.origin.y; i<maxY; ++i) {
+    for (NSInteger i=region.origin.y; i<maxY; ++i) {
         [rows insertObject:[self stringForRange:range] atIndex:0];
-        range.location += size2d.width;
+        range.location += size2.width;
     }
     
     return [[rows copy] autorelease];
 }
 
-- (NSString *)stringForRect:(CGRect)rect {
-    return [[self rowStringsForRect:rect] componentsJoinedByString:@"\n"];
+- (NSString *)stringForRegion2:(BARegion2)region {
+    return [[self rowStringsForRegion2:region] componentsJoinedByString:@"\n"];
 }
 
-- (NSString *)stringForRect {
-    return [[self rowStringsForRect:CGRectZero] componentsJoinedByString:@"\n"];
+- (NSString *)stringForRegion2 {
+    return [[self rowStringsForRegion2:BARegion2Zero()] componentsJoinedByString:@"\n"];
 }
 
-- (id)initWithSize:(CGSize)initSize {
-    return [self initWithLength:initSize.width*initSize.height size:[BASampleArray sampleArrayForSize2d:initSize]];
+- (id)initWithSize2:(BASize2)initSize {
+    return [self initWithLength:initSize.width*initSize.height size:[BASampleArray sampleArrayForSize2:initSize]];
 }
 
 - (BABitArray *)bitArrayByFlippingColumns {
@@ -984,11 +994,11 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     
     BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
     
-    NSUInteger width = size2d.width;
-    NSUInteger height = size2d.height;
+    NSInteger width = size2.width;
+    NSInteger height = size2.height;
     
-    for (NSUInteger i=0; i<height; ++i) {
-        for (NSUInteger j=0; j<width; ++j) {
+    for (NSInteger i=0; i<height; ++i) {
+        for (NSInteger j=0; j<width; ++j) {
             if(GET_BIT(j + i*width))
                 SET_OTHER_BIT(copy, width-j-1 + i*width);
         }
@@ -1003,15 +1013,15 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         return [[self copy] autorelease];
     
     BABitArray *copy = [BABitArray bitArrayWithLength:length size:[[size copy] autorelease]];
-    NSUInteger width = size2d.width;
-    NSUInteger height = size2d.height;
+    NSInteger width = size2.width;
+    NSInteger height = size2.height;
     
     BOOL *bits = malloc(sizeof(BOOL)*width);
     
     NSRange source = NSMakeRange(0, width);
     NSRange dest = NSMakeRange((height-1)*width, width);
 
-    for (NSUInteger i=0; i<height; ++i) {
+    for (NSInteger i=0; i<height; ++i) {
         copyBits(buffer, bits, source, NO, NO);
         source.location += width;
         copyBits(copy->buffer, bits, dest, YES, reverse);
@@ -1037,8 +1047,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
         quarters += 4;
     
     BABitArray *copy = nil;
-    NSUInteger width = size2d.width;
-    NSUInteger height = size2d.height;
+    NSInteger width = size2.width;
+    NSInteger height = size2.height;
     
     switch (quarters) {
             
@@ -1054,8 +1064,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
             // y2 = x,  y3 = y2 = x
             // index = x3 + w*y3 = (w-y) + w*x
             // w is actually width-1 for indexed storage
-            for (NSUInteger i=0; i<height; ++i) {
-                for (NSUInteger j=0; j<width; ++j) {
+            for (NSInteger i=0; i<height; ++i) {
+                for (NSInteger j=0; j<width; ++j) {
                     if(GET_BIT(j + i*width))
                         SET_OTHER_BIT(copy, (width-1-i) + j*width);
                 }
@@ -1076,8 +1086,8 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
             // y2 = -x, y3 = h+y2 = h+(-x) = h-x
             // index = x3 + w*y3 = y + w*(h-x)
             // wi is actually width-1 for indexed storage
-            for (NSUInteger i=0; i<height; ++i) {
-                for (NSUInteger j=0; j<width; ++j) {
+            for (NSInteger i=0; i<height; ++i) {
+                for (NSInteger j=0; j<width; ++j) {
                     if(GET_BIT(j + i*width))
                         SET_OTHER_BIT(copy, i + (height-1-j)*width);
                 }
@@ -1088,15 +1098,15 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     
     if(quarters == 1 || quarters == 3) {
         // swap height and width in size
-        copy->size = [[BASampleArray sampleArrayForSize2d:CGSizeMake(height, width)] retain];
+        copy->size = [[BASampleArray sampleArrayForSize2:BASize2Make(height, width)] retain];
         [copy refreshCount];
     }
     
     return copy;
 }
 
-+ (BABitArray *)bitArrayWithSize:(CGSize)initSize {
-    return [[(BABitArray *)[self alloc] initWithSize:initSize] autorelease];
++ (BABitArray *)bitArrayWithSize2:(BASize2)initSize {
+    return [[(BABitArray *)[self alloc] initWithSize2:initSize] autorelease];
 }
 
 @end
@@ -1104,24 +1114,24 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 
 @implementation BASampleArray (BABitArraySupport)
 
-- (CGSize)size2d {
-    CGSize result;
+- (BASize2)size2 {
+    BASize2 result;
     [self readSamples:(UInt8 *)&result range:NSMakeRange(0, 2)];
     return result;
 }
 
-- (void)size3d:(NSUInteger*)size {
+- (void)size3d:(NSUInteger *)size {
     [self readSamples:(UInt8 *)&size range:NSMakeRange(0, 3)];
 }
 
-+ (BASampleArray *)sampleArrayForSize2d:(CGSize)size {
-    BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(CGFloat)/sizeof(UInt8)] autorelease];
-    [result writeSamples:(UInt8 *)&size range:NSMakeRange(0, 2)];
++ (BASampleArray *)sampleArrayForSize2:(BASize2)size2 {
+    BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:2 size:sizeof(NSInteger)/sizeof(UInt8)] autorelease];
+    [result writeSamples:(UInt8 *)&size2 range:NSMakeRange(0, 2)];
     return result;
 }
 
 + (BASampleArray *)sampleArrayForSize3d:(NSUInteger *)size {
-    BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:3 size:sizeof(NSUInteger)/sizeof(UInt8)] autorelease];
+    BASampleArray *result = [[[BASampleArray alloc] initWithPower:1 order:3 size:sizeof(NSInteger)/sizeof(UInt8)] autorelease];
     [result writeSamples:(UInt8 *)&size range:NSMakeRange(0, 3)];
     return result;
 }

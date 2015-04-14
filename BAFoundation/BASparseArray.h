@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import <BAFoundation/BATypes.h>
+
 
 #define TABLE_SIZE 10
 

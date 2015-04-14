@@ -8,9 +8,19 @@
  */
 
 
+#undef sine
+#undef cosine
+#undef absolute
+
+#if CGFLOAT_IS_DOUBLE
+#define sine sin
+#define cosine cos
+#define absolute fabs
+#else
 #define sine sinf
 #define cosine cosf
 #define absolute fabsf
+#endif
 #define BAInt long
 #define BAUInt unsigned long
 #define NAN_OFFSET LONG_MAX+1  // -1 signed long

@@ -12,8 +12,8 @@
 
 - (UInt16 *)histogram2dInverse:(BOOL)inverse {
 	
-	UInt16 const width = size2d.width;
-	UInt16 const height = size2d.height;
+	UInt16 const width = size2.width;
+	UInt16 const height = size2.height;
 	
 	NSAssert((NSUInteger)width*height == length, @"wrong size info");
 	
@@ -59,8 +59,8 @@
 	
 	UInt16 *histogram = [self inverseHistogram2d];
 	
-	NSInteger w = size2d.width;
-	NSInteger h = size2d.height;
+	NSInteger w = size2.width;
+	NSInteger h = size2.height;
 	
 	CGRect *activeRects = malloc(sizeof(CGRect)*(h+1));
 	*activeRects = CGRectZero;
@@ -116,7 +116,7 @@ end:
 	if(count == length)
 		return CGRectZero;
 	else if(count == 0)
-		return CGRectMake(0, 0, size2d.width, size2d.height);
+		return CGRectMake(0, 0, size2.width, size2.height);
 	
 	__block CGRect best = CGRectZero;
 	
