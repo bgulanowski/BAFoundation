@@ -1,5 +1,5 @@
 //
-//  BATypes.m
+//  BATypes.h
 //  BAFoundation
 //
 //  Created by Brent Gulanowski on 2015-04-13.

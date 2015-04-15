@@ -84,6 +84,7 @@
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
 		84F246431ADCB03300D3C499 /* BATypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F246411ADCAFB400D3C499 /* BATypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84F246451ADD2B5100D3C499 /* BARegion2Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F246441ADD2B5100D3C499 /* BARegion2Test.m */; };
 		84F9A3F21851A28B004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
 		84F9A3F31851A298004E31E4 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */; };
 		84F9EE8517909D83005B6DD1 /* BANoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F9EE8317909D5A005B6DD1 /* BANoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -183,6 +184,7 @@
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BARelationshipProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84F246411ADCAFB400D3C499 /* BATypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATypes.h; sourceTree = "<group>"; };
+		84F246441ADD2B5100D3C499 /* BARegion2Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BARegion2Test.m; sourceTree = "<group>"; };
 		84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		84F9EE8317909D5A005B6DD1 /* BANoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
 		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoise.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -314,6 +316,7 @@
 				84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */,
 				84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */,
 				84357BA218381F8600664A68 /* BANoiseMakerTester.m */,
+				84F246441ADD2B5100D3C499 /* BARegion2Test.m */,
 			);
 			name = "Unit Tests";
 			path = BAFoundationTests;
@@ -550,7 +553,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastTestingUpgradeCheck = 0610;
+				LastTestingUpgradeCheck = 0630;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Lichen Labs";
 				TargetAttributes = {
@@ -624,6 +627,7 @@
 				4E4CC5231338D6BA007AD580 /* BABitArrayTester.m in Sources */,
 				84A0D25E16E27E270010D80D /* SparseBitArrayTest2D.m in Sources */,
 				84A0D25F16E27E270010D80D /* SparseBitArrayTest3D.m in Sources */,
+				84F246451ADD2B5100D3C499 /* BARegion2Test.m in Sources */,
 				84A0D26016E27E270010D80D /* SparseBitArrayTestBasic.m in Sources */,
 				84357BA318381F8600664A68 /* BANoiseMakerTester.m in Sources */,
 			);

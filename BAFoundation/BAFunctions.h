@@ -18,7 +18,7 @@ NS_INLINE NSInteger BARandomIntegerInRange(NSInteger min, NSInteger max) {
 }
 
 NS_INLINE NSInteger powi ( NSInteger base, NSUInteger exp ) {
-    NSInteger result = 1;
+    NSInteger result = base ? 1 : 0;
     while(exp) {
         if (exp & 1)
             result *= base;
@@ -81,8 +81,8 @@ NS_INLINE BOOL BASize2EqualToSize2( BASize2 size1, BASize2 size2 ) {
 
 #pragma mark - Integer Regions
 
-NS_INLINE BARegion2 BARegion2Make(BAPoint2 point, BASize2 size) {
-    return (BARegion2) { point, size };
+NS_INLINE BARegion2 BARegion2Make(NSInteger x, NSInteger y, NSInteger width, NSInteger height) {
+    return (BARegion2) { { x, y }, { width, height } };
 };
 
 NS_INLINE BARegion2 BARegion2Zero( void ) {
@@ -147,10 +147,10 @@ NS_INLINE BOOL BARegion2ContainsRegion2(BARegion2 outer, BARegion2 inner) {
 }
 
 NS_INLINE BARegion2 BARegion2Intersection(BARegion2 first, BARegion2 second) {
-    BAPoint2 bottomLeft = BAPoint2Make(MAX(first.origin.x, second.origin.x), MAX(first.origin.y, first.origin.y));
+    BAPoint2 bottomLeft = BAPoint2Make(MAX(BARegion2GetMinX(first), BARegion2GetMinX(second)), MAX(BARegion2GetMinY(first), BARegion2GetMinY(second)));
     BAPoint2 topRight = BAPoint2Make(MIN(BARegion2GetMaxX(first), BARegion2GetMaxX(second)), MIN(BARegion2GetMaxY(first), BARegion2GetMaxY(second)));
     BASize2 size = BASize2Make(topRight.x - bottomLeft.x, topRight.y - bottomLeft.y);
-    return BARegion2Make(bottomLeft, size);
+    return BARegion2Make(bottomLeft.x, bottomLeft.y, size.width, size.height);
 }
 
 NS_INLINE CGRect BARegion2ToCGRect(BARegion2 region) {
@@ -158,5 +158,5 @@ NS_INLINE CGRect BARegion2ToCGRect(BARegion2 region) {
 }
 
 NS_INLINE BARegion2 BARegion2FromCGRect(CGRect rect) {
-    return BARegion2Make(BAPoint2Make(CGRectGetMinX(rect), CGRectGetMinY(rect)), BASize2Make(CGRectGetWidth(rect), CGRectGetHeight(rect)));
+    return BARegion2Make(CGRectGetMinX(rect), CGRectGetMinY(rect), CGRectGetWidth(rect), CGRectGetHeight(rect));
 }

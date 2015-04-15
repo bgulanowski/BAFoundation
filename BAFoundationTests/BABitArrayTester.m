@@ -9,7 +9,13 @@
 #import "BABitArrayTester.h"
 
 #import <BAFoundation/BABitArray.h>
+#import <BAFoundation/BAFunctions.h>
 
+@interface BABitArray (Testing)
++ (instancetype)testBitArray8by8;
++ (instancetype)testBitArray128by128;
++ (instancetype)testBitArray256by256;
+@end
 
 @implementation BABitArrayTester
 
@@ -107,7 +113,7 @@
 	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
 	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
     
-    ba = [BABitArray bitArrayWithLength:8*8 size:[BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)]];
+    ba = [BABitArray bitArrayWithLength:8*8 size:[BASampleArray sampleArrayForSize2:BASize2Make(8, 8)]];
     
     [ba setDiagonalReverse:NO min:0 max:8];
     STAssertEquals([ba count], (NSUInteger)8, @"Failed count after set diagonal");
@@ -309,18 +315,18 @@
 
 - (void)test32SubArray {
     
-    BABitArray *ba1 = [BABitArray bitArrayWithLength:256*256 size:[BASampleArray sampleArrayForSize2d:NSMakeSize(256, 256)]];
-    NSRect rect = NSMakeRect(64, 64, 128, 128);
-    
-    [ba1 setRect:rect];
+    BABitArray *ba1 = [BABitArray testBitArray256by256];
+    BARegion2 region = BARegion2Make( 64, 64, 128, 128);
+
+    [ba1 setRegion2:region];
     
     NSUInteger e = (NSUInteger)128*128;
     NSUInteger a = [ba1 count];
     
     STAssertEquals(a, e, @"setRect: failed; count is wrong. Expected: %u. Actual: %u", (unsigned)e, (unsigned)a);
     
-    BABitArray *ba = (BABitArray *)[ba1 subArrayWithRect:rect];
-    BABitArray *be = [BABitArray bitArrayWithLength:e size:[BASampleArray sampleArrayForSize2d:NSMakeSize(128, 128)]];
+    BABitArray *ba = (BABitArray *)[ba1 subArrayWithRegion:region];
+    BABitArray *be = [BABitArray testBitArray128by128];
     
     [be setAll];
     
@@ -329,13 +335,11 @@
 
 - (void)test40RowFlip {
     
-    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
-    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
-    
+    BABitArray *ba1 = [BABitArray testBitArray8by8];
     [ba1 setDiagonalReverse:NO min:0 max:8];
     [ba1 setRow:6 min:0 max:8];
     
-    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *e = [BABitArray testBitArray8by8];
     [e setDiagonalReverse:YES min:0 max:8];
     [e setRow:1 min:0 max:8];
     
@@ -346,13 +350,11 @@
 
 - (void)test41ColumnFlip {
     
-    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
-    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
-    
+    BABitArray *ba1 = [BABitArray testBitArray8by8];
     [ba1 setDiagonalReverse:NO min:0 max:8];
     [ba1 setColumn:6 min:0 max:8];
     
-    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *e = [BABitArray testBitArray8by8];
     [e setDiagonalReverse:YES min:0 max:8];
     [e setColumn:1 min:0 max:8];
 
@@ -363,13 +365,11 @@
 
 - (void)test42Rotation90 {
     
-    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
-    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
-    
+    BABitArray *ba1 = [BABitArray testBitArray8by8];
     [ba1 setDiagonalReverse:NO min:0 max:8];
     [ba1 setColumn:5 min:0 max:8];
     
-    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *e = [BABitArray testBitArray8by8];
     [e setDiagonalReverse:YES min:0 max:8];
     [e setRow:5 min:0 max:8];
     
@@ -380,14 +380,13 @@
 
 - (void)test43Rotation180 {
     
-    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
-    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *ba1 = [BABitArray testBitArray8by8];
     
     [ba1 setDiagonalReverse:NO min:0 max:8];
     [ba1 setColumn:2 min:0 max:8];
     [ba1 setRow:4 min:0 max:8];
     
-    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *e = [BABitArray testBitArray8by8];
     [e setDiagonalReverse:NO min:0 max:8];
     [e setColumn:5 min:0 max:8];
     [e setRow:3 min:0 max:8];
@@ -399,13 +398,12 @@
 
 - (void)test44Rotation270 {
     
-    BASampleArray *sa = [BASampleArray sampleArrayForSize2d:NSMakeSize(8, 8)];
-    BABitArray *ba1 = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *ba1 = [BABitArray testBitArray8by8];
     
     [ba1 setDiagonalReverse:NO min:0 max:8];
     [ba1 setColumn:2 min:0 max:8];
     
-    BABitArray *e = [BABitArray bitArrayWithLength:8*8 size:sa];
+    BABitArray *e = [BABitArray testBitArray8by8];
     [e setDiagonalReverse:YES min:0 max:8];
     [e setRow:5 min:0 max:8];
     
@@ -438,6 +436,28 @@
 - (void)setColumn:(NSUInteger)column min:(NSUInteger)min max:(NSUInteger)max {
     for (NSUInteger i=min; i<max; ++i)
         [self setBitAtX:column y:i];
+}
+
+@end
+
+@implementation BABitArray (Testing)
+
++ (instancetype)testBitArrayWithSize2:(BASize2)size2 {
+    BASampleArray *sa = [BASampleArray sampleArrayForSize2:size2];
+    return [BABitArray bitArrayWithLength:size2.width * size2.height size:sa];
+
+}
+
++ (instancetype)testBitArray128by128 {
+    return [self testBitArrayWithSize2:BASize2Make(128, 128)];
+}
+
++ (instancetype)testBitArray256by256 {
+    return [self testBitArrayWithSize2:BASize2Make(256, 256)];
+}
+
++ (instancetype)testBitArray8by8 {
+    return [self testBitArrayWithSize2:BASize2Make(8, 8)];
 }
 
 @end

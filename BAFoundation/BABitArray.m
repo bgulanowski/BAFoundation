@@ -880,12 +880,12 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 }
 
 
-#define REGION2_ASSERT(region, size2) NSAssert(BARegionGetQuadrant(region) == BAQuadrant0 && BARegion2ContainsRegion2(region, BARegion2Make(BAPoint2Make(0,0), size2)), @"error")
+#define REGION2_ASSERT(region, size2) NSAssert(BARegionGetQuadrant(region) == BAQuadrant0 && BARegion2ContainsRegion2(BARegion2Make(0, 0, size2.width, size2.height), region), @"error")
 
 - (void)updateRegion2:(BARegion2)region set:(BOOL)set {
     
     BIT_ARRAY_SIZE_ASSERT();
-    REGION2_ASSERT(region, self.size.size2);
+    REGION2_ASSERT(region, size2);
     
     NSRange range = NSMakeRange(region.origin.x+size2.width*region.origin.y, region.size.width);
     NSInteger delta = 0;

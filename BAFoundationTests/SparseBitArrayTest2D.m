@@ -131,53 +131,53 @@
     }
     
     NSString *e = [strings componentsJoinedByString:@"\n"];
-    NSString *a = [_array stringForRect];
+    NSString *a = [_array stringForRegion2];
     
     STAssertEqualObjects(a, e, @"String creation failed.");
 }
 
 - (void)testWriteRect {
     
-    NSRect setRect = NSMakeRect(8, 8, 32, 32);
-    NSRect clrRect = NSMakeRect(16, 16, 16, 16);
+    BARegion2 setRegion = BARegion2Make(8, 8, 32, 32);
+    BARegion2 clrRegion = BARegion2Make(16, 16, 16, 16);
     
-    [_array setRect:setRect];
-    [_array clearRect:clrRect];
+    [_array setRegion2:setRegion];
+    [_array clearRegion2:clrRegion];
     
     STAssertEquals([_array count], (NSUInteger) (32*32 - 16*16), @"count failed");
     
-    NSString *string = [_array stringForRect];
+    NSString *string = [_array stringForRegion2];
     
     STAssertEquals([string length], [_array treeSize]+[_array treeBase]-1, @"whaaa");
     
-    NSRect rect = NSMakeRect(0, 0, BASE, BASE);
-    id<BABitArray2D> ba = [_array subArrayWithRect:rect];
+    BARegion2 region = BARegion2Make(0, 0, BASE, BASE);
+    id<BABitArray2D> ba = [_array subArrayWithRegion:region];
     
     STAssertEquals([ba count], (NSUInteger)8*8, @"Wrong count");
     
-    string = [_array stringForRect:rect];
-    NSString *other = [ba stringForRect];
+    string = [_array stringForRegion2:region];
+    NSString *other = [ba stringForRegion2];
     
     STAssertNotNil(ba, @"Failed to create subarray");
     
     STAssertEqualObjects(other, string, @"string creation failed");
     
-    rect = NSMakeRect(4, 4, 20, 10);
+    region = BARegion2Make(4, 4, 20, 10);
     
-    NSUInteger length = rect.size.width * rect.size.height;
-    NSRect intersection = NSIntersectionRect(rect, setRect);
-    NSUInteger count = intersection.size.width*intersection.size.height;
+    NSUInteger length = BARegion2Area(region);
+    BARegion2 intersection = BARegion2Intersection(region, setRegion);
+    NSUInteger count = BARegion2Area(intersection);
 
-    ba = [_array subArrayWithRect:rect];
+    ba = [_array subArrayWithRegion:region];
     STAssertEquals(ba.length, length, @"wrong length");
     STAssertEquals(ba.count, count, @"wrong count");
 
-    NSUInteger stringLength = length + rect.size.height - 1;
+    NSUInteger stringLength = length + region.size.height - 1;
 
-    string = [_array stringForRect:rect];
+    string = [_array stringForRegion2:region];
     STAssertEquals([string length], stringLength, @"wrong string length");
 
-    other = [ba stringForRect];
+    other = [ba stringForRegion2];
     STAssertEquals([other length], stringLength, @"wrong string length");
     
     STAssertEqualObjects(string, other, @"string creation failed");

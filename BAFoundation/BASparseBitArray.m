@@ -432,7 +432,7 @@
         
         for (NSUInteger i=0; i<4; ++i) {
             
-            BARegion2 subRegion = BARegion2Intersection(region, BARegion2Make(BAPoint2Make(i&1 ? childBase : 0, i&2 ? childBase : 0), BASize2Make(childBase, childBase)));
+            BARegion2 subRegion = BARegion2Intersection(region, BARegion2Make(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
             if (BARegion2IsEmpty(subRegion)) {
                 continue;
             }
@@ -481,7 +481,7 @@
 			dispatch_group_enter(group);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 
-                BARegion2 subRect = BARegion2Intersection(region, BARegion2Make(BAPoint2Make(i&1 ? childBase : 0, i&2 ? childBase : 0), BASize2Make(childBase, childBase)));
+                BARegion2 subRect = BARegion2Intersection(region, BARegion2Make(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
                 BAPoint2 offset = origin;
                 
                 if(!BARegion2IsEmpty(subRect)) {
@@ -650,7 +650,7 @@ static NSArray *BlanksForRegion(BARegion2 region) {
     
     for (NSUInteger i=0; i<4; ++i) {
         
-        BARegion2 childRegion = BARegion2Make(BAPoint2Make(i&1 ? childBase : 0, i&2 ? childBase : 0), BASize2Make(childBase, childBase));
+        BARegion2 childRegion = BARegion2Make(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase);
         BARegion2 subRegion = BARegion2Intersection(region, childRegion);
         
         if(BARegion2IsEmpty(subRegion)) {
@@ -704,7 +704,7 @@ static NSArray *BlanksForRegion(BARegion2 region) {
 }
 
 - (NSString *)stringForRegion2 {
-    return [[self rowStringsForRegion2:BARegion2Make(BAPoint2Zero(), BASize2Make(_treeBase, _treeBase))] componentsJoinedByString:@"\n"];
+    return [[self rowStringsForRegion2:BARegion2Make( 0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
 }
 
 @end
