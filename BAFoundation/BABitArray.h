@@ -52,7 +52,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 
 @protocol BABitArray2D <BABitArray>
 
-- (id)initWithBitArray:(id<BABitArray>)otherArray region:(BARegion2)region;
+- (id)initWithBitArray:(id<BABitArray>)otherArray region:(BARegion)region;
 
 - (BASampleArray *)size;
 
@@ -70,17 +70,17 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (void)setBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 - (void)clearBitAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 
-- (void)setRegion2:(BARegion2)region;
-- (void)clearRegion2:(BARegion2)region;
+- (void)setRegion:(BARegion)region;
+- (void)clearRegion:(BARegion)region;
 
-- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin;
+- (void)writeRegion:(BARegion)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin;
 
-- (id<BABitArray2D>)subArrayWithRegion:(BARegion2)region;
+- (id<BABitArray2D>)subArrayWithRegion:(BARegion)region;
 
 @optional
-- (NSArray *)rowStringsForRegion2:(BARegion2)region;
-- (NSString *)stringForRegion2:(BARegion2)region;
-- (NSString *)stringForRegion2;
+- (NSArray *)rowStringsForRegion:(BARegion)region;
+- (NSString *)stringForRegion:(BARegion)region;
+- (NSString *)stringForRegion;
 
 @end
 
@@ -154,7 +154,7 @@ typedef void (^BABitArrayEnumerator) (NSUInteger bit);
 - (BABitArray *)bitArrayByFlippingColumns;
 - (BABitArray *)bitArrayByFlippingRows;
 - (BABitArray *)bitArrayByRotating:(NSInteger)quarters; // "quarters" are increments are 90 degrees
-- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray;
+- (void)writeRegion:(BARegion)region fromArray:(id<BABitArray2D>)bitArray;
 + (BABitArray *)bitArrayWithSize2:(BASize2)initSize;
 @end
 

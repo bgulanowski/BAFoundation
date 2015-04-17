@@ -21,7 +21,7 @@ typedef struct {
 typedef struct {
     BAPoint2 origin;
     BASize2 size;
-} BARegion2;
+} BARegion;
 
 typedef NS_ENUM(NSUInteger, BAQuadrant) {
     BAQuadrant00 = 0x01, // +X, +Y

@@ -131,42 +131,42 @@
     }
     
     NSString *e = [strings componentsJoinedByString:@"\n"];
-    NSString *a = [_array stringForRegion2];
+    NSString *a = [_array stringForRegion];
     
     XCTAssertEqualObjects(a, e, @"String creation failed.");
 }
 
 - (void)testWriteRect {
     
-    BARegion2 setRegion = BARegion2Make(8, 8, 32, 32);
-    BARegion2 clrRegion = BARegion2Make(16, 16, 16, 16);
+    BARegion setRegion = BARegionMake(8, 8, 32, 32);
+    BARegion clrRegion = BARegionMake(16, 16, 16, 16);
     
-    [_array setRegion2:setRegion];
-    [_array clearRegion2:clrRegion];
+    [_array setRegion:setRegion];
+    [_array clearRegion:clrRegion];
     
     XCTAssertEqual([_array count], (NSUInteger) (32*32 - 16*16), @"count failed");
     
-    NSString *string = [_array stringForRegion2];
+    NSString *string = [_array stringForRegion];
     
     XCTAssertEqual([string length], [_array treeSize]+[_array treeBase]-1, @"whaaa");
     
-    BARegion2 region = BARegion2Make(0, 0, BASE, BASE);
+    BARegion region = BARegionMake(0, 0, BASE, BASE);
     id<BABitArray2D> ba = [_array subArrayWithRegion:region];
     
     XCTAssertEqual([ba count], (NSUInteger)8*8, @"Wrong count");
     
-    string = [_array stringForRegion2:region];
-    NSString *other = [ba stringForRegion2];
+    string = [_array stringForRegion:region];
+    NSString *other = [ba stringForRegion];
     
     XCTAssertNotNil(ba, @"Failed to create subarray");
     
     XCTAssertEqualObjects(other, string, @"string creation failed");
     
-    region = BARegion2Make(4, 4, 20, 10);
+    region = BARegionMake(4, 4, 20, 10);
     
-    NSUInteger length = BARegion2Area(region);
-    BARegion2 intersection = BARegion2Intersection(region, setRegion);
-    NSUInteger count = BARegion2Area(intersection);
+    NSUInteger length = BARegionArea(region);
+    BARegion intersection = BARegionIntersection(region, setRegion);
+    NSUInteger count = BARegionArea(intersection);
 
     ba = [_array subArrayWithRegion:region];
     XCTAssertEqual(ba.length, length, @"wrong length");
@@ -174,10 +174,10 @@
 
     NSUInteger stringLength = length + region.size.height - 1;
 
-    string = [_array stringForRegion2:region];
+    string = [_array stringForRegion:region];
     XCTAssertEqual([string length], stringLength, @"wrong string length");
 
-    other = [ba stringForRegion2];
+    other = [ba stringForRegion];
     XCTAssertEqual([other length], stringLength, @"wrong string length");
     
     XCTAssertEqualObjects(string, other, @"string creation failed");

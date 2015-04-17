@@ -92,101 +92,101 @@ NS_INLINE BOOL BASize2EqualToSize2( BASize2 size1, BASize2 size2 ) {
 
 #pragma mark - Integer Regions
 
-NS_INLINE BARegion2 BARegion2Make(NSInteger x, NSInteger y, NSInteger width, NSInteger height) {
-    return (BARegion2) { { x, y }, { width, height } };
+NS_INLINE BARegion BARegionMake(NSInteger x, NSInteger y, NSInteger width, NSInteger height) {
+    return (BARegion) { { x, y }, { width, height } };
 };
 
-NS_INLINE BARegion2 BARegion2Zero( void ) {
-    return (BARegion2) { 0, 0 };
+NS_INLINE BARegion BARegionZero( void ) {
+    return (BARegion) { 0, 0 };
 };
 
-NS_INLINE BOOL BARegion2EqualToRegion2(BARegion2 region1, BARegion2 region2) {
+NS_INLINE BOOL BARegionEqualToRegion(BARegion region1, BARegion region2) {
     return BAPoint2EqualToPoint2(region1.origin, region2.origin) && BASize2EqualToSize2(region1.size, region2.size);
 }
 
-NS_INLINE BAPoint2 BARegion2GetOrigin(BARegion2 region) {
+NS_INLINE BAPoint2 BARegionGetOrigin(BARegion region) {
     return region.origin;
 }
 
-NS_INLINE BASize2 BARegion2GetSize(BARegion2 region) {
+NS_INLINE BASize2 BARegionGetSize(BARegion region) {
     return region.size;
 }
 
-NS_INLINE NSInteger BARegion2GetWidth(BARegion2 region) {
+NS_INLINE NSInteger BARegionGetWidth(BARegion region) {
     return region.size.width;
 }
 
-NS_INLINE NSInteger BARegion2GetHeight(BARegion2 region) {
+NS_INLINE NSInteger BARegionGetHeight(BARegion region) {
     return region.size.height;
 }
 
-NS_INLINE NSInteger BARegion2Area(BARegion2 region) {
+NS_INLINE NSInteger BARegionArea(BARegion region) {
     return region.size.width * region.size.height;
 }
 
-NS_INLINE NSInteger BARegion2GetMinX(BARegion2 region) {
+NS_INLINE NSInteger BARegionGetMinX(BARegion region) {
     return region.origin.x;
 }
 
-NS_INLINE NSInteger BARegion2GetMaxX(BARegion2 region) {
+NS_INLINE NSInteger BARegionGetMaxX(BARegion region) {
     return region.origin.x + region.size.width;
 }
 
-NS_INLINE NSInteger BARegion2GetMinY(BARegion2 region) {
+NS_INLINE NSInteger BARegionGetMinY(BARegion region) {
     return region.origin.y;
 }
 
-NS_INLINE NSInteger BARegion2GetMaxY(BARegion2 region) {
+NS_INLINE NSInteger BARegionGetMaxY(BARegion region) {
     return region.origin.y + region.size.height;
 }
 
-NS_INLINE BAPoint2 BARegion2GetBottomLeft(BARegion2 region) {
-    return BAPoint2Make(BARegion2GetMinX(region), BARegion2GetMinY(region));
+NS_INLINE BAPoint2 BARegionGetBottomLeft(BARegion region) {
+    return BAPoint2Make(BARegionGetMinX(region), BARegionGetMinY(region));
 }
 
-NS_INLINE BAPoint2 BARegion2GetBottomRight(BARegion2 region) {
-    return BAPoint2Make(BARegion2GetMaxX(region), BARegion2GetMinY(region));
+NS_INLINE BAPoint2 BARegionGetBottomRight(BARegion region) {
+    return BAPoint2Make(BARegionGetMaxX(region), BARegionGetMinY(region));
 }
 
-NS_INLINE BAPoint2 BARegion2GetTopLeft(BARegion2 region) {
-    return BAPoint2Make(BARegion2GetMinX(region), BARegion2GetMaxY(region));
+NS_INLINE BAPoint2 BARegionGetTopLeft(BARegion region) {
+    return BAPoint2Make(BARegionGetMinX(region), BARegionGetMaxY(region));
 }
 
-NS_INLINE BAPoint2 BARegion2GetTopRight(BARegion2 region) {
-    return BAPoint2Make(BARegion2GetMaxX(region), BARegion2GetMaxY(region));
+NS_INLINE BAPoint2 BARegionGetTopRight(BARegion region) {
+    return BAPoint2Make(BARegionGetMaxX(region), BARegionGetMaxY(region));
 }
 
-NS_INLINE BOOL BARegion2IsEmpty(BARegion2 region) {
+NS_INLINE BOOL BARegionIsEmpty(BARegion region) {
     return region.size.width <= 0 || region.size.height <= 0;
 }
 
-NS_INLINE BAQuadrant BARegion2GetQuadrant(BARegion2 region) {
-    BAQuadrant qbl = BAPoint2GetQuadrant(BARegion2GetBottomLeft(region));
-    BAQuadrant qbr = BAPoint2GetQuadrant(BARegion2GetBottomRight(region));
-    BAQuadrant qtl = BAPoint2GetQuadrant(BARegion2GetTopLeft(region));
-    BAQuadrant qtr = BAPoint2GetQuadrant(BARegion2GetTopRight(region));
+NS_INLINE BAQuadrant BARegionGetQuadrant(BARegion region) {
+    BAQuadrant qbl = BAPoint2GetQuadrant(BARegionGetBottomLeft(region));
+    BAQuadrant qbr = BAPoint2GetQuadrant(BARegionGetBottomRight(region));
+    BAQuadrant qtl = BAPoint2GetQuadrant(BARegionGetTopLeft(region));
+    BAQuadrant qtr = BAPoint2GetQuadrant(BARegionGetTopRight(region));
     
     return qbl | qbr | qtl | qtr;
 }
 
-NS_INLINE BOOL BARegion2ContainsRegion2(BARegion2 outer, BARegion2 inner) {
-    return (BARegion2GetMinX(outer) <= BARegion2GetMinX(inner) &&
-            BARegion2GetMaxX(outer) >= BARegion2GetMaxX(inner) &&
-            BARegion2GetMinY(outer) <= BARegion2GetMinY(inner) &&
-            BARegion2GetMaxY(outer) >= BARegion2GetMaxY(inner));
+NS_INLINE BOOL BARegionContainsRegion(BARegion outer, BARegion inner) {
+    return (BARegionGetMinX(outer) <= BARegionGetMinX(inner) &&
+            BARegionGetMaxX(outer) >= BARegionGetMaxX(inner) &&
+            BARegionGetMinY(outer) <= BARegionGetMinY(inner) &&
+            BARegionGetMaxY(outer) >= BARegionGetMaxY(inner));
 }
 
-NS_INLINE BARegion2 BARegion2Intersection(BARegion2 first, BARegion2 second) {
-    BAPoint2 bottomLeft = BAPoint2Make(MAX(BARegion2GetMinX(first), BARegion2GetMinX(second)), MAX(BARegion2GetMinY(first), BARegion2GetMinY(second)));
-    BAPoint2 topRight = BAPoint2Make(MIN(BARegion2GetMaxX(first), BARegion2GetMaxX(second)), MIN(BARegion2GetMaxY(first), BARegion2GetMaxY(second)));
+NS_INLINE BARegion BARegionIntersection(BARegion first, BARegion second) {
+    BAPoint2 bottomLeft = BAPoint2Make(MAX(BARegionGetMinX(first), BARegionGetMinX(second)), MAX(BARegionGetMinY(first), BARegionGetMinY(second)));
+    BAPoint2 topRight = BAPoint2Make(MIN(BARegionGetMaxX(first), BARegionGetMaxX(second)), MIN(BARegionGetMaxY(first), BARegionGetMaxY(second)));
     BASize2 size = BASize2Make(topRight.x - bottomLeft.x, topRight.y - bottomLeft.y);
-    return BARegion2Make(bottomLeft.x, bottomLeft.y, size.width, size.height);
+    return BARegionMake(bottomLeft.x, bottomLeft.y, size.width, size.height);
 }
 
-NS_INLINE CGRect BARegion2ToCGRect(BARegion2 region) {
-    return CGRectMake(BARegion2GetMinX(region), BARegion2GetMinY(region), BARegion2GetWidth(region), BARegion2GetHeight(region));
+NS_INLINE CGRect BARegionToCGRect(BARegion region) {
+    return CGRectMake(BARegionGetMinX(region), BARegionGetMinY(region), BARegionGetWidth(region), BARegionGetHeight(region));
 }
 
-NS_INLINE BARegion2 BARegion2FromCGRect(CGRect rect) {
-    return BARegion2Make(CGRectGetMinX(rect), CGRectGetMinY(rect), CGRectGetWidth(rect), CGRectGetHeight(rect));
+NS_INLINE BARegion BARegionFromCGRect(CGRect rect) {
+    return BARegionMake(CGRectGetMinX(rect), CGRectGetMinY(rect), CGRectGetWidth(rect), CGRectGetHeight(rect));
 }

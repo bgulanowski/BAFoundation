@@ -360,7 +360,7 @@
 
 
 @interface BABitArray (ExposedPrivates)
-- (void)updateRegion2:(BARegion2)region set:(BOOL)set;
+- (void)updateRegion:(BARegion)region set:(BOOL)set;
 
 @end
 
@@ -419,10 +419,10 @@
     [self updateBitAtX:x y:y z:z set:NO];
 }
 
-- (void)recursiveUpdateRegion2:(BARegion2)region set:(BOOL)set {
+- (void)recursiveUpdateRegion:(BARegion)region set:(BOOL)set {
     
     if(0 == _level) {
-        [self.bits updateRegion2:region set:set];
+        [self.bits updateRegion:region set:set];
         if(_refreshBlock)
             _refreshBlock(self);
     }
@@ -432,8 +432,8 @@
         
         for (NSUInteger i=0; i<4; ++i) {
             
-            BARegion2 subRegion = BARegion2Intersection(region, BARegion2Make(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
-            if (BARegion2IsEmpty(subRegion)) {
+            BARegion subRegion = BARegionIntersection(region, BARegionMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+            if (BARegionIsEmpty(subRegion)) {
                 continue;
             }
             
@@ -442,31 +442,31 @@
             if(i&2)
                 subRegion.origin.y -= childBase;
             
-            [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveUpdateRegion2:subRegion set:set];
+            [(BASparseBitArray *)[self childAtIndex:i create:YES] recursiveUpdateRegion:subRegion set:set];
         }
     }
 }
 
-- (void)updateRegion2:(BARegion2)region set:(BOOL)set {
+- (void)updateRegion:(BARegion)region set:(BOOL)set {
     
-    NSUInteger maxIndex = StorageIndexFor2DCoordinates(BARegion2GetMaxX(region), BARegion2GetMaxY(region), _treeBase);
+    NSUInteger maxIndex = StorageIndexFor2DCoordinates(BARegionGetMaxX(region), BARegionGetMaxY(region), _treeBase);
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex+1];
-    [self recursiveUpdateRegion2:region set:set];
+    [self recursiveUpdateRegion:region set:set];
 }
 
-- (void)setRegion2:(BARegion2)region {
-    [self updateRegion2:region set:YES];
+- (void)setRegion:(BARegion)region {
+    [self updateRegion:region set:YES];
 }
 
-- (void)clearRegion2:(BARegion2)region {
-    [self updateRegion2:region set:NO];
+- (void)clearRegion:(BARegion)region {
+    [self updateRegion:region set:NO];
 }
 
-- (void)recursiveWriteRegion:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin dispatchGroup:(dispatch_group_t)group {
+- (void)recursiveWriteRegion:(BARegion)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin dispatchGroup:(dispatch_group_t)group {
     
     if(0 == _level) {
-        [self.bits writeRegion2:region fromArray:bitArray offset:origin];
+        [self.bits writeRegion:region fromArray:bitArray offset:origin];
         if(_refreshBlock)
             _refreshBlock(self);
     }
@@ -481,10 +481,10 @@
 			dispatch_group_enter(group);
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 
-                BARegion2 subRect = BARegion2Intersection(region, BARegion2Make(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
+                BARegion subRect = BARegionIntersection(region, BARegionMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase));
                 BAPoint2 offset = origin;
                 
-                if(!BARegion2IsEmpty(subRect)) {
+                if(!BARegionIsEmpty(subRect)) {
                     
                     if(i&1) {
                         subRect.origin.x -= childBase;
@@ -547,9 +547,9 @@
     return count;
 }
 
-- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin {
+- (void)writeRegion:(BARegion)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin {
 
-    NSUInteger maxIndex = StorageIndexFor2DCoordinates(BARegion2GetMaxX(region), BARegion2GetMaxY(region), _treeBase);
+    NSUInteger maxIndex = StorageIndexFor2DCoordinates(BARegionGetMaxX(region), BARegionGetMaxY(region), _treeBase);
     
     if(maxIndex >= _treeSize)
         [self expandToFitSize:maxIndex+1];
@@ -562,22 +562,22 @@
 	});
 }
 
-- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray {
-    [self writeRegion2:region fromArray:bitArray offset:BAPoint2Zero()];
+- (void)writeRegion:(BARegion)region fromArray:(id<BABitArray2D>)bitArray {
+    [self writeRegion:region fromArray:bitArray offset:BAPoint2Zero()];
 }
 
-- (id<BABitArray2D>)subArrayWithRegion:(BARegion2)region {
+- (id<BABitArray2D>)subArrayWithRegion:(BARegion)region {
     
-    BABitArray *subArray = [[BABitArray alloc] initWithLength:BARegion2Area(region) size:[BASampleArray sampleArrayForSize2:region.size]];
-    NSUInteger width = BARegion2GetWidth(region);
-    NSUInteger height = BARegion2GetHeight(region);
+    BABitArray *subArray = [[BABitArray alloc] initWithLength:BARegionArea(region) size:[BASampleArray sampleArrayForSize2:region.size]];
+    NSUInteger width = BARegionGetWidth(region);
+    NSUInteger height = BARegionGetHeight(region);
     BOOL *bits = malloc(width);
     
     for (NSUInteger y=0; y < height; ++y) {
 
         NSRange destRange = NSMakeRange(y * width, width);
         
-        [self readBits:bits fromX:BARegion2GetMinX(region) y:BARegion2GetMinY(region) + y length:width];
+        [self readBits:bits fromX:BARegionGetMinX(region) y:BARegionGetMinY(region) + y length:width];
         [subArray writeBits:bits range:destRange];
     }
     
@@ -586,9 +586,9 @@
     return [subArray autorelease];
 }
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray region:(BARegion2)region {
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray region:(BARegion)region {
 
-    NSUInteger max = BARegion2GetHeight(region) > BARegion2GetWidth(region) ? BARegion2GetHeight(region) : BARegion2GetWidth(region);
+    NSUInteger max = BARegionGetHeight(region) > BARegionGetWidth(region) ? BARegionGetHeight(region) : BARegionGetWidth(region);
     NSUInteger base = NextPowerOf2((uint32_t)max);
 
 #if 0
@@ -602,14 +602,14 @@
         BAPoint2 origin = region.origin;
         region.origin = BAPoint2Zero();
 
-        [self writeRegion2:region fromArray:otherArray offset:origin];
+        [self writeRegion:region fromArray:otherArray offset:origin];
     }
     
     return self;
 }
 
 
-static NSArray *BlanksForRegion(BARegion2 region) {
+static NSArray *BlanksForRegion(BARegion region) {
     
     NSUInteger count = region.size.width;
     char *str = malloc(sizeof(char)*count+1);
@@ -625,7 +625,7 @@ static NSArray *BlanksForRegion(BARegion2 region) {
     return [[array copy] autorelease];
 }
 
-- (NSArray *)rowStringsForRegion2:(BARegion2)region {
+- (NSArray *)rowStringsForRegion:(BARegion)region {
     
     // Recursion through children, or iteration over the included leaves?
     // Either way, we have to do some stitching as we convert between coordinate systems
@@ -634,12 +634,12 @@ static NSArray *BlanksForRegion(BARegion2 region) {
     // I vote for recursion: we re-stitch the row strings at each level
     
     // We don't need to expand -- uninitialized space is filled with blanks ('_' characters)
-    if(BARegion2IsEmpty(region))
+    if(BARegionIsEmpty(region))
         return nil;
     
     if(0 == _level) {
         if(_bits)
-            return [_bits rowStringsForRegion2:region];
+            return [_bits rowStringsForRegion:region];
         else
             return BlanksForRegion(region);
     }
@@ -650,10 +650,10 @@ static NSArray *BlanksForRegion(BARegion2 region) {
     
     for (NSUInteger i=0; i<4; ++i) {
         
-        BARegion2 childRegion = BARegion2Make(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase);
-        BARegion2 subRegion = BARegion2Intersection(region, childRegion);
+        BARegion childRegion = BARegionMake(i&1 ? childBase : 0, i&2 ? childBase : 0, childBase, childBase);
+        BARegion subRegion = BARegionIntersection(region, childRegion);
         
-        if(BARegion2IsEmpty(subRegion)) {
+        if(BARegionIsEmpty(subRegion)) {
             childStrings[i] = NULL;
             continue;
         }
@@ -665,7 +665,7 @@ static NSArray *BlanksForRegion(BARegion2 region) {
         
         id child = [_children objectAtIndex:i];
 
-        childStrings[i] = child == [NSNull null] ? BlanksForRegion(subRegion) : [child rowStringsForRegion2:subRegion];
+        childStrings[i] = child == [NSNull null] ? BlanksForRegion(subRegion) : [child rowStringsForRegion:subRegion];
     }
     
     NSMutableArray *rowStrings = [NSMutableArray array];
@@ -699,12 +699,12 @@ static NSArray *BlanksForRegion(BARegion2 region) {
     return [[rowStrings copy] autorelease];
 }
 
-- (NSString *)stringForRegion2:(BARegion2)region {
-    return [[self rowStringsForRegion2:region] componentsJoinedByString:@"\n"];
+- (NSString *)stringForRegion:(BARegion)region {
+    return [[self rowStringsForRegion:region] componentsJoinedByString:@"\n"];
 }
 
-- (NSString *)stringForRegion2 {
-    return [[self rowStringsForRegion2:BARegion2Make( 0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
+- (NSString *)stringForRegion {
+    return [[self rowStringsForRegion:BARegionMake( 0, 0, _treeBase, _treeBase)] componentsJoinedByString:@"\n"];
 }
 
 @end

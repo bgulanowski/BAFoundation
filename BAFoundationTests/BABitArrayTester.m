@@ -316,9 +316,9 @@
 - (void)test32SubArray {
     
     BABitArray *ba1 = [BABitArray testBitArray256by256];
-    BARegion2 region = BARegion2Make( 64, 64, 128, 128);
+    BARegion region = BARegionMake( 64, 64, 128, 128);
 
-    [ba1 setRegion2:region];
+    [ba1 setRegion:region];
     
     NSUInteger e = (NSUInteger)128*128;
     NSUInteger a = [ba1 count];

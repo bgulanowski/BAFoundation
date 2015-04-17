@@ -880,9 +880,9 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
 }
 
 
-#define REGION2_ASSERT(region, size2) NSAssert(BARegion2GetQuadrant(region) == BAQuadrant0 && BARegion2ContainsRegion2(BARegion2Make(0, 0, size2.width, size2.height), region), @"error")
+#define REGION2_ASSERT(region, size2) NSAssert(BARegionGetQuadrant(region) == BAQuadrant0 && BARegionContainsRegion(BARegionMake(0, 0, size2.width, size2.height), region), @"error")
 
-- (void)updateRegion2:(BARegion2)region set:(BOOL)set {
+- (void)updateRegion:(BARegion)region set:(BOOL)set {
     
     BIT_ARRAY_SIZE_ASSERT();
     REGION2_ASSERT(region, size2);
@@ -902,23 +902,23 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     NSAssert([self checkCount], @"count incorrect");
 }
 
-- (void)setRegion2:(BARegion2)region {
-    [self updateRegion2:region set:YES];
+- (void)setRegion:(BARegion)region {
+    [self updateRegion:region set:YES];
 }
 
-- (void)clearRegion2:(BARegion2)region {
-    [self updateRegion2:region set:NO];
+- (void)clearRegion:(BARegion)region {
+    [self updateRegion:region set:NO];
 }
 
-- (void)writeRegion2:(BARegion2)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin {
+- (void)writeRegion:(BARegion)region fromArray:(id<BABitArray2D>)bitArray offset:(BAPoint2)origin {
     
     BASize2 sourceSize = bitArray.size.size2;
     
     BIT_ARRAY_SIZE_ASSERT();
     REGION2_ASSERT(region, self.size.size2);
 
-    NSRange sourceRange = NSMakeRange(origin.x + sourceSize.width * origin.y, BARegion2GetWidth(region));
-    NSRange destRange = NSMakeRange(region.origin.x + size2.width * region.origin.y, BARegion2GetWidth(region));
+    NSRange sourceRange = NSMakeRange(origin.x + sourceSize.width * origin.y, BARegionGetWidth(region));
+    NSRange destRange = NSMakeRange(region.origin.x + size2.width * region.origin.y, BARegionGetWidth(region));
     
     // TODO: Replace with more effective implementation
     BOOL *bits = malloc(region.size.width*sizeof(BOOL));
@@ -933,34 +933,34 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     free(bits);
 }
 
-- (void)writeRegion2:(BARegion2)rect fromArray:(BABitArray *)bitArray {
-    [self writeRegion2:rect fromArray:bitArray offset:BAPoint2Zero()];
+- (void)writeRegion:(BARegion)rect fromArray:(BABitArray *)bitArray {
+    [self writeRegion:rect fromArray:bitArray offset:BAPoint2Zero()];
 }
 
-- (id<BABitArray2D>)subArrayWithRegion:(BARegion2)region {
+- (id<BABitArray2D>)subArrayWithRegion:(BARegion)region {
     
-    BABitArray *result = [BABitArray bitArrayWithLength:BARegion2Area(region) size:[BASampleArray sampleArrayForSize2:region.size]];
+    BABitArray *result = [BABitArray bitArrayWithLength:BARegionArea(region) size:[BASampleArray sampleArrayForSize2:region.size]];
     BAPoint2 origin = region.origin;
     region.origin = BAPoint2Zero();
-    [result writeRegion2:region fromArray:self offset:origin];
+    [result writeRegion:region fromArray:self offset:origin];
     return result;
 }
 
-- (id)initWithBitArray:(id<BABitArray2D>)otherArray region:(BARegion2)region {
-    self = [self initWithLength:BARegion2Area(region) size:[BASampleArray sampleArrayForSize2:region.size]];
+- (id)initWithBitArray:(id<BABitArray2D>)otherArray region:(BARegion)region {
+    self = [self initWithLength:BARegionArea(region) size:[BASampleArray sampleArrayForSize2:region.size]];
     if(self) {
         BAPoint2 origin = region.origin;
         region.origin = BAPoint2Zero();
-        [self writeRegion2:region fromArray:otherArray offset:origin];
+        [self writeRegion:region fromArray:otherArray offset:origin];
     }
     return self;
 }
 
-- (NSArray *)rowStringsForRegion2:(BARegion2)region {
+- (NSArray *)rowStringsForRegion:(BARegion)region {
     
     NSMutableArray *rows = [NSMutableArray array];
 	
-    if (BARegion2EqualToRegion2(region, BARegion2Zero())) {
+    if (BARegionEqualToRegion(region, BARegionZero())) {
         region.size = size2;
     }
 
@@ -975,12 +975,12 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     return [[rows copy] autorelease];
 }
 
-- (NSString *)stringForRegion2:(BARegion2)region {
-    return [[self rowStringsForRegion2:region] componentsJoinedByString:@"\n"];
+- (NSString *)stringForRegion:(BARegion)region {
+    return [[self rowStringsForRegion:region] componentsJoinedByString:@"\n"];
 }
 
-- (NSString *)stringForRegion2 {
-    return [[self rowStringsForRegion2:BARegion2Zero()] componentsJoinedByString:@"\n"];
+- (NSString *)stringForRegion {
+    return [[self rowStringsForRegion:BARegionZero()] componentsJoinedByString:@"\n"];
 }
 
 - (id)initWithSize2:(BASize2)initSize {

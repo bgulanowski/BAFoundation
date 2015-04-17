@@ -1,5 +1,5 @@
 //
-//  BARegion2Test.m
+//  BARegionTest.m
 //  BAFoundation
 //
 //  Created by Brent Gulanowski on 2015-04-14.
@@ -11,11 +11,11 @@
 
 #import <BAFoundation/BAFunctions.h>
 
-@interface BARegion2Test : XCTestCase
+@interface BARegionTest : XCTestCase
 
 @end
 
-@implementation BARegion2Test
+@implementation BARegionTest
 
 - (void)testRandomInteger {
     NSInteger r = BARandomIntegerInRange(0, 0);
