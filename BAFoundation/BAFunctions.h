@@ -65,6 +65,17 @@ NS_INLINE BOOL BAPoint2EqualToPoint2( BAPoint2 point1, BAPoint2 point2 ) {
     return point1.x == point2.x && point1.y == point2.y;
 }
 
+NS_INLINE BAQuadrant BAPoint2GetQuadrant (BAPoint2 point ) {
+    BAQuadrant q = BAQuadrant00;
+    if (point.x < 0) {
+        q <<= 1;
+    }
+    if (point.y < 0) {
+        q <<= 2;
+    }
+    return q;
+}
+
 #pragma mark - Integer Sizes
 
 NS_INLINE BASize2 BASize2Make( NSInteger w, NSInteger h ) {
@@ -129,14 +140,33 @@ NS_INLINE NSInteger BARegion2GetMaxY(BARegion2 region) {
     return region.origin.y + region.size.height;
 }
 
+NS_INLINE BAPoint2 BARegion2GetBottomLeft(BARegion2 region) {
+    return BAPoint2Make(BARegion2GetMinX(region), BARegion2GetMinY(region));
+}
+
+NS_INLINE BAPoint2 BARegion2GetBottomRight(BARegion2 region) {
+    return BAPoint2Make(BARegion2GetMaxX(region), BARegion2GetMinY(region));
+}
+
+NS_INLINE BAPoint2 BARegion2GetTopLeft(BARegion2 region) {
+    return BAPoint2Make(BARegion2GetMinX(region), BARegion2GetMaxY(region));
+}
+
+NS_INLINE BAPoint2 BARegion2GetTopRight(BARegion2 region) {
+    return BAPoint2Make(BARegion2GetMaxX(region), BARegion2GetMaxY(region));
+}
+
 NS_INLINE BOOL BARegion2IsEmpty(BARegion2 region) {
     return region.size.width <= 0 || region.size.height <= 0;
 }
 
-NS_INLINE BAQuadrant BARegionGetQuadrant(BARegion2 region) {
-    NSUInteger x = region.origin.x >= 0 ? 0 : 01;
-    NSUInteger y = region.origin.y >= 0 ? 0 : 010;
-    return (BAQuadrant) 1 << (x + y);
+NS_INLINE BAQuadrant BARegion2GetQuadrant(BARegion2 region) {
+    BAQuadrant qbl = BAPoint2GetQuadrant(BARegion2GetBottomLeft(region));
+    BAQuadrant qbr = BAPoint2GetQuadrant(BARegion2GetBottomRight(region));
+    BAQuadrant qtl = BAPoint2GetQuadrant(BARegion2GetTopLeft(region));
+    BAQuadrant qtr = BAPoint2GetQuadrant(BARegion2GetTopRight(region));
+    
+    return qbl | qbr | qtl | qtr;
 }
 
 NS_INLINE BOOL BARegion2ContainsRegion2(BARegion2 outer, BARegion2 inner) {
