@@ -20,10 +20,10 @@ static void clearBits(unsigned char *byte, NSUInteger start, NSUInteger end);
 NSUInteger hammingWeight(unsigned char *bytes, NSRange range);
 
 // Copy bits from, or to, the provided array of BOOLs
-NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse);
+NSUInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse);
 
 // Set or clear bits
-NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
+NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set);
 
 
 @interface BABitArray ()
@@ -725,7 +725,7 @@ NSUInteger hammingWeight(unsigned char *bytes, NSRange bitRange) {
 	return total;
 }
 
-NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
+NSUInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	
     if(range.length == 0)
         return 0;
@@ -736,7 +736,7 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	NSUInteger end = (start+range.length-1)%bitsInChar;
 	unsigned char byteSet = set ? 0xFF : 0;
 	
-	NSInteger oldCount = hammingWeight(bytes, range);
+	NSUInteger oldCount = hammingWeight(bytes, range);
     
     // updateBits() is a cover for either setBits() or clearBits(), to reduce the number of if() statements
     // this might defeat the inlining, but I don't know
@@ -756,13 +756,13 @@ NSInteger setRange(unsigned char *bytes, NSRange range, BOOL set) {
 	}
 	
 	if(set)
-		return (NSInteger)range.length - oldCount;
+		return range.length - oldCount;
 	else
 		return -oldCount;
 }
 
 
-NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse) {
+NSUInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, BOOL reverse) {
 
     if(range.length == 0)
         return 0;
@@ -774,7 +774,7 @@ NSInteger copyBits(unsigned char *bytes, BOOL *bits, NSRange range, BOOL write, 
     NSUInteger k = reverse ? range.length-1 : 0;
     NSUInteger inc = reverse ? -1 : 1;
     
-    NSInteger oldCount = hammingWeight(bytes, range);
+    NSUInteger oldCount = hammingWeight(bytes, range);
     
     for (NSUInteger i=frstByte; i<=lastByte; ++i) {
         
