@@ -90,6 +90,7 @@
 		84F9EE8517909D83005B6DD1 /* BANoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F9EE8317909D5A005B6DD1 /* BANoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84F9EE8617909D83005B6DD1 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9EE8417909D5A005B6DD1 /* BANoise.m */; };
 		84F9EE8717909D87005B6DD1 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9EE8417909D5A005B6DD1 /* BANoise.m */; };
+		84FCF0781B0225A3009B00B3 /* BAFoundation.h in Headers */ = {isa = PBXBuildFile; fileRef = 84FCF0771B0225A0009B00B3 /* BAFoundation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		B6F030FF14300C9C0087940B /* BANoiseMaker.h in Headers */ = {isa = PBXBuildFile; fileRef = B6F030FD14300C9C0087940B /* BANoiseMaker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B6F0310014300C9C0087940B /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F030FE14300C9C0087940B /* BANoiseMaker.m */; };
@@ -188,6 +189,7 @@
 		84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		84F9EE8317909D5A005B6DD1 /* BANoise.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
 		84F9EE8417909D5A005B6DD1 /* BANoise.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoise.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		84FCF0771B0225A0009B00B3 /* BAFoundation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BAFoundation.h; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* BAFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BAFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6F030FD14300C9C0087940B /* BANoiseMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BANoiseMaker.h; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				84A0D26116E27E480010D80D /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
+				84FCF0771B0225A0009B00B3 /* BAFoundation.h */,
 			);
 			path = BAFoundation;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84FCF0781B0225A3009B00B3 /* BAFoundation.h in Headers */,
 				84A0D20616E271110010D80D /* BASparseBitArray.h in Headers */,
 				84A0D20916E271380010D80D /* BAMacros.h in Headers */,
 				842C151915FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h in Headers */,
