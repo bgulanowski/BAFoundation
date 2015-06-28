@@ -514,6 +514,8 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 	_children = [[NSMutableArray alloc] initWithObjects:newChild, nil];
 	for (NSUInteger i=1; i<_scale; ++i)
 		[_children addObject:[NSNull null]];
+    
+    [newChild release];
 }
 
 - (void)expandToFitSize:(NSUInteger)newTreeSize {
