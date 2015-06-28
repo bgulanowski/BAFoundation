@@ -707,7 +707,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     double maxY = region.origin.y + region.size.y;
     double maxZ = region.origin.z + region.size.z;
     
-    BANoiseEvaluator evaluator = self.evaluator;
+    BAFunction3 evaluator = [self.evaluator autorelease];
     
     for (double z = region.origin.z; z < maxZ; ++z) {
         for (double y = region.origin.y; y < maxY; ++y) {
@@ -719,7 +719,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     }
 }
 
-- (BANoiseEvaluator)evaluator {
+- (BAFunction3)evaluator {
 	int *bytes = (int *)[_data bytes];
 	if(_transform) {
 		BAVectorTransformer transformer = [_transform transformer];
@@ -799,7 +799,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 	return BASimplexNoise3DBlend([_data bytes], [_mod bytes], x, y, z, _octaves, _persistence);
 }
 
-- (BANoiseEvaluator)evaluator {
+- (BAFunction3)evaluator {
 	int *bytes = (int *)[_data bytes];
 	int *modulus = (int *)[_mod bytes];
 	if(_transform) {

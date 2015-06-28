@@ -34,7 +34,7 @@ static inline BANoiseRegion BANoiseRegionMake(BANoiseVector o, BANoiseVector s) 
 
 
 typedef BANoiseVector (^BAVectorTransformer)(BANoiseVector vector);
-typedef double (^BANoiseEvaluator)(double x, double y, double z);
+typedef double (^BAFunction3)(double x, double y, double z);
 typedef BOOL (^BANoiseIteratorBlock)(double x, double y, double z, double value);
 
 
@@ -75,7 +75,7 @@ typedef BOOL (^BANoiseIteratorBlock)(double x, double y, double z, double value)
 // Returns a value in [-1.0,1.0]
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z;
 @optional
-- (BANoiseEvaluator)evaluator;
+- (BAFunction3)evaluator;
 - (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block;
 
 @end
@@ -105,6 +105,8 @@ extern const int BADefaultPermutation[512];
 @property (nonatomic, readonly) unsigned long seed;
 @property (nonatomic, readonly) NSUInteger octaves;
 @property (nonatomic, readonly) double persistence;
+
+- (instancetype)initWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
 
 - (BOOL)isEqualToNoise:(BANoise *)other;
 // copies share underlying (immutable) noise data
