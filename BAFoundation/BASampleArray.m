@@ -42,18 +42,9 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super init];
+    self = [self initWithPower:[aDecoder decodeIntegerForKey:@"power"] order:[aDecoder decodeIntegerForKey:@"order"] size:[aDecoder decodeIntegerForKey: @"size"]];
     if(self) {
-        _power = [aDecoder decodeIntegerForKey:@"power"];
-        _order = [aDecoder decodeIntegerForKey:@"order"];
-        _size  = [aDecoder decodeIntegerForKey: @"size"];
-        _count = powi(_order, _power);
-        _samples = malloc(_size*_count);
-
-        NSAssert(_samples, @"Failed to allocate memory for BASampleArray");
-
         NSData *sampleData = [aDecoder decodeObjectForKey:@"sampleData"];
-        
         [sampleData getBytes:_samples length:_size*_count];
     }
     return self;
