@@ -312,7 +312,7 @@
 		B6AAB6C114C21B9A0007A0A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Marketcircle Inc";
 			};
 			buildConfigurationList = B6AAB6C414C21B9A0007A0A4 /* Build configuration list for PBXProject "BAFoundation" */;
@@ -375,6 +375,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
