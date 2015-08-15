@@ -46,6 +46,8 @@
 		84AECAE8184BC089002AC8D0 /* BAFunctions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84AECAE7184BC080002AC8D0 /* BAFunctions.h */; };
 		84F11FEF190617C20035E15C /* NSEntityDescription+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F11FEE190617C20035E15C /* NSEntityDescription+BAAdditions.m */; };
 		84F11FF019061C1E0035E15C /* NSEntityDescription+BAAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84F11FED190617C20035E15C /* NSEntityDescription+BAAdditions.h */; };
+		84F246E91ADF3B7100D3C499 /* BABitArray+Rectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */; };
+		84F246EA1ADF3BA200D3C499 /* BATypes.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84F246E81ADF3B7100D3C499 /* BATypes.h */; };
 		B6AAB6CE14C21B9A0007A0A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6AAB6CD14C21B9A0007A0A4 /* Foundation.framework */; };
 		B6AAB6E314C21BC20007A0A4 /* BABitArray.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DB14C21BC20007A0A4 /* BABitArray.m */; };
 		B6AAB6E514C21BC20007A0A4 /* BAGraphNode.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */; };
@@ -60,6 +62,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				84F246EA1ADF3BA200D3C499 /* BATypes.h in CopyFiles */,
 				84F11FF019061C1E0035E15C /* NSEntityDescription+BAAdditions.h in CopyFiles */,
 				84AECAE8184BC089002AC8D0 /* BAFunctions.h in CopyFiles */,
 				84AECAD2184BBBE9002AC8D0 /* BABitArray.h in CopyFiles */,
@@ -124,6 +127,9 @@
 		84AECAE7184BC080002AC8D0 /* BAFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFunctions.h; sourceTree = "<group>"; };
 		84F11FED190617C20035E15C /* NSEntityDescription+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription+BAAdditions.h"; sourceTree = "<group>"; };
 		84F11FEE190617C20035E15C /* NSEntityDescription+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+BAAdditions.m"; sourceTree = "<group>"; };
+		84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BABitArray+Rectangles.h"; sourceTree = "<group>"; };
+		84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BABitArray+Rectangles.m"; sourceTree = "<group>"; };
+		84F246E81ADF3B7100D3C499 /* BATypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATypes.h; sourceTree = "<group>"; };
 		B6AAB6CA14C21B9A0007A0A4 /* libBAFoundation.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBAFoundation.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6AAB6CD14C21B9A0007A0A4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B6AAB6D114C21B9A0007A0A4 /* BAFoundation-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BAFoundation-Prefix.pch"; path = "../iOS/BAFoundation/BAFoundation-Prefix.pch"; sourceTree = "<group>"; };
@@ -250,6 +256,9 @@
 		B6AAB6CF14C21B9A0007A0A4 /* BAFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */,
+				84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */,
+				84F246E81ADF3B7100D3C499 /* BATypes.h */,
 				84AECAE7184BC080002AC8D0 /* BAFunctions.h */,
 				84A0D20C16E2724F0010D80D /* BAMacros.h */,
 				84AECAFD184BCAC9002AC8D0 /* Core Data */,
@@ -332,6 +341,7 @@
 				B6AAB6E514C21BC20007A0A4 /* BAGraphNode.m in Sources */,
 				84AEC9D1184BB6C9002AC8D0 /* NSData+GZip.m in Sources */,
 				B6AAB6E714C21BC20007A0A4 /* BANoiseMaker.m in Sources */,
+				84F246E91ADF3B7100D3C499 /* BABitArray+Rectangles.m in Sources */,
 				B6AAB6E914C21BC20007A0A4 /* BATextIOHandler.m in Sources */,
 				84A0D22216E2724F0010D80D /* BACoreDataManager.m in Sources */,
 				84AEC9CA184BB6C9002AC8D0 /* BANoise.m in Sources */,
