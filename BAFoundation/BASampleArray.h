@@ -60,6 +60,8 @@
 @property (nonatomic, readonly) NSUInteger size;
 @property (nonatomic, readonly) NSUInteger count;
 
+- (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size NS_DESIGNATED_INITIALIZER;
+
 - (BOOL)isEqualToSampleArray:(BASampleArray *)other;
 
 - (UInt32)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y;
