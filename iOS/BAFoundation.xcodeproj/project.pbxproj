@@ -44,6 +44,8 @@
 		84AECAE5184BBBE9002AC8D0 /* NSManagedObjectContext+BAAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A0D21D16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.h */; };
 		84AECAE6184BBBE9002AC8D0 /* NSObject+PlistTransforming.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84A0D21F16E2724F0010D80D /* NSObject+PlistTransforming.h */; };
 		84AECAE8184BC089002AC8D0 /* BAFunctions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84AECAE7184BC080002AC8D0 /* BAFunctions.h */; };
+		84BD6A711B80DEE6005C658F /* NSObject+BAIntrospection.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD6A701B80DEE6005C658F /* NSObject+BAIntrospection.m */; };
+		84BD6A721B8137CC005C658F /* NSObject+BAIntrospection.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84BD6A6F1B80DEE6005C658F /* NSObject+BAIntrospection.h */; };
 		84F11FEF190617C20035E15C /* NSEntityDescription+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F11FEE190617C20035E15C /* NSEntityDescription+BAAdditions.m */; };
 		84F11FF019061C1E0035E15C /* NSEntityDescription+BAAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84F11FED190617C20035E15C /* NSEntityDescription+BAAdditions.h */; };
 		84F246E91ADF3B7100D3C499 /* BABitArray+Rectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */; };
@@ -62,6 +64,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				84BD6A721B8137CC005C658F /* NSObject+BAIntrospection.h in CopyFiles */,
 				84F246EA1ADF3BA200D3C499 /* BATypes.h in CopyFiles */,
 				84F11FF019061C1E0035E15C /* NSEntityDescription+BAAdditions.h in CopyFiles */,
 				84AECAE8184BC089002AC8D0 /* BAFunctions.h in CopyFiles */,
@@ -125,6 +128,8 @@
 		84AEC9C7184BB6C9002AC8D0 /* NSData+GZip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+GZip.h"; sourceTree = "<group>"; };
 		84AEC9C8184BB6C9002AC8D0 /* NSData+GZip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+GZip.m"; sourceTree = "<group>"; };
 		84AECAE7184BC080002AC8D0 /* BAFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFunctions.h; sourceTree = "<group>"; };
+		84BD6A6F1B80DEE6005C658F /* NSObject+BAIntrospection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BAIntrospection.h"; sourceTree = "<group>"; };
+		84BD6A701B80DEE6005C658F /* NSObject+BAIntrospection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BAIntrospection.m"; sourceTree = "<group>"; };
 		84F11FED190617C20035E15C /* NSEntityDescription+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription+BAAdditions.h"; sourceTree = "<group>"; };
 		84F11FEE190617C20035E15C /* NSEntityDescription+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+BAAdditions.m"; sourceTree = "<group>"; };
 		84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BABitArray+Rectangles.h"; sourceTree = "<group>"; };
@@ -226,6 +231,15 @@
 			name = Noise;
 			sourceTree = "<group>";
 		};
+		84BD6A6E1B80DECF005C658F /* Introspection */ = {
+			isa = PBXGroup;
+			children = (
+				84BD6A6F1B80DEE6005C658F /* NSObject+BAIntrospection.h */,
+				84BD6A701B80DEE6005C658F /* NSObject+BAIntrospection.m */,
+			);
+			name = Introspection;
+			sourceTree = "<group>";
+		};
 		B6AAB6BF14C21B9A0007A0A4 = {
 			isa = PBXGroup;
 			children = (
@@ -256,6 +270,7 @@
 		B6AAB6CF14C21B9A0007A0A4 /* BAFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				84BD6A6E1B80DECF005C658F /* Introspection */,
 				84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */,
 				84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */,
 				84F246E81ADF3B7100D3C499 /* BATypes.h */,
@@ -357,6 +372,7 @@
 				84A0D23116E2724F0010D80D /* IntegerNumberTransformer.m in Sources */,
 				84A0D23316E2724F0010D80D /* NSManagedObject+BAAdditions.m in Sources */,
 				84A0D23516E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m in Sources */,
+				84BD6A711B80DEE6005C658F /* NSObject+BAIntrospection.m in Sources */,
 				84A0D23716E2724F0010D80D /* NSObject+PlistTransforming.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
