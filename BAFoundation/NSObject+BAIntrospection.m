@@ -8,6 +8,8 @@
 
 #import "NSObject+BAIntrospection.h"
 
+static NSMutableDictionary *typeInfoIndex;
+
 static void PrepareTypeNamesAndValues( void );
 
 @interface NSObject (BACompatibility)
@@ -24,13 +26,21 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 - (NSString *)publicClassName {
-    return [[self class]  publicClassName];
+    return [[self class] publicClassName];
 }
 
-+ (NSArray *)instanceVariableTypeInfos {
++ (NSArray *)cachedInstanceVariableInfo {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        typeInfoIndex = [NSMutableDictionary dictionary];
+    });
+    return typeInfoIndex[[self publicClassName]];
+}
+
++ (NSArray *)createInstanceVariableInfo {
     
     NSMutableArray *typeInfos = [NSMutableArray array];
-
+    
     unsigned int count;
     Ivar *ivars = class_copyIvarList(self, &count);
     
@@ -41,6 +51,26 @@ static void PrepareTypeNamesAndValues( void );
     free(ivars);
     
     return typeInfos;
+}
+
++ (NSArray *)instanceVariableInfo {
+    
+    NSArray *info = [self cachedInstanceVariableInfo];
+    
+    if (nil == info) {
+        typeInfoIndex[[self publicClassName]] = info = [self createInstanceVariableInfo];
+    }
+    
+    return info;
+}
+
++ (NSDictionary *)instanceVariableInfoByName {
+    NSArray *info = [self instanceVariableInfo];
+    return [NSDictionary dictionaryWithObjects:info forKeys:[info valueForKey:@"name"]];
+}
+
++ (NSArray *)instanceVariableInfoForType:(BAIvarType)ivarType {
+    return [[self instanceVariableInfo] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type = %td", ivarType]];
 }
 
 @end
@@ -60,7 +90,7 @@ static void PrepareTypeNamesAndValues( void );
         self.name = [NSString stringWithUTF8String:ivar_getName(ivar)];
         const char *encoding = ivar_getTypeEncoding(ivar);
         self.type = BAIVarTypeForEncoding(encoding);
-        
+        self.objectClassName = BAIvarClassNameForEncoding(encoding);
         // for debugging
         self.encoding = [NSString stringWithUTF8String:encoding];
     }
@@ -68,7 +98,19 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 - (NSString *)debugDescription {
-    return [NSString stringWithFormat:@"%@: %@", self.name, self.encoding];
+    
+    NSString *detail = nil;
+    if (self.type == BAIvarTypeObject) {
+        detail = self.objectClassName;
+    }
+    else if (self.type == BAIvarTypeCollection) {
+        detail = self.objectClassName;
+    }
+    else {
+        detail = NSStringForBAIvarType(self.type);
+    }
+
+    return [NSString stringWithFormat:@"%@: %@ (%@)", self.name, detail, self.encoding];
 }
 
 + (instancetype)ivarInfoWithIvar:(Ivar)ivar {
@@ -83,6 +125,7 @@ static void PrepareTypeNamesAndValues( void ) {
     
     NSMutableArray * typeNames = [NSMutableArray array];
     
+    typeNames[BAIvarTypeUndefined] = @"Undefined";
     typeNames[BAIvarTypeBool] = @"Bool";
     typeNames[BAIvarTypeInteger] = @"Integer";
     typeNames[BAIvarTypeFloat] = @"Float";
@@ -108,7 +151,7 @@ static void PrepareTypeNamesAndValues( void ) {
 }
 
 NSString *NSStringForBAIvarType(BAIvarType ivarType) {
-    return namesIndex[@(ivarType)];
+    return namesIndex[@(ivarType)] ?: namesIndex[@(BAIvarTypeUndefined)];
 }
 
 BAIvarType BAIvarTypeForNSString(NSString *ivarName) {
@@ -144,7 +187,7 @@ BAIvarType BAIVarTypeForEncoding(const char * encoding) {
             type = BAIvarTypeCArray;
             break;
         case '@':
-            type = BAIvarTypeForClass(BAIvarClassForEncoding(encoding));
+            type = BAIvarTypeForClass(NSClassFromString(BAIvarClassNameForEncoding(encoding)));
             break;
         case '#':
             return BAIvarTypeClass;
@@ -175,14 +218,19 @@ BAIvarType BAIvarTypeForClass(Class class) {
     }
 }
 
-Class BAIvarClassForEncoding(const char * encoding) {
-    if (encoding[0] == '{' &&strlen(encoding) > 3) {
-        // ???: is this right?
-        NSString *string = [NSString stringWithUTF8String:&encoding[1]];
-        string = [string substringToIndex:string.length - 1];
-        return NSClassFromString(string);
+NSString *BAIvarClassNameForEncoding(const char * encoding) {
+    
+    NSString *string = [NSString stringWithUTF8String:encoding];
+    
+    if (string.length > 3) {
+        string = [string substringWithRange:NSMakeRange(2, string.length - 3)];
+    }
+    else if (encoding[0] == '@') {
+        string = @"id";
     }
     else {
-        return BAIvarTypeUndefined;
+        string = nil;
     }
+    
+    return string;
 }

@@ -39,7 +39,9 @@ extern Class BAIvarClassForEncoding(const char * encoding);
 + (NSString *)publicClassName;
 - (NSString *)publicClassName;
 
-+ (NSArray *)instanceVariableTypeInfos;
++ (NSArray *)instanceVariableInfo;
++ (NSDictionary *)instanceVariableInfoByName;
++ (NSArray *)instanceVariableInfoForType:(BAIvarType)ivarType;
 
 @end
 
@@ -47,6 +49,7 @@ extern Class BAIvarClassForEncoding(const char * encoding);
 
 @property (strong) NSString *name;
 @property (strong) NSString *encoding;
+@property (strong) NSString *objectClassName;
 @property BAIvarType type;
 
 - (instancetype)initWithIvar:(Ivar)ivar;
