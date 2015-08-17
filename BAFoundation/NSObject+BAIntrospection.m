@@ -8,7 +8,9 @@
 
 #import "NSObject+BAIntrospection.h"
 
+// keyed by class name
 static NSMutableDictionary *ivarInfoIndex;
+static NSMutableDictionary *propertyInfoIndex;
 
 static void PrepareTypeNamesAndValues( void );
 
@@ -90,7 +92,15 @@ static void PrepareTypeNamesAndValues( void );
     return names;
 }
 
-+ (NSArray *)propertyInfo {
++ (NSArray *)cachedPropertyInfo {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        propertyInfoIndex = [NSMutableDictionary dictionary];
+    });
+    return propertyInfoIndex[[self publicClassName]];
+}
+
++ (NSArray *)createPropertyInfo {
     NSMutableArray *infos = [NSMutableArray array];
     [self iteratePropertiesWithBlock:^(objc_property_t property) {
         [infos addObject:[BAValueInfo valueInfoWithProperty:property]];
@@ -98,13 +108,19 @@ static void PrepareTypeNamesAndValues( void );
     return infos;
 }
 
++ (NSArray *)propertyInfo {
+    NSArray *infos = [self cachedPropertyInfo];
+    if (nil == infos) {
+        propertyInfoIndex[[self publicClassName]] = infos = [self createPropertyInfo];
+    }
+    return infos;
+}
+
 + (NSArray *)propertyInfoUpToAncestor:(Class)ancestor {
     NSMutableArray *infos = [NSMutableArray array];
-    Class class = [self superclass];
+    Class class = self;
     while (class != ancestor) {
-        [class iteratePropertiesWithBlock:^(objc_property_t property) {
-            [infos addObject:[BAValueInfo valueInfoWithProperty:property]];
-        }];
+        [infos addObjectsFromArray:[class propertyInfo]];
         class = [class superclass];
     }
     return infos;
