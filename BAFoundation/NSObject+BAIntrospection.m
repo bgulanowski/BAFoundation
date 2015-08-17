@@ -45,7 +45,7 @@ static void PrepareTypeNamesAndValues( void );
     Ivar *ivars = class_copyIvarList(self, &count);
     
     for (unsigned int index=0; index<count; ++index) {
-        [typeInfos addObject:[BAIvarInfo ivarInfoWithIvar:ivars[index]]];
+        [typeInfos addObject:[BAValueInfo valueInfoWithIvar:ivars[index]]];
     }
     
     free(ivars);
@@ -90,15 +90,24 @@ static void PrepareTypeNamesAndValues( void );
     return names;
 }
 
-+ (void)logPropertyInfo {
++ (NSArray *)propertyInfo {
+    NSMutableArray *infos = [NSMutableArray array];
     [self iteratePropertiesWithBlock:^(objc_property_t property) {
-        NSLog(@"%s: %s", property_getName(property), property_getAttributes(property));
+        [infos addObject:[BAValueInfo valueInfoWithProperty:property]];
     }];
+    return infos;
+}
+
++ (void)logPropertyInfo {
+//    [self iteratePropertiesWithBlock:^(objc_property_t property) {
+//        NSLog(@"%s: %s", property_getName(property), property_getAttributes(property));
+//    }];
+    NSLog(@"%@", [[self propertyInfo] debugDescription]);
 }
 
 @end
 
-@implementation BAIvarInfo
+@implementation BAValueInfo
 
 + (void)initialize {
     static dispatch_once_t onceToken;
@@ -107,27 +116,30 @@ static void PrepareTypeNamesAndValues( void );
     });
 }
 
-- (instancetype)initWithIvar:(Ivar)ivar {
+- (instancetype)initWithName:(NSString *)name encoding:(NSString *)encoding {
     self = [super init];
     if (self) {
-        self.name = [NSString stringWithUTF8String:ivar_getName(ivar)];
-        const char *encoding = ivar_getTypeEncoding(ivar);
-        self.valueType = BAIVarTypeForEncoding(encoding);
-        self.objectClassName = BAIvarClassNameForEncoding(encoding);
+        self.name = name;
+        self.valueType = BAValueTypeForEncoding(encoding);
+        self.typeName = BAValueTypeNameForEncoding(encoding);
         // for debugging
-        self.encoding = [NSString stringWithUTF8String:encoding];
+        self.encoding = encoding;
     }
     return self;
+}
+
+- (instancetype)initWithIvar:(Ivar)ivar {
+    return [self initWithName:[NSString stringWithUTF8String:ivar_getName(ivar)] encoding:[NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)]];
 }
 
 - (NSString *)debugDescription {
     
     NSString *detail = nil;
     if (self.valueType == BAValueTypeObject) {
-        detail = self.objectClassName;
+        detail = self.typeName;
     }
     else if (self.valueType == BAValueTypeCollection) {
-        detail = self.objectClassName;
+        detail = self.typeName;
     }
     else {
         detail = NSStringForBAValueType(self.valueType);
@@ -136,9 +148,18 @@ static void PrepareTypeNamesAndValues( void );
     return [NSString stringWithFormat:@"%@: %@ (%@)", self.name, detail, self.encoding];
 }
 
-+ (instancetype)ivarInfoWithIvar:(Ivar)ivar {
++ (instancetype)valueInfoWithIvar:(Ivar)ivar {
     return [[self alloc] initWithIvar:ivar];
 }
+
+- (instancetype)initWithProperty:(objc_property_t)property {
+    return [self initWithName:[NSString stringWithUTF8String:property_getName(property)] encoding:BAValueEncodingForPropertyAttributes([NSString stringWithUTF8String:property_getAttributes(property)])];
+}
+
++ (instancetype)valueInfoWithProperty:(objc_property_t)property {
+    return [[self alloc] initWithProperty:property];
+}
+
 @end
 
 const NSDictionary *namesIndex;
@@ -181,9 +202,9 @@ BAValueType BAValueTypeForNSString(NSString *ivarName) {
     return [typesIndex[ivarName] unsignedIntegerValue];
 }
 
-BAValueType BAIVarTypeForEncoding(const char * encoding) {
+BAValueType BAValueTypeForEncoding(NSString *encoding) {
     BAValueType type = BAValueTypeUndefined;
-    switch (encoding[0]) {
+    switch ([encoding characterAtIndex:0]) {
         case 'B':
             type = BAValueTypeBool;
             break;
@@ -210,7 +231,7 @@ BAValueType BAIVarTypeForEncoding(const char * encoding) {
             type = BAValueTypeCArray;
             break;
         case '@':
-            type = BAValueTypeForClass(NSClassFromString(BAIvarClassNameForEncoding(encoding)));
+            type = BAValueTypeForClass(NSClassFromString(BAValueTypeNameForEncoding(encoding)));
             break;
         case '#':
             return BAValueTypeClass;
@@ -241,19 +262,22 @@ BAValueType BAValueTypeForClass(Class class) {
     }
 }
 
-NSString *BAIvarClassNameForEncoding(const char * encoding) {
+NSString *BAValueTypeNameForEncoding(NSString *encoding) {
     
-    NSString *string = [NSString stringWithUTF8String:encoding];
-    
-    if (string.length > 3) {
-        string = [string substringWithRange:NSMakeRange(2, string.length - 3)];
+    if (encoding.length > 3) {
+        encoding = [encoding substringWithRange:NSMakeRange(2, encoding.length - 3)];
     }
-    else if (encoding[0] == '@') {
-        string = @"id";
+    else if ([encoding characterAtIndex:0] == '@') {
+        encoding = @"id";
     }
     else {
-        string = nil;
+        encoding = nil;
     }
     
-    return string;
+    return encoding;
+}
+
+NSString *BAValueEncodingForPropertyAttributes(NSString *attributes) {
+    NSRange range = [attributes rangeOfString:@","];
+    return [attributes substringWithRange:NSMakeRange(1, range.location-1)];
 }

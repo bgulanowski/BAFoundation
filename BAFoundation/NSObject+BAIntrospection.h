@@ -28,11 +28,12 @@ typedef NS_ENUM(NSUInteger, BAValueType) {
 extern NSString *NSStringForBAValueType(BAValueType ivarType);
 extern BAValueType BAValueTypeForNSString(NSString *string);
 
-extern BAValueType BAIVarTypeForEncoding(const char * encoding);
+extern BAValueType BAValueTypeForEncoding(NSString *encoding);
 extern BAValueType BAValueTypeForClass(Class class);
-extern NSString *BAIvarClassNameForEncoding(const char * encoding);
+extern NSString *BAValueTypeNameForEncoding(NSString *encoding);
+extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 
-@class BAIvarInfo;
+@class BAValueInfo;
 
 @interface NSObject (BAIntrospection)
 
@@ -44,27 +45,24 @@ extern NSString *BAIvarClassNameForEncoding(const char * encoding);
 + (NSArray *)instanceVariableInfoForType:(BAValueType)ivarType;
 
 + (NSArray *)propertyNames;
++ (NSArray *)propertyInfo;
 + (void)logPropertyInfo;
 
 @end
 
-@interface BAIvarInfo : NSObject
+@interface BAValueInfo : NSObject
 
 @property (strong) NSString *name;
 @property (strong) NSString *encoding;
-@property (strong) NSString *objectClassName;
+@property (strong) NSString *typeName;
 @property BAValueType valueType;
 
+- (instancetype)initWithName:(NSString *)name encoding:(NSString *)encoding NS_DESIGNATED_INITIALIZER;
+
 - (instancetype)initWithIvar:(Ivar)ivar;
-+ (instancetype)ivarInfoWithIvar:(Ivar)ivar;
++ (instancetype)valueInfoWithIvar:(Ivar)ivar;
 
-@end
-
-@interface BAPropertyInfo : NSObject
-
-@property (strong) NSString *name;
-@property (strong) NSString *encoding;
-@property (strong) NSString *valueClassName;
-//@property BAProperty
+- (instancetype)initWithProperty:(objc_property_t)property;
++ (instancetype)valueInfoWithProperty:(objc_property_t)property;
 
 @end
