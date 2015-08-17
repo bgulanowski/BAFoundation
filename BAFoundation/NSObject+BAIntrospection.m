@@ -8,7 +8,7 @@
 
 #import "NSObject+BAIntrospection.h"
 
-static NSMutableDictionary *typeInfoIndex;
+static NSMutableDictionary *ivarInfoIndex;
 
 static void PrepareTypeNamesAndValues( void );
 
@@ -32,9 +32,9 @@ static void PrepareTypeNamesAndValues( void );
 + (NSArray *)cachedInstanceVariableInfo {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        typeInfoIndex = [NSMutableDictionary dictionary];
+        ivarInfoIndex = [NSMutableDictionary dictionary];
     });
-    return typeInfoIndex[[self publicClassName]];
+    return ivarInfoIndex[[self publicClassName]];
 }
 
 + (NSArray *)createInstanceVariableInfo {
@@ -58,7 +58,7 @@ static void PrepareTypeNamesAndValues( void );
     NSArray *info = [self cachedInstanceVariableInfo];
     
     if (nil == info) {
-        typeInfoIndex[[self publicClassName]] = info = [self createInstanceVariableInfo];
+        ivarInfoIndex[[self publicClassName]] = info = [self createInstanceVariableInfo];
     }
     
     return info;
