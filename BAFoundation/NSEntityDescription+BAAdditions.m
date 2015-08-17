@@ -3,7 +3,7 @@
 //  BAFoundation
 //
 //  Created by Brent Gulanowski on 2014-04-21.
-//  Copyright (c) 2014 Marketcircle Inc. All rights reserved.
+//  Copyright (c) 2014 Bored Astronaut. All rights reserved.
 //
 
 #import "NSEntityDescription+BAAdditions.h"
