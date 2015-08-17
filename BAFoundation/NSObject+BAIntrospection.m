@@ -98,10 +98,19 @@ static void PrepareTypeNamesAndValues( void );
     return infos;
 }
 
++ (NSArray *)propertyInfoUpToAncestor:(Class)ancestor {
+    NSMutableArray *infos = [NSMutableArray array];
+    Class class = [self superclass];
+    while (class != ancestor) {
+        [class iteratePropertiesWithBlock:^(objc_property_t property) {
+            [infos addObject:[BAValueInfo valueInfoWithProperty:property]];
+        }];
+        class = [class superclass];
+    }
+    return infos;
+}
+
 + (void)logPropertyInfo {
-//    [self iteratePropertiesWithBlock:^(objc_property_t property) {
-//        NSLog(@"%s: %s", property_getName(property), property_getAttributes(property));
-//    }];
     NSLog(@"%@", [[self propertyInfo] debugDescription]);
 }
 
@@ -279,5 +288,10 @@ NSString *BAValueTypeNameForEncoding(NSString *encoding) {
 
 NSString *BAValueEncodingForPropertyAttributes(NSString *attributes) {
     NSRange range = [attributes rangeOfString:@","];
-    return [attributes substringWithRange:NSMakeRange(1, range.location-1)];
+    if (range.location == NSNotFound) {
+        return [attributes substringFromIndex:1];
+    }
+    else {
+        return [attributes substringWithRange:NSMakeRange(1, range.location-1)];
+    }
 }

@@ -46,6 +46,7 @@ extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 
 + (NSArray *)propertyNames;
 + (NSArray *)propertyInfo;
++ (NSArray *)propertyInfoUpToAncestor:(Class)ancestor;
 + (void)logPropertyInfo;
 
 @end
