@@ -30,7 +30,7 @@ extern BAIvarType BAIvarTypeForNSString(NSString *string);
 
 extern BAIvarType BAIVarTypeForEncoding(const char * encoding);
 extern BAIvarType BAIvarTypeForClass(Class class);
-extern Class BAIvarClassForEncoding(const char * encoding);
+extern NSString *BAIvarClassNameForEncoding(const char * encoding);
 
 @class BAIvarInfo;
 
@@ -43,6 +43,9 @@ extern Class BAIvarClassForEncoding(const char * encoding);
 + (NSDictionary *)instanceVariableInfoByName;
 + (NSArray *)instanceVariableInfoForType:(BAIvarType)ivarType;
 
++ (NSArray *)propertyNames;
++ (void)logPropertyInfo;
+
 @end
 
 @interface BAIvarInfo : NSObject
@@ -54,5 +57,14 @@ extern Class BAIvarClassForEncoding(const char * encoding);
 
 - (instancetype)initWithIvar:(Ivar)ivar;
 + (instancetype)ivarInfoWithIvar:(Ivar)ivar;
+
+@end
+
+@interface BAPropertyInfo : NSObject
+
+@property (strong) NSString *name;
+@property (strong) NSString *encoding;
+@property (strong) NSString *valueClassName;
+//@property BAProperty
 
 @end

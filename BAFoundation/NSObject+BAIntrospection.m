@@ -73,6 +73,29 @@ static void PrepareTypeNamesAndValues( void );
     return [[self instanceVariableInfo] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type = %td", ivarType]];
 }
 
++ (void)iteratePropertiesWithBlock:(void(^)(objc_property_t))block {
+    unsigned int count;
+    objc_property_t *properties = class_copyPropertyList(self, &count);
+    for (unsigned int i=0; i<count; ++i) {
+        block(properties[i]);
+    }
+    free(properties);
+}
+
++ (NSArray *)propertyNames {
+    NSMutableArray *names = [NSMutableArray array];
+    [self iteratePropertiesWithBlock:^(objc_property_t property) {
+        [names addObject:[NSString stringWithUTF8String:property_getName(property)]];
+    }];
+    return names;
+}
+
++ (void)logPropertyInfo {
+    [self iteratePropertiesWithBlock:^(objc_property_t property) {
+        NSLog(@"%s: %s", property_getName(property), property_getAttributes(property));
+    }];
+}
+
 @end
 
 @implementation BAIvarInfo
