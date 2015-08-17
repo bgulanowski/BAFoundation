@@ -69,7 +69,7 @@ static void PrepareTypeNamesAndValues( void );
     return [NSDictionary dictionaryWithObjects:info forKeys:[info valueForKey:@"name"]];
 }
 
-+ (NSArray *)instanceVariableInfoForType:(BAIvarType)ivarType {
++ (NSArray *)instanceVariableInfoForType:(BAValueType)ivarType {
     return [[self instanceVariableInfo] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"type = %td", ivarType]];
 }
 
@@ -112,7 +112,7 @@ static void PrepareTypeNamesAndValues( void );
     if (self) {
         self.name = [NSString stringWithUTF8String:ivar_getName(ivar)];
         const char *encoding = ivar_getTypeEncoding(ivar);
-        self.type = BAIVarTypeForEncoding(encoding);
+        self.valueType = BAIVarTypeForEncoding(encoding);
         self.objectClassName = BAIvarClassNameForEncoding(encoding);
         // for debugging
         self.encoding = [NSString stringWithUTF8String:encoding];
@@ -123,14 +123,14 @@ static void PrepareTypeNamesAndValues( void );
 - (NSString *)debugDescription {
     
     NSString *detail = nil;
-    if (self.type == BAIvarTypeObject) {
+    if (self.valueType == BAValueTypeObject) {
         detail = self.objectClassName;
     }
-    else if (self.type == BAIvarTypeCollection) {
+    else if (self.valueType == BAValueTypeCollection) {
         detail = self.objectClassName;
     }
     else {
-        detail = NSStringForBAIvarType(self.type);
+        detail = NSStringForBAValueType(self.valueType);
     }
 
     return [NSString stringWithFormat:@"%@: %@ (%@)", self.name, detail, self.encoding];
@@ -148,21 +148,21 @@ static void PrepareTypeNamesAndValues( void ) {
     
     NSMutableArray * typeNames = [NSMutableArray array];
     
-    typeNames[BAIvarTypeUndefined] = @"Undefined";
-    typeNames[BAIvarTypeBool] = @"Bool";
-    typeNames[BAIvarTypeInteger] = @"Integer";
-    typeNames[BAIvarTypeFloat] = @"Float";
-    typeNames[BAIvarTypeCString] = @"CString";
-    typeNames[BAIvarTypeCArray] = @"CArray";
-    typeNames[BAIvarTypeString] = @"String";
-    typeNames[BAIvarTypeObject] = @"Object";
-    typeNames[BAIvarTypeCollection] = @"Collection";
-    typeNames[BAIvarTypeClass] = @"Class";
+    typeNames[BAValueTypeUndefined] = @"Undefined";
+    typeNames[BAValueTypeBool] = @"Bool";
+    typeNames[BAValueTypeInteger] = @"Integer";
+    typeNames[BAValueTypeFloat] = @"Float";
+    typeNames[BAValueTypeCString] = @"CString";
+    typeNames[BAValueTypeCArray] = @"CArray";
+    typeNames[BAValueTypeString] = @"String";
+    typeNames[BAValueTypeObject] = @"Object";
+    typeNames[BAValueTypeCollection] = @"Collection";
+    typeNames[BAValueTypeClass] = @"Class";
     
     NSMutableDictionary *names = [NSMutableDictionary dictionary];
     NSMutableDictionary *types = [NSMutableDictionary dictionary];
     
-    for (NSUInteger i=0; i<BAIvarTypeCount; ++i) {
+    for (NSUInteger i=0; i<BAValueTypeCount; ++i) {
         id type = @(i);
         id name = typeNames[i];
         names[type] = name;
@@ -173,19 +173,19 @@ static void PrepareTypeNamesAndValues( void ) {
     typesIndex = types;
 }
 
-NSString *NSStringForBAIvarType(BAIvarType ivarType) {
-    return namesIndex[@(ivarType)] ?: namesIndex[@(BAIvarTypeUndefined)];
+NSString *NSStringForBAValueType(BAValueType ivarType) {
+    return namesIndex[@(ivarType)] ?: namesIndex[@(BAValueTypeUndefined)];
 }
 
-BAIvarType BAIvarTypeForNSString(NSString *ivarName) {
+BAValueType BAValueTypeForNSString(NSString *ivarName) {
     return [typesIndex[ivarName] unsignedIntegerValue];
 }
 
-BAIvarType BAIVarTypeForEncoding(const char * encoding) {
-    BAIvarType type = BAIvarTypeUndefined;
+BAValueType BAIVarTypeForEncoding(const char * encoding) {
+    BAValueType type = BAValueTypeUndefined;
     switch (encoding[0]) {
         case 'B':
-            type = BAIvarTypeBool;
+            type = BAValueTypeBool;
             break;
         case 'c': // char
         case 'i': // int
@@ -197,23 +197,23 @@ BAIvarType BAIVarTypeForEncoding(const char * encoding) {
         case 'S': // unsigned short
         case 'L': // unsigned long
         case 'Q': // unsigned long long
-            type = BAIvarTypeInteger;
+            type = BAValueTypeInteger;
             break;
         case 'f': // float
         case 'd': // double
-            type = BAIvarTypeFloat;
+            type = BAValueTypeFloat;
             break;
         case '*': // char *
-            type = BAIvarTypeCString;
+            type = BAValueTypeCString;
             break;
         case '[':
-            type = BAIvarTypeCArray;
+            type = BAValueTypeCArray;
             break;
         case '@':
-            type = BAIvarTypeForClass(NSClassFromString(BAIvarClassNameForEncoding(encoding)));
+            type = BAValueTypeForClass(NSClassFromString(BAIvarClassNameForEncoding(encoding)));
             break;
         case '#':
-            return BAIvarTypeClass;
+            return BAValueTypeClass;
             break;
         case '{': // struct or object
             
@@ -229,15 +229,15 @@ BAIvarType BAIVarTypeForEncoding(const char * encoding) {
     return type;
 }
 
-BAIvarType BAIvarTypeForClass(Class class) {
+BAValueType BAValueTypeForClass(Class class) {
     if ([class isSubclassOfClass:[NSArray class]] || [class isSubclassOfClass:[NSSet class]]) {
-        return BAIvarTypeCollection;
+        return BAValueTypeCollection;
     }
     else if([class isSubclassOfClass:[NSString class]]) {
-        return BAIvarTypeString;
+        return BAValueTypeString;
     }
     else {
-        return BAIvarTypeObject;
+        return BAValueTypeObject;
     }
 }
 

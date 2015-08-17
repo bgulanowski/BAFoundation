@@ -10,26 +10,26 @@
 
 #import <objc/runtime.h>
 
-typedef NS_ENUM(NSUInteger, BAIvarType) {
-    BAIvarTypeUndefined,
-    BAIvarTypeBool,
-    BAIvarTypeInteger,
-    BAIvarTypeFloat,
-    BAIvarTypeCString,
-    BAIvarTypeCArray, // not supported
-    BAIvarTypeString, // Objective-C string
-    BAIvarTypeObject,
-    BAIvarTypeCollection,
-    BAIvarTypeClass,
+typedef NS_ENUM(NSUInteger, BAValueType) {
+    BAValueTypeUndefined,
+    BAValueTypeBool,
+    BAValueTypeInteger,
+    BAValueTypeFloat,
+    BAValueTypeCString,
+    BAValueTypeCArray, // not supported
+    BAValueTypeString, // Objective-C string
+    BAValueTypeObject,
+    BAValueTypeCollection,
+    BAValueTypeClass,
     
-    BAIvarTypeCount,
+    BAValueTypeCount,
 };
 
-extern NSString *NSStringForBAIvarType(BAIvarType ivarType);
-extern BAIvarType BAIvarTypeForNSString(NSString *string);
+extern NSString *NSStringForBAValueType(BAValueType ivarType);
+extern BAValueType BAValueTypeForNSString(NSString *string);
 
-extern BAIvarType BAIVarTypeForEncoding(const char * encoding);
-extern BAIvarType BAIvarTypeForClass(Class class);
+extern BAValueType BAIVarTypeForEncoding(const char * encoding);
+extern BAValueType BAValueTypeForClass(Class class);
 extern NSString *BAIvarClassNameForEncoding(const char * encoding);
 
 @class BAIvarInfo;
@@ -41,7 +41,7 @@ extern NSString *BAIvarClassNameForEncoding(const char * encoding);
 
 + (NSArray *)instanceVariableInfo;
 + (NSDictionary *)instanceVariableInfoByName;
-+ (NSArray *)instanceVariableInfoForType:(BAIvarType)ivarType;
++ (NSArray *)instanceVariableInfoForType:(BAValueType)ivarType;
 
 + (NSArray *)propertyNames;
 + (void)logPropertyInfo;
@@ -53,7 +53,7 @@ extern NSString *BAIvarClassNameForEncoding(const char * encoding);
 @property (strong) NSString *name;
 @property (strong) NSString *encoding;
 @property (strong) NSString *objectClassName;
-@property BAIvarType type;
+@property BAValueType valueType;
 
 - (instancetype)initWithIvar:(Ivar)ivar;
 + (instancetype)ivarInfoWithIvar:(Ivar)ivar;
