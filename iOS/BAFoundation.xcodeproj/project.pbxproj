@@ -327,8 +327,9 @@
 		B6AAB6C114C21B9A0007A0A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = BA;
 				LastUpgradeCheck = 0700;
-				ORGANIZATIONNAME = "Marketcircle Inc";
+				ORGANIZATIONNAME = "Bored Astronaut";
 			};
 			buildConfigurationList = B6AAB6C414C21B9A0007A0A4 /* Build configuration list for PBXProject "BAFoundation" */;
 			compatibilityVersion = "Xcode 3.2";
