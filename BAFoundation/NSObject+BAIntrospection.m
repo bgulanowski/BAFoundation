@@ -14,11 +14,25 @@ static NSMutableDictionary *propertyInfoIndex;
 
 static void PrepareTypeNamesAndValues( void );
 
+#pragma mark -
+
 @interface NSObject (BACompatibility)
 - (NSString *)className;
 @end
 
+#pragma mark -
+
 @implementation NSObject (BAIntrospection)
+
++ (NSArray *)ancestors {
+    NSMutableArray *ancestors = [NSMutableArray array];
+    Class class = self;
+    while (class != Nil) {
+        [ancestors addObject:class];
+        class = [class superclass];
+    }
+    return ancestors;
+}
 
 + (NSString *)publicClassName {
     if ([self respondsToSelector:@selector(className)]) {
@@ -85,11 +99,7 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 + (NSArray *)propertyNames {
-    NSMutableArray *names = [NSMutableArray array];
-    [self iteratePropertiesWithBlock:^(objc_property_t property) {
-        [names addObject:[NSString stringWithUTF8String:property_getName(property)]];
-    }];
-    return names;
+    return [[self propertyInfo] valueForKey:NSStringFromSelector(@selector(name))];
 }
 
 + (NSArray *)cachedPropertyInfo {
@@ -116,6 +126,28 @@ static void PrepareTypeNamesAndValues( void );
     return infos;
 }
 
++ (BAValueInfo *)propertyInfoForName:(NSString *)name {
+    for (BAValueInfo *info in [self propertyInfo]) {
+        if ([info.name isEqualToString:name]) {
+            return info;
+        }
+    }
+    return nil;
+}
+
+- (BAValueInfo *)propertyInfoForName:(NSString *)name {
+    return [[self class] propertyInfoForName:name];
+}
+
++ (NSDictionary *)propertyInfoByName {
+    NSArray *infos = [self propertyInfo];
+    return [NSDictionary dictionaryWithObjects:infos forKeys:[infos valueForKey:NSStringFromSelector(@selector(name))]];
+}
+
+- (NSDictionary *)propertyInfoByName {
+    return [[self class] propertyInfoByName];
+}
+
 + (NSArray *)propertyInfoUpToAncestor:(Class)ancestor {
     NSMutableArray *infos = [NSMutableArray array];
     Class class = self;
@@ -126,11 +158,17 @@ static void PrepareTypeNamesAndValues( void );
     return infos;
 }
 
+- (NSArray *)propertyInfoUpToAncestor:(Class)ancestor {
+    return [[self class] propertyInfoUpToAncestor:ancestor];
+}
+
 + (void)logPropertyInfo {
     NSLog(@"%@", [[self propertyInfo] debugDescription]);
 }
 
 @end
+
+#pragma mark -
 
 @implementation BAValueInfo
 

@@ -37,6 +37,8 @@ extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 
 @interface NSObject (BAIntrospection)
 
++ (NSArray *)ancestors;
+
 + (NSString *)publicClassName;
 - (NSString *)publicClassName;
 
@@ -46,6 +48,10 @@ extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 
 + (NSArray *)propertyNames;
 + (NSArray *)propertyInfo;
++ (BAValueInfo *)propertyInfoForName:(NSString *)name;
+- (BAValueInfo *)propertyInfoForName:(NSString *)name;
++ (NSDictionary *)propertyInfoByName;
+- (NSDictionary *)propertyInfoByName;
 + (NSArray *)propertyInfoUpToAncestor:(Class)ancestor;
 + (void)logPropertyInfo;
 
