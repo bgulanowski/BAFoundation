@@ -136,7 +136,7 @@ NS_INLINE BOOL BARegion2IsEmpty(BARegion2 region) {
 NS_INLINE BAQuadrant BARegionGetQuadrant(BARegion2 region) {
     NSUInteger x = region.origin.x >= 0 ? 0 : 01;
     NSUInteger y = region.origin.y >= 0 ? 0 : 010;
-    return (BAQuadrant) x + y;
+    return (BAQuadrant) 1 << (x + y);
 }
 
 NS_INLINE BOOL BARegion2ContainsRegion2(BARegion2 outer, BARegion2 inner) {

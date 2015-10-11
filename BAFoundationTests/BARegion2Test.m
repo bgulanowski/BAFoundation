@@ -96,8 +96,7 @@
     STAssertFalse(BAPoint2EqualToPoint2(a, b), @"");
 }
 
-- (void)testBARegion2Functions {
-    STFail(@"unimplemented tests");
-}
+//- (void)testBARegion2Functions {
+//}
 
 @end
