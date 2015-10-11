@@ -23,40 +23,40 @@
 	
 	BABitArray *ba = [BABitArray bitArray8];
 	
-	STAssertNotNil(ba, @"Failed to allocate bit array 8");
+	XCTAssertNotNil(ba, @"Failed to allocate bit array 8");
     
     for(NSUInteger i=0; i<8; ++i)
-        STAssertFalse([ba bit:i], @"bit %lu should not be set", i);
-    STAssertEquals([ba firstSetBit], NSNotFound, @"first set bit should be Not Found");
-    STAssertEquals([ba lastSetBit], NSNotFound, @"last set bit should be Not Found");
-    STAssertEquals([ba firstClearBit], 0ul, @"first clear bit did not match");
-    STAssertEquals([ba lastClearBit], 7ul, @"last clear bit did not match");
+        XCTAssertFalse([ba bit:i], @"bit %lu should not be set", i);
+    XCTAssertEqual([ba firstSetBit], NSNotFound, @"first set bit should be Not Found");
+    XCTAssertEqual([ba lastSetBit], NSNotFound, @"last set bit should be Not Found");
+    XCTAssertEqual([ba firstClearBit], 0ul, @"first clear bit did not match");
+    XCTAssertEqual([ba lastClearBit], 7ul, @"last clear bit did not match");
 	
     [ba setBit:0];
-    STAssertEquals([ba firstSetBit], 0ul, @"first set bit did not match");
-    STAssertEquals([ba lastSetBit], 0ul, @"last set bit did not match");
-    STAssertEquals([ba firstClearBit], 1ul, @"first clear bit did not match");
-    STAssertEquals([ba lastClearBit], 7ul, @"last clear bit did not match");
+    XCTAssertEqual([ba firstSetBit], 0ul, @"first set bit did not match");
+    XCTAssertEqual([ba lastSetBit], 0ul, @"last set bit did not match");
+    XCTAssertEqual([ba firstClearBit], 1ul, @"first clear bit did not match");
+    XCTAssertEqual([ba lastClearBit], 7ul, @"last clear bit did not match");
     
     [ba setBit:7];
-    STAssertEquals([ba firstSetBit], 0ul, @"first set bit did not match");
-    STAssertEquals([ba lastSetBit], 7ul, @"last set bit did not match");
-    STAssertEquals([ba firstClearBit], 1ul, @"first clear bit did not match");
-    STAssertEquals([ba lastClearBit], 6ul, @"last clear bit did not match");
+    XCTAssertEqual([ba firstSetBit], 0ul, @"first set bit did not match");
+    XCTAssertEqual([ba lastSetBit], 7ul, @"last set bit did not match");
+    XCTAssertEqual([ba firstClearBit], 1ul, @"first clear bit did not match");
+    XCTAssertEqual([ba lastClearBit], 6ul, @"last clear bit did not match");
 
 	[ba setAll];
-	STAssertTrue([ba bit:0], @"Failed to set bit 0");
-	STAssertTrue([ba bit:7], @"Failed to set bit 7");
-    STAssertEquals([ba firstSetBit], 0ul, @"first set bit did not match");
-    STAssertEquals([ba lastSetBit], 7ul, @"last set bit did not match");
-    STAssertEquals([ba firstClearBit], NSNotFound, @"first clear bit did not match");
-    STAssertEquals([ba lastClearBit], NSNotFound, @"last clear bit did not match");
+	XCTAssertTrue([ba bit:0], @"Failed to set bit 0");
+	XCTAssertTrue([ba bit:7], @"Failed to set bit 7");
+    XCTAssertEqual([ba firstSetBit], 0ul, @"first set bit did not match");
+    XCTAssertEqual([ba lastSetBit], 7ul, @"last set bit did not match");
+    XCTAssertEqual([ba firstClearBit], NSNotFound, @"first clear bit did not match");
+    XCTAssertEqual([ba lastClearBit], NSNotFound, @"last clear bit did not match");
 
     [ba clearBit:1];
     [ba clearBit:6];
 	
-    STAssertEquals([ba firstClearBit], 1ul, @"first clear bit did not match");
-    STAssertEquals([ba lastClearBit], 6ul, @"last clear bit did not match");
+    XCTAssertEqual([ba firstClearBit], 1ul, @"first clear bit did not match");
+    XCTAssertEqual([ba lastClearBit], 6ul, @"last clear bit did not match");
 }
 
 - (void)test02Count {
@@ -64,65 +64,65 @@
 	BABitArray *ba = [BABitArray bitArray64];
 	NSUInteger count = 0;
 	
-	STAssertNotNil(ba, @"Failed to allocate bit array 64");
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertNotNil(ba, @"Failed to allocate bit array 64");
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
 	
 	[ba setAll];
-	STAssertTrue([ba bit:0], @"Failed to set bit 0");
-	STAssertTrue([ba bit:63], @"Failed to set bit 63");
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertTrue([ba bit:0], @"Failed to set bit 0");
+	XCTAssertTrue([ba bit:63], @"Failed to set bit 63");
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
 	
 	[ba clearAll];
-	STAssertFalse([ba bit:0], @"Failed to clear bit 0");
-	STAssertFalse([ba bit:63], @"Failed to clear bit 63");
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertFalse([ba bit:0], @"Failed to clear bit 0");
+	XCTAssertFalse([ba bit:63], @"Failed to clear bit 63");
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
 	
 	[ba setBit:33];
 	++count;
-	STAssertTrue([ba bit:33], @"Failed to set bit 33");
-	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertTrue([ba bit:33], @"Failed to set bit 33");
+	XCTAssertEqual(ba.count, count, @"Wrong count (%zu; expected %zu)", ba.count, count);
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
 	
 	NSRange range = NSMakeRange(40, 15);
 	[ba setRange:range];
 	count+=15;
 	
-	STAssertTrue([ba bit:40], @"Failed to set bit 40 when setting range %@", NSStringFromRange(range));
-	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertTrue([ba bit:40], @"Failed to set bit 40 when setting range %@", NSStringFromRange(range));
+	XCTAssertEqual(ba.count, count, @"Wrong count (%zu; expected %zu)", ba.count, count);
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
 	
 	range = NSMakeRange(7, 10);
 	[ba setRange:range];
 	count+=10;
-	STAssertTrue([ba bit:7], @"Failed to set bit 7 when setting range %@", NSStringFromRange(range));
-	STAssertTrue([ba bit:12], @"Failed to set bit 12 when setting range %@", NSStringFromRange(range));
-	STAssertTrue([ba bit:16], @"Failed to set bit 16 when setting range %@", NSStringFromRange(range));
-	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
-	STAssertTrue([ba checkCount], @"Failed count check (expected: %u)", ba.count);
+	XCTAssertTrue([ba bit:7], @"Failed to set bit 7 when setting range %@", NSStringFromRange(range));
+	XCTAssertTrue([ba bit:12], @"Failed to set bit 12 when setting range %@", NSStringFromRange(range));
+	XCTAssertTrue([ba bit:16], @"Failed to set bit 16 when setting range %@", NSStringFromRange(range));
+	XCTAssertEqual(ba.count, count, @"Wrong count (%zu; expected %zu)", ba.count, count);
+	XCTAssertTrue([ba checkCount], @"Failed count check (expected: %zu)", ba.count);
 	
 	[ba setRange:NSMakeRange(20, 17)];
 	count+=(17-1); // 33 is already set
-	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertEqual(ba.count, count, @"Wrong count (%zu; expected %zu)", ba.count, count);
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
 	
 	[ba clearRange:NSMakeRange(28, 4)];
 	count-=4;
-	STAssertTrue([ba bit:20], @"Failed to set bit 20");
-	STAssertFalse([ba bit:30], @"Failed to clear bit 30");
-	STAssertTrue([ba bit:35], @"Failed to set bit 35");
-	STAssertEquals(ba.count, count, @"Wrong count (%u; expected %u)", ba.count, count);
-	STAssertTrue([ba checkCount], @"Failed count check (%u)", ba.count);
+	XCTAssertTrue([ba bit:20], @"Failed to set bit 20");
+	XCTAssertFalse([ba bit:30], @"Failed to clear bit 30");
+	XCTAssertTrue([ba bit:35], @"Failed to set bit 35");
+	XCTAssertEqual(ba.count, count, @"Wrong count (%zu; expected %zu)", ba.count, count);
+	XCTAssertTrue([ba checkCount], @"Failed count check (%zu)", ba.count);
     
     ba = [BABitArray bitArrayWithLength:8*8 size:[BASampleArray sampleArrayForSize2:BASize2Make(8, 8)]];
     
     [ba setDiagonalReverse:NO min:0 max:8];
-    STAssertEquals([ba count], (NSUInteger)8, @"Failed count after set diagonal");
+    XCTAssertEqual([ba count], (NSUInteger)8, @"Failed count after set diagonal");
     
     [ba setRow:6 min:0 max:8];
-    STAssertEquals([ba count], (NSUInteger)15, @"Failed count after set row");
+    XCTAssertEqual([ba count], (NSUInteger)15, @"Failed count after set row");
     
     [ba setColumn:4 min:0 max:8];
-    STAssertEquals([ba count], (NSUInteger)21, @"Failed count after set column");
+    XCTAssertEqual([ba count], (NSUInteger)21, @"Failed count after set column");
 }
 
 - (void)test03FirstLast {
@@ -137,10 +137,10 @@
 	NSUInteger fc = [ba firstClearBit];
 	NSUInteger lc = [ba lastClearBit];
 	
-	STAssertTrue(12==fs, @"First set failed. Expected %qu; actual: %qu", 12, fs);
-	STAssertTrue(0==fc, @"First clear failed. Expected %qu; actual: %qu", 0, fc);
-	STAssertTrue(31==ls, @"Last set failed. Expected %qu; actual: %qu", 31, ls);
-	STAssertTrue(63==lc, @"Last clear failed. Expected %qu; actual: %qu", 63, lc);
+	XCTAssertTrue(12==fs, @"First set failed. Expected %zu; actual: %zu", (NSUInteger)12, fs);
+	XCTAssertTrue(0==fc, @"First clear failed. Expected %zu; actual: %zu", (NSUInteger)0, fc);
+	XCTAssertTrue(31==ls, @"Last set failed. Expected %zu; actual: %zu", (NSUInteger)31, ls);
+	XCTAssertTrue(63==lc, @"Last clear failed. Expected %zu; actual: %zu", (NSUInteger)63, lc);
 }
 
 - (void)test04EqualitySimplePositive {
@@ -148,7 +148,7 @@
 	BABitArray *ba1 = [BABitArray bitArray8];
 	BABitArray *ba2 = [BABitArray bitArray8];
 	
-	STAssertTrue([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
+	XCTAssertTrue([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
 }
 
 - (void)test05EqualitySimpleNegative {
@@ -158,7 +158,7 @@
     
     [ba1 setBit:7];
 	
-	STAssertFalse([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
+	XCTAssertFalse([ba1 isEqualToBitArray:ba2], @"Expected: %@; Actual: %@", ba1, ba2);
 }
 
 - (void)test10Copy {
@@ -166,11 +166,11 @@
     BABitArray *ba1 = [BABitArray bitArray64];
     BABitArray *ba2 = [[ba1 copy] autorelease];
     
-    STAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray copy equality test failed");
+    XCTAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray copy equality test failed");
     
     [ba2 setBit:63];
     
-    STAssertFalse([ba1 isEqualToBitArray:ba2], @"BABitArray copy modify inequality test failed");
+    XCTAssertFalse([ba1 isEqualToBitArray:ba2], @"BABitArray copy modify inequality test failed");
 }
 
 - (void)test11EncodeDecode {
@@ -185,7 +185,7 @@
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:ba1];
     BABitArray *ba2 = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     
-    STAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray encode-decode equality test failed");
+    XCTAssertTrue([ba1 isEqualToBitArray:ba2], @"BABitArray encode-decode equality test failed");
 }
 
 - (void)test20Enumeration {
@@ -205,8 +205,8 @@
         ++checkCount;
     }];
     
-    STAssertTrue(0 == [ba2 count], @"enumeration test failed");
-    STAssertEquals(checkCount, [ba1 count], @"enumeration test failed");
+    XCTAssertTrue(0 == [ba2 count], @"enumeration test failed");
+    XCTAssertEqual(checkCount, [ba1 count], @"enumeration test failed");
 }
 
 - (void)test30WriteRange {
@@ -219,22 +219,22 @@
     
     [ba1 writeBits:bits range:NSMakeRange(30, 1)];
     
-    STAssertEquals([ba1 count], (NSUInteger)1, @"Write bits failed; array count incorrect. Expected: 1. Actual: %d", [ba1 count]);
+    XCTAssertEqual([ba1 count], (NSUInteger)1, @"Write bits failed; array count incorrect. Expected: 1. Actual: %zu", [ba1 count]);
     
     [ba1 readBits:check range:NSMakeRange(30, 1)];
     
-    STAssertEquals(check[0], bits[0], @"Read bits failed.");
+    XCTAssertEqual(check[0], bits[0], @"Read bits failed.");
     
     bits[1] = bits[5] = bits[6] = bits[11] = bits[15] = YES;
     
     [ba1 writeBits:bits range:NSMakeRange(0, 16)];
     
-    STAssertEquals([ba1 count], (NSUInteger)7, @"Write bits failed; array count incorrect. Expected: 7. Actual: %d", [ba1 count]);
+    XCTAssertEqual([ba1 count], (NSUInteger)7, @"Write bits failed; array count incorrect. Expected: 7. Actual: %zu", [ba1 count]);
     
     [ba1 readBits:check range:NSMakeRange(0, 16)];
     
     for(NSUInteger i=0; i<16; ++i) {
-        STAssertEquals(check[i], bits[i], @"Read bits failed at bit %d", (int)i);
+        XCTAssertEqual(check[i], bits[i], @"Read bits failed at bit %d", (int)i);
         if(check[i] != bits[i])
             break;
     }
@@ -251,8 +251,8 @@
 	
 #if SEQUENTIAL_BIT_ORDER
     unsigned char c[2] = { 0b00001000, 0b00110000 };
-	STAssertEquals(c[0], (unsigned char)0x08, @"Bit order mismatch");
-	STAssertEquals(c[1], (unsigned char)0x30, @"Bit order mismatch");
+	XCTAssertEqual(c[0], (unsigned char)0x08, @"Bit order mismatch");
+	XCTAssertEqual(c[1], (unsigned char)0x30, @"Bit order mismatch");
 #else
     unsigned char c[2] = { 0b00010000, 0b00001100 };
 #endif
@@ -260,13 +260,13 @@
 	NSData *e = [NSData dataWithBytes:c length:2];
     NSData *a = [ba dataForRange:NSMakeRange(0, 16)];
 	
-	STAssertEqualObjects(a, e, @"-dataForRange: failed.");
+	XCTAssertEqualObjects(a, e, @"-dataForRange: failed.");
 
 #if SEQUENTIAL_BIT_ORDER
     c[0] = 0b10000011;
     c[1] = 0b00000000;
-	STAssertEquals(c[0], (unsigned char)0x83, @"Bit order mismatch");
-	STAssertEquals(c[1], (unsigned char)0x0, @"Bit order mismatch");
+	XCTAssertEqual(c[0], (unsigned char)0x83, @"Bit order mismatch");
+	XCTAssertEqual(c[1], (unsigned char)0x0, @"Bit order mismatch");
 #else
     c[0] = 0b11000001;
     c[1] = 0b00000000;
@@ -280,8 +280,8 @@
     BABitArray *t1 = [[[BABitArray alloc] initWithData:a length:8] autorelease];
     BABitArray *t2 = [[[BABitArray alloc] initWithBitArray:ba range:NSMakeRange(4, 8)] autorelease];
     
-    STAssertEqualObjects(a, e, @"-dataForRange: failed.");
-	STAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
+    XCTAssertEqualObjects(a, e, @"-dataForRange: failed.");
+	XCTAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
 	
 	// 00010000 01100000 00010101 10000000
     [ba setBit:20];
@@ -292,8 +292,8 @@
 #if SEQUENTIAL_BIT_ORDER
     c[0] = 0b11000000;
     c[1] = 0b00101010;
-	STAssertEquals(c[0], (unsigned char)0xC0, @"Bit order mismatch");
-	STAssertEquals(c[1], (unsigned char)0x2A, @"Bit order mismatch");
+	XCTAssertEqual(c[0], (unsigned char)0xC0, @"Bit order mismatch");
+	XCTAssertEqual(c[1], (unsigned char)0x2A, @"Bit order mismatch");
 #else
     c[0] = 0b00000011;
     c[1] = 0b01010100;
@@ -309,8 +309,8 @@
     t1 = [[[BABitArray alloc] initWithData:a length:15] autorelease];
     t2 = [[[BABitArray alloc] initWithBitArray:ba range:NSMakeRange(10, 15)] autorelease];
 
-    STAssertEqualObjects(a, e, @"-dataForRange: failed.");
-	STAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
+    XCTAssertEqualObjects(a, e, @"-dataForRange: failed.");
+	XCTAssertEqualObjects(t1, t2, @"-initWithData:length: failed.");
 }
 
 - (void)test32SubArray {
@@ -323,14 +323,14 @@
     NSUInteger e = (NSUInteger)128*128;
     NSUInteger a = [ba1 count];
     
-    STAssertEquals(a, e, @"setRect: failed; count is wrong. Expected: %u. Actual: %u", (unsigned)e, (unsigned)a);
+    XCTAssertEqual(a, e, @"setRect: failed; count is wrong. Expected: %zu. Actual: %zu", e, a);
     
     BABitArray *ba = (BABitArray *)[ba1 subArrayWithRegion:region];
     BABitArray *be = [BABitArray testBitArray128by128];
     
     [be setAll];
     
-    STAssertTrue([ba isEqualToBitArray:be], @"subArrayWithRect: failed; Expected: %@. Actual: %@", be, ba);
+    XCTAssertTrue([ba isEqualToBitArray:be], @"subArrayWithRect: failed; Expected: %@. Actual: %@", be, ba);
 }
 
 - (void)test40RowFlip {
@@ -345,7 +345,7 @@
     
     BABitArray *a = [ba1 bitArrayByFlippingRows];
     
-    STAssertTrue([a isEqualToBitArray:e], @"flipping rows failed");
+    XCTAssertTrue([a isEqualToBitArray:e], @"flipping rows failed");
 }
 
 - (void)test41ColumnFlip {
@@ -360,7 +360,7 @@
 
     BABitArray *a = [ba1 bitArrayByFlippingColumns];
     
-    STAssertTrue([a isEqualToBitArray:e], @"flipping columns failed");
+    XCTAssertTrue([a isEqualToBitArray:e], @"flipping columns failed");
 }
 
 - (void)test42Rotation90 {
@@ -375,7 +375,7 @@
     
     BABitArray *a = [ba1 bitArrayByRotating:1];
     
-    STAssertTrue([a isEqualToBitArray:e], @"rotation by 90 degrees failed");
+    XCTAssertTrue([a isEqualToBitArray:e], @"rotation by 90 degrees failed");
 }
 
 - (void)test43Rotation180 {
@@ -393,7 +393,7 @@
 
     BABitArray *a = [ba1 bitArrayByRotating:2];
     
-    STAssertTrue([a isEqualToBitArray:e], @"rotation by 180 degrees failed");
+    XCTAssertTrue([a isEqualToBitArray:e], @"rotation by 180 degrees failed");
 }
 
 - (void)test44Rotation270 {
@@ -409,7 +409,7 @@
     
     BABitArray *a = [ba1 bitArrayByRotating:3];
     
-    STAssertTrue([a isEqualToBitArray:e], @"rotation by 90 degrees failed");
+    XCTAssertTrue([a isEqualToBitArray:e], @"rotation by 90 degrees failed");
 }
 
 @end

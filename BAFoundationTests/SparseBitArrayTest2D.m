@@ -37,40 +37,40 @@
 }
 
 - (void)test01 {
-    STAssertEquals(_array.scale, SCALE, @"Wrong tree scale");
-    STAssertEquals(_array.leafSize, LEAF_SIZE, @"Wrong leaf size");
+    XCTAssertEqual(_array.scale, SCALE, @"Wrong tree scale");
+    XCTAssertEqual(_array.leafSize, LEAF_SIZE, @"Wrong leaf size");
 
-    STAssertEquals(_array.level, 1ul, @"Wrong tree root level");
-    STAssertEquals(_array.treeBase, L1_TREE_BASE, @"Wrong tree base");
-    STAssertEquals(_array.treeSize, L1_TREE_SIZE, @"Wrong tree size");
+    XCTAssertEqual(_array.level, 1ul, @"Wrong tree root level");
+    XCTAssertEqual(_array.treeBase, L1_TREE_BASE, @"Wrong tree base");
+    XCTAssertEqual(_array.treeSize, L1_TREE_SIZE, @"Wrong tree size");
     
     [_array setBitAtX:2*BASE y:0];
     
-    STAssertEquals(_array.level, 2ul, @"Wrong tree root level");
-    STAssertEquals(_array.treeBase, L2_TREE_BASE, @"Wrong tree base");
-    STAssertEquals(_array.treeSize, L2_TREE_SIZE, @"Wrong tree size");
+    XCTAssertEqual(_array.level, 2ul, @"Wrong tree root level");
+    XCTAssertEqual(_array.treeBase, L2_TREE_BASE, @"Wrong tree base");
+    XCTAssertEqual(_array.treeSize, L2_TREE_SIZE, @"Wrong tree size");
 }
 
 - (void)test02 {
     [_array setBitAtX:0 y:0];
-    STAssertTrue([_array bitAtX:0 y:0], @"failed to confirm bit set at (0,0)");
+    XCTAssertTrue([_array bitAtX:0 y:0], @"failed to confirm bit set at (0,0)");
     [_array setBitAtX:1 y:0];
-    STAssertTrue([_array bitAtX:1 y:0], @"failed to confirm bit set at (-1,0)");
+    XCTAssertTrue([_array bitAtX:1 y:0], @"failed to confirm bit set at (-1,0)");
     [_array setBitAtX:0 y:1];
-    STAssertTrue([_array bitAtX:0 y:1], @"failed to confirm bit set at (0,-1)");
+    XCTAssertTrue([_array bitAtX:0 y:1], @"failed to confirm bit set at (0,-1)");
     [_array setBitAtX:1 y:1];
-    STAssertTrue([_array bitAtX:1 y:1], @"failed to confirm bit set at (-1,-1)");
+    XCTAssertTrue([_array bitAtX:1 y:1], @"failed to confirm bit set at (-1,-1)");
 }
 
 - (void)test03 {
     [_array setBitAtX:7 y:7];
-    STAssertTrue([_array bitAtX:7 y:7], @"failed to confirm bit set at (7,7)");
+    XCTAssertTrue([_array bitAtX:7 y:7], @"failed to confirm bit set at (7,7)");
     [_array setBitAtX:8 y:7];
-    STAssertTrue([_array bitAtX:8 y:7], @"failed to confirm bit set at (-8,7)");
+    XCTAssertTrue([_array bitAtX:8 y:7], @"failed to confirm bit set at (-8,7)");
     [_array setBitAtX:7 y:8];
-    STAssertTrue([_array bitAtX:7 y:8], @"failed to confirm bit set at (7,-8)");
+    XCTAssertTrue([_array bitAtX:7 y:8], @"failed to confirm bit set at (7,-8)");
     [_array setBitAtX:8 y:8];
-    STAssertTrue([_array bitAtX:8 y:8], @"failed to confirm bit set at (-8,-8)");
+    XCTAssertTrue([_array bitAtX:8 y:8], @"failed to confirm bit set at (-8,-8)");
 }
 
 - (void)test04 {
@@ -106,7 +106,7 @@
     }];
     
 //    NSLog(@"Count: %d nodes, %d leaves", (int)nodeCount, (int)leafCount);
-    STAssertEquals(leafCount, e, @"Wrong leaf count. Expected: %d. Actual: %d", e, leafCount);
+    XCTAssertEqual(leafCount, e, @"Wrong leaf count. Expected: %zu. Actual: %zu", e, leafCount);
 }
 
 - (void)test06String {
@@ -133,7 +133,7 @@
     NSString *e = [strings componentsJoinedByString:@"\n"];
     NSString *a = [_array stringForRegion2];
     
-    STAssertEqualObjects(a, e, @"String creation failed.");
+    XCTAssertEqualObjects(a, e, @"String creation failed.");
 }
 
 - (void)testWriteRect {
@@ -144,23 +144,23 @@
     [_array setRegion2:setRegion];
     [_array clearRegion2:clrRegion];
     
-    STAssertEquals([_array count], (NSUInteger) (32*32 - 16*16), @"count failed");
+    XCTAssertEqual([_array count], (NSUInteger) (32*32 - 16*16), @"count failed");
     
     NSString *string = [_array stringForRegion2];
     
-    STAssertEquals([string length], [_array treeSize]+[_array treeBase]-1, @"whaaa");
+    XCTAssertEqual([string length], [_array treeSize]+[_array treeBase]-1, @"whaaa");
     
     BARegion2 region = BARegion2Make(0, 0, BASE, BASE);
     id<BABitArray2D> ba = [_array subArrayWithRegion:region];
     
-    STAssertEquals([ba count], (NSUInteger)8*8, @"Wrong count");
+    XCTAssertEqual([ba count], (NSUInteger)8*8, @"Wrong count");
     
     string = [_array stringForRegion2:region];
     NSString *other = [ba stringForRegion2];
     
-    STAssertNotNil(ba, @"Failed to create subarray");
+    XCTAssertNotNil(ba, @"Failed to create subarray");
     
-    STAssertEqualObjects(other, string, @"string creation failed");
+    XCTAssertEqualObjects(other, string, @"string creation failed");
     
     region = BARegion2Make(4, 4, 20, 10);
     
@@ -169,18 +169,18 @@
     NSUInteger count = BARegion2Area(intersection);
 
     ba = [_array subArrayWithRegion:region];
-    STAssertEquals(ba.length, length, @"wrong length");
-    STAssertEquals(ba.count, count, @"wrong count");
+    XCTAssertEqual(ba.length, length, @"wrong length");
+    XCTAssertEqual(ba.count, count, @"wrong count");
 
     NSUInteger stringLength = length + region.size.height - 1;
 
     string = [_array stringForRegion2:region];
-    STAssertEquals([string length], stringLength, @"wrong string length");
+    XCTAssertEqual([string length], stringLength, @"wrong string length");
 
     other = [ba stringForRegion2];
-    STAssertEquals([other length], stringLength, @"wrong string length");
+    XCTAssertEqual([other length], stringLength, @"wrong string length");
     
-    STAssertEqualObjects(string, other, @"string creation failed");
+    XCTAssertEqualObjects(string, other, @"string creation failed");
 }
 
 - (void)test99 {

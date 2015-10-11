@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Lichen Labs. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "BANoise.h"
 
@@ -51,7 +51,7 @@ static const double finish = 4.;
 
 static __strong NSData *sampleData;
 
-@interface BANoiseMakerTester : SenTestCase
+@interface BANoiseMakerTester : XCTestCase
 
 + (double)evaluateX:(double)x Y:(double)y Z:(double)z;
 + (NSData *)sampleData;
@@ -185,7 +185,7 @@ static __strong NSData *sampleData;
 {
 	BANoise *noise = [[BANoise alloc] init];
 	
-	STAssertNotNil(noise, @"BANoiseMaker returned nil from init");
+	XCTAssertNotNil(noise, @"BANoiseMaker returned nil from init");
 	
 	double *samples = (double *)[sampleData bytes];
 	double *sampleCursor = samples;
@@ -197,7 +197,7 @@ static __strong NSData *sampleData;
 		for (double y = start; y < finish && !breakout; y += increments) {
 			for (double z = start; z < finish && !breakout; z += increments) {
 				double noiseSample = [noise evaluateX:x Y:y Z:z];
-				STAssertEquals(noiseSample, *sampleCursor, @"Mismatched sample data for (%f,%f,%f)", x, y, z);
+				XCTAssertEqual(noiseSample, *sampleCursor, @"Mismatched sample data for (%f,%f,%f)", x, y, z);
 				breakout = *sampleCursor != noiseSample;
 				sampleCursor++;
 				if (noiseSample == 0.) {

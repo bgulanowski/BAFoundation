@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4E4CC5191338D436007AD580 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
-		4E4CC51A1338D436007AD580 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E4CC4F91338D37C007AD580 /* SenTestingKit.framework */; };
 		4E4CC5231338D6BA007AD580 /* BABitArrayTester.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E4CC4F41338D2DC007AD580 /* BABitArrayTester.m */; };
 		4E5CA8D81338D77F00F28C3C /* BAFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* BAFoundation.framework */; };
 		4E6B60981056B1E700027CCC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
@@ -124,11 +123,10 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* BAFoundation_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFoundation_Prefix.pch; sourceTree = "<group>"; };
-		4E4CC4A51338D0F2007AD580 /* BAFoundationTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BAFoundationTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4E4CC4A51338D0F2007AD580 /* BAFoundationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BAFoundationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E4CC4A61338D0F2007AD580 /* BAFoundationTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BAFoundationTests-Info.plist"; sourceTree = "<group>"; };
 		4E4CC4F31338D2DC007AD580 /* BABitArrayTester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABitArrayTester.h; sourceTree = "<group>"; };
 		4E4CC4F41338D2DC007AD580 /* BABitArrayTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABitArrayTester.m; sourceTree = "<group>"; };
-		4E4CC4F91338D37C007AD580 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4E792A92133A2E82003C9B3E /* baft */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = baft; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E792AAB133A2ECF003C9B3E /* libbaf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbaf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E792ACC133A3041003C9B3E /* baft_main.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = baft_main.m; sourceTree = "<group>"; };
@@ -202,7 +200,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E4CC5191338D436007AD580 /* Foundation.framework in Frameworks */,
-				4E4CC51A1338D436007AD580 /* SenTestingKit.framework in Frameworks */,
 				4E5CA8D81338D77F00F28C3C /* BAFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,7 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* BAFoundation.framework */,
-				4E4CC4A51338D0F2007AD580 /* BAFoundationTests.octest */,
+				4E4CC4A51338D0F2007AD580 /* BAFoundationTests.xctest */,
 				4E792A92133A2E82003C9B3E /* baft */,
 				4E792AAB133A2ECF003C9B3E /* libbaf.a */,
 			);
@@ -266,7 +263,6 @@
 			isa = PBXGroup;
 			children = (
 				84F9A3F11851A28B004E31E4 /* ApplicationServices.framework */,
-				4E4CC4F91338D37C007AD580 /* SenTestingKit.framework */,
 				842C152F15FD9BE600D5AE05 /* CoreData.framework */,
 				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
 				84BBE64016E8EDBD00AF371A /* libz.dylib */,
@@ -494,8 +490,8 @@
 			);
 			name = BAFoundationTests;
 			productName = BAFoundationTests;
-			productReference = 4E4CC4A51338D0F2007AD580 /* BAFoundationTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
+			productReference = 4E4CC4A51338D0F2007AD580 /* BAFoundationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4E792A91133A2E82003C9B3E /* baft */ = {
 			isa = PBXNativeTarget;
@@ -842,7 +838,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -853,11 +852,8 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					Cocoa,
-					"-framework",
-					SenTestingKit,
 				);
 				PRODUCT_NAME = BAFoundationTests;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -868,7 +864,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(inherited)",
+				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
@@ -877,11 +876,8 @@
 				OTHER_LDFLAGS = (
 					"-framework",
 					Cocoa,
-					"-framework",
-					SenTestingKit,
 				);
 				PRODUCT_NAME = BAFoundationTests;
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

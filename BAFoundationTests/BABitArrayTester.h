@@ -6,12 +6,12 @@
 //  Copyright 2011 Bored Astronaut. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "BABitArray.h"
 
 
-@interface BABitArrayTester : SenTestCase {
+@interface BABitArrayTester : XCTestCase {
 
 }
 

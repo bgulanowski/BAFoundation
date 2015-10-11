@@ -6,11 +6,11 @@
 //  Copyright (c) 2012 Lichen Labs. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 @class BASparseBitArray;
 
-@interface SparseBitArrayTest2D : SenTestCase {
+@interface SparseBitArrayTest2D : XCTestCase {
     BASparseBitArray *_array;
 }
 
