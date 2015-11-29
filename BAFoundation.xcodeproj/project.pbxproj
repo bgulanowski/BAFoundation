@@ -554,7 +554,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0630;
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Lichen Labs";
 				TargetAttributes = {
 					8DC2EF4F0486A6940098B216 = {
@@ -749,6 +749,7 @@
 				GCC_PREFIX_HEADER = BAFoundation/BAFoundation_Prefix.pch;
 				INFOPLIST_FILE = BAFoundation/Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.boredastronaut.foundation;
 				PRODUCT_NAME = BAFoundation;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = framework;
@@ -773,6 +774,7 @@
 				GCC_PREFIX_HEADER = BAFoundation/BAFoundation_Prefix.pch;
 				INFOPLIST_FILE = BAFoundation/Info.plist;
 				INSTALL_PATH = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.boredastronaut.foundation;
 				PRODUCT_NAME = BAFoundation;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = framework;
@@ -790,6 +792,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -853,6 +856,7 @@
 					"-framework",
 					Cocoa,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.boredastronaut.foundation.tests;
 				PRODUCT_NAME = BAFoundationTests;
 			};
 			name = Debug;
@@ -877,6 +881,7 @@
 					"-framework",
 					Cocoa,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.boredastronaut.foundation.tests;
 				PRODUCT_NAME = BAFoundationTests;
 			};
 			name = Release;
