@@ -193,23 +193,9 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 - (instancetype)initWithIvar:(Ivar)ivar {
-    return [self initWithName:[NSString stringWithUTF8String:ivar_getName(ivar)] encoding:[NSString stringWithUTF8String:ivar_getTypeEncoding(ivar)]];
-}
-
-- (NSString *)debugDescription {
-    
-    NSString *detail = nil;
-    if (self.valueType == BAValueTypeObject) {
-        detail = self.typeName;
-    }
-    else if (self.valueType == BAValueTypeCollection) {
-        detail = self.typeName;
-    }
-    else {
-        detail = NSStringForBAValueType(self.valueType);
-    }
-
-    return [NSString stringWithFormat:@"%@: %@ (%@)", self.name, detail, self.encoding];
+    NSString *name = [NSString stringWithCString:ivar_getName(ivar) encoding:NSASCIIStringEncoding];
+    NSString *code = [NSString stringWithCString:ivar_getTypeEncoding(ivar) encoding:NSASCIIStringEncoding];
+    return [self initWithName:name encoding:code];
 }
 
 + (instancetype)valueInfoWithIvar:(Ivar)ivar {
@@ -225,6 +211,11 @@ static void PrepareTypeNamesAndValues( void );
 
 + (instancetype)valueInfoWithProperty:(objc_property_t)property {
     return [[self alloc] initWithProperty:property];
+}
+
+- (NSString *)debugDescription {
+    NSString *typeName = self.typeName ?: [NSString stringForValueType:self.valueType];
+    return [NSString stringWithFormat:@"%@: %@ (%@)", self.name, typeName, self.encoding];
 }
 
 @end
