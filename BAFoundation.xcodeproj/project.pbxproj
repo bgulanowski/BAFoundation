@@ -62,6 +62,11 @@
 		842F43861D29692D00B5C48F /* NSArray+BAFExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43781D29691200B5C48F /* NSArray+BAFExtensions.m */; };
 		842F43871D29692D00B5C48F /* NSDictionary+BAFExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F437A1D29691200B5C48F /* NSDictionary+BAFExtensions.m */; };
 		842F43881D29692D00B5C48F /* NSObject+BAIntrospection.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F437C1D29691200B5C48F /* NSObject+BAIntrospection.m */; };
+		842F438B1D2969DC00B5C48F /* NSArrayBAFExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F438A1D2969DC00B5C48F /* NSArrayBAFExtensionTests.m */; };
+		842F438D1D2969EE00B5C48F /* NSObjectBAIntrospectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F438C1D2969EE00B5C48F /* NSObjectBAIntrospectionTests.m */; };
+		842F438F1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F438E1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m */; };
+		842F43911D296A3000B5C48F /* NSObjectPlistTransformingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43901D296A3000B5C48F /* NSObjectPlistTransformingTests.m */; };
+		842F43931D29755200B5C48F /* BAKeyValuePairTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43921D29755200B5C48F /* BAKeyValuePairTests.m */; };
 		84357BA318381F8600664A68 /* BANoiseMakerTester.m in Sources */ = {isa = PBXBuildFile; fileRef = 84357BA218381F8600664A68 /* BANoiseMakerTester.m */; };
 		848699461707AC0C00727A5D /* BAFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8428532E16F3A4BE00BD7A71 /* BAFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
@@ -180,6 +185,11 @@
 		842F437A1D29691200B5C48F /* NSDictionary+BAFExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+BAFExtensions.m"; sourceTree = "<group>"; };
 		842F437B1D29691200B5C48F /* NSObject+BAIntrospection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BAIntrospection.h"; sourceTree = "<group>"; };
 		842F437C1D29691200B5C48F /* NSObject+BAIntrospection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BAIntrospection.m"; sourceTree = "<group>"; };
+		842F438A1D2969DC00B5C48F /* NSArrayBAFExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayBAFExtensionTests.m; sourceTree = "<group>"; };
+		842F438C1D2969EE00B5C48F /* NSObjectBAIntrospectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObjectBAIntrospectionTests.m; sourceTree = "<group>"; };
+		842F438E1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryBAFExtensionTests.m; sourceTree = "<group>"; };
+		842F43901D296A3000B5C48F /* NSObjectPlistTransformingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObjectPlistTransformingTests.m; sourceTree = "<group>"; };
+		842F43921D29755200B5C48F /* BAKeyValuePairTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAKeyValuePairTests.m; sourceTree = "<group>"; };
 		84357BA218381F8600664A68 /* BANoiseMakerTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BANoiseMakerTester.m; sourceTree = "<group>"; };
 		84A0D20416E271110010D80D /* BASparseBitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseBitArray.h; sourceTree = "<group>"; };
 		84A0D20516E271110010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseBitArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -327,14 +337,19 @@
 				4E4CC4F31338D2DC007AD580 /* BABitArrayTester.h */,
 				4E4CC4F41338D2DC007AD580 /* BABitArrayTester.m */,
 				4E4CC4A61338D0F2007AD580 /* BAFoundationTests-Info.plist */,
+				842F43921D29755200B5C48F /* BAKeyValuePairTests.m */,
+				84357BA218381F8600664A68 /* BANoiseMakerTester.m */,
+				84F246441ADD2B5100D3C499 /* BARegion2Test.m */,
+				842F438A1D2969DC00B5C48F /* NSArrayBAFExtensionTests.m */,
+				842F438E1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m */,
+				842F438C1D2969EE00B5C48F /* NSObjectBAIntrospectionTests.m */,
+				842F43901D296A3000B5C48F /* NSObjectPlistTransformingTests.m */,
 				84A0D25816E27E270010D80D /* SparseBitArrayTest2D.h */,
 				84A0D25916E27E270010D80D /* SparseBitArrayTest2D.m */,
 				84A0D25A16E27E270010D80D /* SparseBitArrayTest3D.h */,
 				84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */,
 				84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */,
 				84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */,
-				84357BA218381F8600664A68 /* BANoiseMakerTester.m */,
-				84F246441ADD2B5100D3C499 /* BARegion2Test.m */,
 			);
 			name = "Unit Tests";
 			path = BAFoundationTests;
@@ -513,7 +528,6 @@
 				4E4CC4A01338D0F2007AD580 /* Resources */,
 				4E4CC4A11338D0F2007AD580 /* Sources */,
 				4E4CC4A21338D0F2007AD580 /* Frameworks */,
-				4E4CC4A31338D0F2007AD580 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -635,33 +649,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		4E4CC4A31338D0F2007AD580 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		4E4CC4A11338D0F2007AD580 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				842F438D1D2969EE00B5C48F /* NSObjectBAIntrospectionTests.m in Sources */,
 				4E4CC5231338D6BA007AD580 /* BABitArrayTester.m in Sources */,
+				842F43931D29755200B5C48F /* BAKeyValuePairTests.m in Sources */,
 				84A0D25E16E27E270010D80D /* SparseBitArrayTest2D.m in Sources */,
 				84A0D25F16E27E270010D80D /* SparseBitArrayTest3D.m in Sources */,
+				842F43911D296A3000B5C48F /* NSObjectPlistTransformingTests.m in Sources */,
 				84F246451ADD2B5100D3C499 /* BARegion2Test.m in Sources */,
 				84A0D26016E27E270010D80D /* SparseBitArrayTestBasic.m in Sources */,
+				842F438F1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m in Sources */,
 				84357BA318381F8600664A68 /* BANoiseMakerTester.m in Sources */,
+				842F438B1D2969DC00B5C48F /* NSArrayBAFExtensionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
