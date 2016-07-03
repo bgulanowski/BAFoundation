@@ -313,7 +313,10 @@ static void PrepareTypeNamesAndValues( void );
             type = BAValueTypeCArray;
             break;
         case '@':
-            type = [NSClassFromString([self encodedClassName]) valueType];
+        {
+            Class cls = NSClassFromString([self encodedClassName]);
+            type = cls ? [cls valueType] : BAValueTypeObject;
+        }
             break;
         case '#':
             return BAValueTypeClass;
