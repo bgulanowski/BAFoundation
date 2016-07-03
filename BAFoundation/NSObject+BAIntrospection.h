@@ -25,14 +25,6 @@ typedef NS_ENUM(NSUInteger, BAValueType) {
     BAValueTypeCount,
 };
 
-extern NSString *NSStringForBAValueType(BAValueType ivarType);
-extern BAValueType BAValueTypeForNSString(NSString *string);
-
-extern BAValueType BAValueTypeForEncoding(NSString *encoding);
-extern BAValueType BAValueTypeForClass(Class class);
-extern NSString *BAValueTypeNameForEncoding(NSString *encoding);
-extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
-
 @class BAValueInfo;
 
 @interface NSObject (BAIntrospection)
