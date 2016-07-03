@@ -110,20 +110,21 @@ static void PrepareTypeNamesAndValues( void );
     return propertyInfoIndex[[self publicClassName]];
 }
 
++ (NSArray *)cachePropertyInfo:(NSArray *)info {
+    propertyInfoIndex[[self publicClassName]] = info;
+    return info;
+}
+
 + (NSArray *)createPropertyInfo {
-    NSMutableArray *infos = [NSMutableArray array];
+    NSMutableArray *info = [NSMutableArray array];
     [self iteratePropertiesWithBlock:^(objc_property_t property) {
-        [infos addObject:[BAValueInfo valueInfoWithProperty:property]];
+        [info addObject:[BAValueInfo valueInfoWithProperty:property]];
     }];
-    return infos;
+    return info;
 }
 
 + (NSArray *)propertyInfo {
-    NSArray *infos = [self cachedPropertyInfo];
-    if (nil == infos) {
-        propertyInfoIndex[[self publicClassName]] = infos = [self createPropertyInfo];
-    }
-    return infos;
+    return propertyInfoIndex[[self publicClassName]] ?: [self cachePropertyInfo:[self createPropertyInfo]];
 }
 
 + (BAValueInfo *)propertyInfoForName:(NSString *)name {

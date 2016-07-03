@@ -64,6 +64,8 @@ extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 @property (strong) NSString *typeName;
 @property BAValueType valueType;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithName:(NSString *)name encoding:(NSString *)encoding NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithIvar:(Ivar)ivar;
