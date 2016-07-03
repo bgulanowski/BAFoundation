@@ -217,7 +217,10 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 - (instancetype)initWithProperty:(objc_property_t)property {
-    return [self initWithName:[NSString stringWithUTF8String:property_getName(property)] encoding:BAValueEncodingForPropertyAttributes([NSString stringWithUTF8String:property_getAttributes(property)])];
+    NSString *name = [NSString stringWithCString:property_getName(property) encoding:NSASCIIStringEncoding];
+    NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSASCIIStringEncoding];
+    NSString *code = BAValueEncodingForPropertyAttributes(attr);
+    return [self initWithName:name encoding:code];
 }
 
 + (instancetype)valueInfoWithProperty:(objc_property_t)property {
