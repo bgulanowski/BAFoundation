@@ -19,5 +19,18 @@
 
 #import <BAFoundation/BANoise.h>
 
+#import <BAFoundation/BAKeyValuePair.h>
 #import <BAFoundation/BAGraphNode.h>
 #import <BAFoundation/BATextIOHandler.h>
+
+#import <BAFoundation/NSObject+BAIntrospection.h>
+
+#import <BAFoundation/NSEntityDescription+BAAdditions.h>
+#import <BAFoundation/NSManagedObject+BAAdditions.h>
+#import <BAFoundation/NSManagedObjectContext+BAAdditions.h>
+
+#import <BAFoundation/NSArray+BAFExtensions.h>
+#import <BAFoundation/NSDictionary+BAFExtensions.h>
+#import <BAFoundation/NSData+GZip.h>
+#import <BAFoundation/NSObject+PlistTransforming.h>
+
