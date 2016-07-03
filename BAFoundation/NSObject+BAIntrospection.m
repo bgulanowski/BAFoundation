@@ -12,6 +12,9 @@
 static NSMutableDictionary *ivarInfoIndex;
 static NSMutableDictionary *propertyInfoIndex;
 
+const NSDictionary *namesIndex;
+const NSDictionary *typesIndex;
+
 static void PrepareTypeNamesAndValues( void );
 
 #pragma mark -
@@ -220,8 +223,6 @@ static void PrepareTypeNamesAndValues( void );
 
 @end
 
-const NSDictionary *namesIndex;
-const NSDictionary *typesIndex;
 #pragma mark -
 
 @implementation NSObject (BAValueTypes)
