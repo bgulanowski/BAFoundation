@@ -222,6 +222,56 @@ static void PrepareTypeNamesAndValues( void );
 
 const NSDictionary *namesIndex;
 const NSDictionary *typesIndex;
+#pragma mark -
+
+@implementation NSObject (BAValueTypes)
+
++ (BAValueType)valueType {
+    return BAValueTypeObject;
+}
+
+@end
+
+@implementation NSArray (BAValueTypes)
+
++ (BAValueType)valueType {
+    return BAValueTypeCollection;
+}
+
+@end
+
+@implementation NSSet (BAValueTypes)
+
++ (BAValueType)valueType {
+    return BAValueTypeCollection;
+}
+
+@end
+
+@implementation NSOrderedSet (BAValueTypes)
+
++ (BAValueType)valueType {
+    return BAValueTypeCollection;
+}
+
+@end
+
+@implementation NSString (BAValueTypes)
+
++ (BAValueType)valueType {
+    return BAValueTypeString;
+}
+
++ (NSString *)stringForValueType:(BAValueType)valueType {
+    return namesIndex[@(valueType)] ?: @"Undefined";
+}
+
+- (BAValueType)valueType {
+    return [typesIndex[self] unsignedIntegerValue];
+}
+
+@end
+
 
 static void PrepareTypeNamesAndValues( void ) {
     

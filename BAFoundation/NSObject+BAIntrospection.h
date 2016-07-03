@@ -75,3 +75,14 @@ extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 + (instancetype)valueInfoWithProperty:(objc_property_t)property;
 
 @end
+
+@interface NSObject (BAValueTypes)
++ (BAValueType)valueType;
+@end
+
+@interface NSString (BAValueTypes)
+
++ (NSString *)stringForValueType:(BAValueType)valueType;
+- (BAValueType)valueType;
+
+@end
