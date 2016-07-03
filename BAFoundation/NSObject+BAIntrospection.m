@@ -23,6 +23,12 @@ static void PrepareTypeNamesAndValues( void );
 - (NSString *)className;
 @end
 
+@interface NSString (BATypeDecoding)
+- (BAValueType)encodedValueType;
+- (NSString *)encodedAttributePropertyType;
+- (NSString *)encodedClassName;
+@end
+
 #pragma mark -
 
 @implementation NSObject (BAIntrospection)
@@ -187,8 +193,8 @@ static void PrepareTypeNamesAndValues( void );
     self = [super init];
     if (self) {
         _name = name;
-        _valueType = BAValueTypeForEncoding(encoding);
-        _typeName = BAValueTypeNameForEncoding(encoding);
+        _valueType = [encoding encodedValueType];
+        _typeName = [encoding encodedClassName];
         // for debugging
         _encoding = encoding;
     }
@@ -208,7 +214,7 @@ static void PrepareTypeNamesAndValues( void );
 - (instancetype)initWithProperty:(objc_property_t)property {
     NSString *name = [NSString stringWithCString:property_getName(property) encoding:NSASCIIStringEncoding];
     NSString *attr = [NSString stringWithCString:property_getAttributes(property) encoding:NSASCIIStringEncoding];
-    NSString *code = BAValueEncodingForPropertyAttributes(attr);
+    NSString *code = [attr encodedAttributePropertyType];
     return [self initWithName:name encoding:code];
 }
 
@@ -273,6 +279,94 @@ static void PrepareTypeNamesAndValues( void );
 
 @end
 
+#pragma mark -
+
+@implementation NSString (BATypeDecoding)
+
+- (BAValueType)encodedValueType {
+    
+    BAValueType type = BAValueTypeUndefined;
+    switch ([self characterAtIndex:0]) {
+        case 'B':
+            type = BAValueTypeBool;
+            break;
+        case 'c': // char
+        case 'i': // int
+        case 's': // short
+        case 'l': // long
+        case 'q': // long long
+        case 'C': // unsigned char
+        case 'I': // unsigned int
+        case 'S': // unsigned short
+        case 'L': // unsigned long
+        case 'Q': // unsigned long long
+            type = BAValueTypeInteger;
+            break;
+        case 'f': // float
+        case 'd': // double
+            type = BAValueTypeFloat;
+            break;
+        case '*': // char *
+            type = BAValueTypeCString;
+            break;
+        case '[':
+            type = BAValueTypeCArray;
+            break;
+        case '@':
+            type = [NSClassFromString([self encodedClassName]) valueType];
+            break;
+        case '#':
+            return BAValueTypeClass;
+            break;
+        case '{': // struct or object
+            
+            break;
+        case ':': // selector
+        case '(': // union
+        case 'b': // bit field
+        case '^': // pointer
+        case '?': // unknown or unsupported
+        default:
+            break;
+    }
+    
+    return type;
+}
+
+- (NSString *)encodedAttributePropertyType {
+    
+    NSRange range = [self rangeOfString:@","];
+    if (range.location == NSNotFound) {
+        return [self substringFromIndex:1];
+    }
+    else {
+        return [self substringWithRange:NSMakeRange(1, range.location-1)];
+    }
+}
+
+- (NSString *)encodedClassName {
+    
+    NSString *encoding = nil;
+    
+    switch ([self characterAtIndex:0]) {
+        case '@':
+            encoding = self.length > 3 ? [self substringWithRange:NSMakeRange(2, self.length - 3)] : @"id";
+            break;
+            
+        case '{':
+            encoding = [self substringWithRange:NSMakeRange(1, self.length - 3)];
+            break;
+            
+        default:
+            break;
+    }
+    
+    return encoding;
+}
+
+@end
+
+#pragma mark - Functions
 
 static void PrepareTypeNamesAndValues( void ) {
     
