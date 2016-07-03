@@ -59,10 +59,10 @@ extern NSString *BAValueEncodingForPropertyAttributes(NSString *attributes);
 
 @interface BAValueInfo : NSObject
 
-@property (strong) NSString *name;
-@property (strong) NSString *encoding;
-@property (strong) NSString *typeName;
-@property BAValueType valueType;
+@property (readonly) NSString *name;
+@property (readonly) NSString *encoding;
+@property (readonly) NSString *typeName;
+@property (readonly) BAValueType valueType;
 
 - (instancetype)init NS_UNAVAILABLE;
 

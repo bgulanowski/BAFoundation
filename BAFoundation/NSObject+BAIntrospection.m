@@ -183,11 +183,11 @@ static void PrepareTypeNamesAndValues( void );
 - (instancetype)initWithName:(NSString *)name encoding:(NSString *)encoding {
     self = [super init];
     if (self) {
-        self.name = name;
-        self.valueType = BAValueTypeForEncoding(encoding);
-        self.typeName = BAValueTypeNameForEncoding(encoding);
+        _name = name;
+        _valueType = BAValueTypeForEncoding(encoding);
+        _typeName = BAValueTypeNameForEncoding(encoding);
         // for debugging
-        self.encoding = encoding;
+        _encoding = encoding;
     }
     return self;
 }
