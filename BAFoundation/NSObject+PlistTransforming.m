@@ -125,7 +125,7 @@
 }
 
 - (NSDictionary *)baf_mapForClass:(Class)class {
-    return [self baf_map:^BAKeyValuePair *(NSString *key, id value) {
+    return [self baf_map:^(NSString *key, id value) {
         return [BAKeyValuePair keyValuePairWithKey:key value:[[class propertyInfoForName:key] baf_valueForPropertyList:value source:class]];
     }];
 }
