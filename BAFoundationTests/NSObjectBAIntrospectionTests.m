@@ -8,32 +8,9 @@
 
 #import <XCTest/XCTest.h>
 #import <BAFoundation/BAFoundation.h>
+#import "BATestObject.h"
 
 @interface NSObjectBAIntrospectionTests : XCTestCase
-
-@end
-
-@interface BAIntrospectionTest : NSObject
-
-@property _Bool c99Boolean;
-@property BOOL objcBoolean;
-@property char character;
-@property NSInteger integer;
-@property CGFloat cgFloat;
-@property char *cString;
-
-@property (strong) id object;
-@property (strong) NSDate *date;
-@property (strong) NSData *data;
-@property (strong) NSNumber *number;
-@property (strong) NSString *string;
-
-@property (strong) NSArray *array;
-@property (strong) NSSet *set;
-@property (strong) NSOrderedSet *orderedSet;
-@property (strong) NSDictionary *dictionary;
-
-@property Class cls;
 
 @end
 
@@ -65,35 +42,35 @@
 
 - (void)testC99BooleanPropertyInfo {
     NSString *propertyName = @"c99Boolean";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeBool, v.valueType);
 }
 
 - (void)testObjCBooleanPropertyInfo {
     NSString *propertyName = @"objcBoolean";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeInteger, v.valueType);
 }
 
 - (void)testBooleanPropertyInfo {
     NSString *propertyName = @"character";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeInteger, v.valueType);
 }
 
 - (void)testIntegerPropertyInfo {
     NSString *propertyName = @"integer";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeInteger, v.valueType);
 }
 
 - (void)testFloatPropertyInfo {
     NSString *propertyName = @"cgFloat";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeFloat, v.valueType);
 }
@@ -102,7 +79,7 @@
 
 - (void)testCStringPropertyInfo {
     NSString *propertyName = @"cString";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeCString, v.valueType);
 }
@@ -111,14 +88,14 @@
 
 - (void)testObjectPropertyInfo {
     NSString *propertyName = @"object";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeObject, v.valueType);
 }
 
 - (void)testDatePropertyInfo {
     NSString *propertyName = @"date";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqualObjects(@"NSDate", v.typeName);
     XCTAssertEqual(BAValueTypeObject, v.valueType);
@@ -126,7 +103,7 @@
 
 - (void)testDataPropertyInfo {
     NSString *propertyName = @"data";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqualObjects(@"NSData", v.typeName);
     XCTAssertEqual(BAValueTypeObject, v.valueType);
@@ -134,7 +111,7 @@
 
 - (void)testNumberPropertyInfo {
     NSString *propertyName = @"number";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(@"NSNumber", v.typeName);
 XCTAssertEqualObjects(propertyName, v.name);
     
@@ -143,7 +120,7 @@ XCTAssertEqualObjects(propertyName, v.name);
 
 - (void)testStringPropertyInfo {
     NSString *propertyName = @"string";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqualObjects(@"NSString", v.typeName);
     XCTAssertEqual(BAValueTypeString, v.valueType);
@@ -151,7 +128,7 @@ XCTAssertEqualObjects(propertyName, v.name);
 
 - (void)testSetPropertyInfo {
     NSString *propertyName = @"set";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqualObjects(@"NSSet", v.typeName);
     XCTAssertEqual(BAValueTypeCollection, v.valueType);
@@ -159,7 +136,7 @@ XCTAssertEqualObjects(propertyName, v.name);
 
 - (void)testOrderedSetPropertyInfo {
     NSString *propertyName = @"orderedSet";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqualObjects(@"NSOrderedSet", v.typeName);
     XCTAssertEqual(BAValueTypeCollection, v.valueType);
@@ -167,7 +144,7 @@ XCTAssertEqualObjects(propertyName, v.name);
 
 - (void)testDictionaryPropertyInfo {
     NSString *propertyName = @"dictionary";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqualObjects(@"NSDictionary", v.typeName);
     XCTAssertEqual(BAValueTypeObject, v.valueType);
@@ -175,14 +152,9 @@ XCTAssertEqualObjects(propertyName, v.name);
 
 - (void)testClassPropertyInfo {
     NSString *propertyName = @"cls";
-    BAValueInfo *v = [BAIntrospectionTest propertyInfoForName:propertyName];
+    BAValueInfo *v = [BATestObject propertyInfoForName:propertyName];
     XCTAssertEqualObjects(propertyName, v.name);
     XCTAssertEqual(BAValueTypeClass, v.valueType);
 }
 
-@end
-
-#pragma mark -
-
-@implementation BAIntrospectionTest
 @end

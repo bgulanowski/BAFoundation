@@ -67,6 +67,7 @@
 		842F438F1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F438E1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m */; };
 		842F43911D296A3000B5C48F /* NSObjectPlistTransformingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43901D296A3000B5C48F /* NSObjectPlistTransformingTests.m */; };
 		842F43931D29755200B5C48F /* BAKeyValuePairTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43921D29755200B5C48F /* BAKeyValuePairTests.m */; };
+		842F43961D2A764000B5C48F /* BATestObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43951D2A764000B5C48F /* BATestObject.m */; };
 		84357BA318381F8600664A68 /* BANoiseMakerTester.m in Sources */ = {isa = PBXBuildFile; fileRef = 84357BA218381F8600664A68 /* BANoiseMakerTester.m */; };
 		848699461707AC0C00727A5D /* BAFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8428532E16F3A4BE00BD7A71 /* BAFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
@@ -190,6 +191,8 @@
 		842F438E1D2969F800B5C48F /* NSDictionaryBAFExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryBAFExtensionTests.m; sourceTree = "<group>"; };
 		842F43901D296A3000B5C48F /* NSObjectPlistTransformingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObjectPlistTransformingTests.m; sourceTree = "<group>"; };
 		842F43921D29755200B5C48F /* BAKeyValuePairTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAKeyValuePairTests.m; sourceTree = "<group>"; };
+		842F43941D2A764000B5C48F /* BATestObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATestObject.h; sourceTree = "<group>"; };
+		842F43951D2A764000B5C48F /* BATestObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BATestObject.m; sourceTree = "<group>"; };
 		84357BA218381F8600664A68 /* BANoiseMakerTester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BANoiseMakerTester.m; sourceTree = "<group>"; };
 		84A0D20416E271110010D80D /* BASparseBitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseBitArray.h; sourceTree = "<group>"; };
 		84A0D20516E271110010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseBitArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -350,6 +353,8 @@
 				84A0D25B16E27E270010D80D /* SparseBitArrayTest3D.m */,
 				84A0D25C16E27E270010D80D /* SparseBitArrayTestBasic.h */,
 				84A0D25D16E27E270010D80D /* SparseBitArrayTestBasic.m */,
+				842F43941D2A764000B5C48F /* BATestObject.h */,
+				842F43951D2A764000B5C48F /* BATestObject.m */,
 			);
 			name = "Unit Tests";
 			path = BAFoundationTests;
@@ -657,6 +662,7 @@
 				842F438D1D2969EE00B5C48F /* NSObjectBAIntrospectionTests.m in Sources */,
 				4E4CC5231338D6BA007AD580 /* BABitArrayTester.m in Sources */,
 				842F43931D29755200B5C48F /* BAKeyValuePairTests.m in Sources */,
+				842F43961D2A764000B5C48F /* BATestObject.m in Sources */,
 				84A0D25E16E27E270010D80D /* SparseBitArrayTest2D.m in Sources */,
 				84A0D25F16E27E270010D80D /* SparseBitArrayTest3D.m in Sources */,
 				842F43911D296A3000B5C48F /* NSObjectPlistTransformingTests.m in Sources */,
