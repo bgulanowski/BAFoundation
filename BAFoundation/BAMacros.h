@@ -43,3 +43,6 @@
 #define BARandomBool()                 (random() & 1)
 #define BARandomSignedness()           (BARandomBool() * 2 - 1)
 #define BARandomCGFloatInRange(_a, _b) (BARandomCGFloat() * absolute(_b - _a) + MIN(_a,_b))
+
+#define SelKey(_selector) NSStringFromSelector( @selector(_selector) )
+

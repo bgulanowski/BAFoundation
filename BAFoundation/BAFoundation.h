@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 Lichen Labs. All rights reserved.
 //
 
+#import <BAFoundation/BATypes.h>
+#import <BAFoundation/BAMacros.h>
+#import <BAFoundation/BAFunctions.h>
+
 #import <BAFoundation/BABitArray.h>
 #import <BAFoundation/BABitArray+Rectangles.h>
 #import <BAFoundation/BASampleArray.h>
