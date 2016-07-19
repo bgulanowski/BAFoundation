@@ -10,6 +10,11 @@
 		842F436E1D2938F500B5C48F /* NSArray+BAFExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F436D1D2938F500B5C48F /* NSArray+BAFExtensions.m */; };
 		842F43711D294FBA00B5C48F /* NSDictionary+BAFExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43701D294FBA00B5C48F /* NSDictionary+BAFExtensions.m */; };
 		842F43741D29507300B5C48F /* BAKeyValuePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 842F43731D29507300B5C48F /* BAKeyValuePair.m */; };
+		84939D641D3E42EF0051811E /* BAFoundation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84939D631D3E42D10051811E /* BAFoundation.h */; };
+		84939D651D3E43080051811E /* BABitArray+Rectangles.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */; };
+		84939D661D3E43170051811E /* BAKeyValuePair.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 842F43721D29507300B5C48F /* BAKeyValuePair.h */; };
+		84939D671D3E43390051811E /* NSArray+BAFExtensions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 842F436C1D2938F500B5C48F /* NSArray+BAFExtensions.h */; };
+		84939D681D3E43390051811E /* NSDictionary+BAFExtensions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 842F436F1D294FBA00B5C48F /* NSDictionary+BAFExtensions.h */; };
 		84A0D22216E2724F0010D80D /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D20B16E2724F0010D80D /* BACoreDataManager.m */; };
 		84A0D22516E2724F0010D80D /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D20E16E2724F0010D80D /* BARelationshipProxy.m */; };
 		84A0D22716E2724F0010D80D /* BASampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21016E2724F0010D80D /* BASampleArray.m */; };
@@ -67,13 +72,18 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				84939D671D3E43390051811E /* NSArray+BAFExtensions.h in CopyFiles */,
+				84939D681D3E43390051811E /* NSDictionary+BAFExtensions.h in CopyFiles */,
+				84939D641D3E42EF0051811E /* BAFoundation.h in CopyFiles */,
 				84BD6A721B8137CC005C658F /* NSObject+BAIntrospection.h in CopyFiles */,
 				84F246EA1ADF3BA200D3C499 /* BATypes.h in CopyFiles */,
 				84F11FF019061C1E0035E15C /* NSEntityDescription+BAAdditions.h in CopyFiles */,
 				84AECAE8184BC089002AC8D0 /* BAFunctions.h in CopyFiles */,
 				84AECAD2184BBBE9002AC8D0 /* BABitArray.h in CopyFiles */,
+				84939D651D3E43080051811E /* BABitArray+Rectangles.h in CopyFiles */,
 				84AECAD3184BBBE9002AC8D0 /* BACoreDataManager.h in CopyFiles */,
 				84AECAD4184BBBE9002AC8D0 /* BAGraphNode.h in CopyFiles */,
+				84939D661D3E43170051811E /* BAKeyValuePair.h in CopyFiles */,
 				84AECAD5184BBBE9002AC8D0 /* BAMacros.h in CopyFiles */,
 				84AECAD6184BBBE9002AC8D0 /* BANoise.h in CopyFiles */,
 				84AECAD7184BBBE9002AC8D0 /* BANoiseMaker.h in CopyFiles */,
@@ -103,6 +113,7 @@
 		842F43701D294FBA00B5C48F /* NSDictionary+BAFExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+BAFExtensions.m"; sourceTree = "<group>"; };
 		842F43721D29507300B5C48F /* BAKeyValuePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAKeyValuePair.h; sourceTree = "<group>"; };
 		842F43731D29507300B5C48F /* BAKeyValuePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BAKeyValuePair.m; sourceTree = "<group>"; };
+		84939D631D3E42D10051811E /* BAFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAFoundation.h; sourceTree = "<group>"; };
 		84A0D20A16E2724F0010D80D /* BACoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BACoreDataManager.h; sourceTree = "<group>"; };
 		84A0D20B16E2724F0010D80D /* BACoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BACoreDataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84A0D20C16E2724F0010D80D /* BAMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMacros.h; sourceTree = "<group>"; };
@@ -283,6 +294,7 @@
 		B6AAB6CF14C21B9A0007A0A4 /* BAFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				84939D631D3E42D10051811E /* BAFoundation.h */,
 				84BD6A6E1B80DECF005C658F /* Introspection */,
 				84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */,
 				84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */,
