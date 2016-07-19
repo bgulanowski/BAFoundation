@@ -15,7 +15,7 @@
 
 @implementation NSObjectPlistTransformingTests
 
-- (void)test {
+- (void)testMapForClass {
     
 }
 

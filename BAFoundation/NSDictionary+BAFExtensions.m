@@ -28,10 +28,10 @@
     return results;
 }
 
-- (NSDictionary *)baf_mapValues:(id(^)(id))block {
+- (NSDictionary *)baf_mapValues:(id(^)(id<NSCopying>, id))block {
     NSMutableDictionary *results = [NSMutableDictionary dictionary];
     for (id<NSCopying>key in self) {
-        results[key] = block(self[key]);
+        results[key] = block(key, self[key]);
     }
     return results;
 }

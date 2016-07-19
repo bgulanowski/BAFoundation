@@ -55,7 +55,7 @@
                         @"one" : @"1",
                         @"two" : @"2"
                         };
-    NSDictionary *a = [d baf_mapValues:^(NSNumber *value) {
+    NSDictionary *a = [d baf_mapValues:^(id<NSCopying> key, NSNumber *value) {
         return value.stringValue;
     }];
     XCTAssertEqualObjects(e, a);

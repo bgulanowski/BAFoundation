@@ -14,6 +14,6 @@
 
 - (NSDictionary *)baf_map:(BAKeyValuePair *(^)(id<NSCopying>, id))block;
 - (NSDictionary *)baf_mapKeys:(id<NSCopying>(^)(id<NSCopying>))block;
-- (NSDictionary *)baf_mapValues:(id(^)(id))block;
+- (NSDictionary *)baf_mapValues:(id(^)(id<NSCopying>, id))block;
 
 @end

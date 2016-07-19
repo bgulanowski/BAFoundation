@@ -12,15 +12,11 @@
 
 @property (nonatomic, readonly, getter=baf_propertyListRepresentation) id propertyListRepresentation;
 
++ (instancetype)baf_objectForPropertyList:(id)propertyList;
+
++ (NSArray *)baf_objectsForPropertyList:(NSArray *)propertyList;
+
 // Classes should override this for their to-many relationships
-+ (Class)baf_classForCollectionProperty:(NSString *)propertyName;
-
-- (instancetype)initWithPropertyList:(id)propertyList class:(Class)cls;
-
-@end
-
-@interface NSDictionary (BAFPlistTransforming)
-
-- (NSDictionary *)baf_mapForClass:(Class)class;
++ (Class)baf_contentClassForCollectionKey:(NSString *)key;
 
 @end
