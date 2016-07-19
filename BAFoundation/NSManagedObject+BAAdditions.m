@@ -67,10 +67,6 @@ Class numberClass;
 	return nil;
 }
 
-+ (NSEntityDescription *)entity {
-	return [NSEntityDescription entityForName:[self entityName] inManagedObjectContext:BAActiveContext];
-}
-
 
 #pragma mark - Derived Properties
 - (NSArray *)attributeNames {
