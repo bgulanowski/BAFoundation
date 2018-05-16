@@ -21,6 +21,9 @@
 #import <BAFoundation/BARelationshipProxy.h>
 #import <BAFoundation/BAUUID.h>
 
+#import <BAFoundation/BANoiseTypes.h>
+#import <BAFoundation/BANoiseFunctions.h>
+#import <BAFoundation/BANoiseTransform.h>
 #import <BAFoundation/BANoise.h>
 
 #import <BAFoundation/BAKeyValuePair.h>

@@ -8,67 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import <BAFoundation/BABitArray.h>
-
-
-typedef struct {
-    double x;
-    double y;
-    double z;
-} BANoiseVector;
-
-
-static inline BANoiseVector BANoiseVectorMake(double x, double y, double z) {
-    return (BANoiseVector){ x, y, z };
-}
-
-
-typedef struct {
-    BANoiseVector origin;
-    BANoiseVector size;
-} BANoiseRegion;
-
-static inline BANoiseRegion BANoiseRegionMake(BANoiseVector o, BANoiseVector s) {
-	return (BANoiseRegion){o,s};
-}
-
-
-typedef BANoiseVector (^BAVectorTransformer)(BANoiseVector vector);
-typedef double (^BANoiseEvaluator)(double x, double y, double z);
-typedef BOOL (^BANoiseIteratorBlock)(double x, double y, double z, double value);
-
-
-@interface BANoiseTransform : NSObject {
-@private
-    BANoiseVector _scale;
-    BANoiseVector _rotationAxis;
-    BANoiseVector _translation;
-    double _rotationAngle;
-    double _matrix[16];
-}
-
-// These are only available if they were provided at instantiation
-@property (nonatomic, readonly) BANoiseVector scale;
-@property (nonatomic, readonly) BANoiseVector rotationAxis;
-@property (nonatomic, readonly) BANoiseVector translation;
-@property (nonatomic, readonly) double rotationAngle;
-
-- (BOOL)isEqualToTransform:(BANoiseTransform *)transform;
-
-- (id)initWithMatrix:(double[16])matrix;
-// Rotations are about the origin
-- (id)initWithScale:(BANoiseVector)scale rotationAxis:(BANoiseVector)axis angle:(double)angle;
-- (id)initWithScale:(BANoiseVector)scale;
-- (id)initWithRotationAxis:(BANoiseVector)axis angle:(double)angle;
-- (id)initWithTranslation:(BANoiseVector)translation;
-
-- (BANoiseTransform *)transformByPremultiplyingTransform:(BANoiseTransform *)transform;
-
-- (BANoiseVector)transformVector:(BANoiseVector)vector;
-- (BAVectorTransformer)transformer;
-
-@end
-
+#import "BANoiseTypes.h"
+#import "BANoiseTransform.h"
 
 @protocol BANoise <NSObject, NSCoding, NSCopying>
 
@@ -79,18 +20,6 @@ typedef BOOL (^BANoiseIteratorBlock)(double x, double y, double z, double value)
 - (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block;
 
 @end
-
-
-extern double BANoiseEvaluate(const int *p, double x, double y, double z);
-extern double BANoiseBlend(const int *p, double x, double y, double z, double octave_count, double persistence);
-
-extern double BASimplexNoise2DEvaluate(const int *p, const int *pmod, double xin, double  yin);
-extern double BASimplexNoise3DEvaluate(const int *p, const int *pmod, double xin, double  yin, double zin);
-extern double BASimplexNoise3DBlend(const int *p, const int *pmod, double x, double y, double z, double octave_count, double persistence);
-double BASimplexNoiseMax(double octave_count, double persistence);
-
-extern const int BADefaultPermutation[512];
-
 
 @interface BANoise : NSObject<BANoise> {
     BANoiseTransform *_transform;

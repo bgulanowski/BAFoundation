@@ -10,8 +10,8 @@
 
 #include <math.h>
 
-#import <BAFoundation/BASampleArray.h>
-
+#import "BASampleArray.h"
+#import "BANoiseFunctions.h"
 
 
 @implementation BANoiseMaker
