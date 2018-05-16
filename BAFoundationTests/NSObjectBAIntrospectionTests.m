@@ -22,7 +22,7 @@
     BAValueInfo *v = [[BAValueInfo alloc] initWithName:@"object" encoding:encoding];
     XCTAssertEqualObjects(@"object", v.name);
     XCTAssertEqualObjects(@"id", v.typeName);
-    XCTAssertEqual(BAValueTypeUndefined, v.valueType);
+    XCTAssertEqual(BAValueTypeObject, v.valueType);
     
     v = [NSURLRequest propertyInfoForName:@"URL"];
     XCTAssertEqualObjects(@"URL", v.name);
