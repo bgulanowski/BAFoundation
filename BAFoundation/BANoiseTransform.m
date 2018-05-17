@@ -185,7 +185,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 }
 
 + (instancetype)randomRotation {
-    return [[[self alloc] initWithRotationAxis:BARandomNoiseVector() angle:BARandomCGFloatInRange(-pi, pi)] autorelease];
+    return [[[self alloc] initWithRotationAxis:BARandomNoiseVector() angle:BARandomCGFloatInRange(-M_PI, M_PI)] autorelease];
 }
 
 + (instancetype)randomScale {
