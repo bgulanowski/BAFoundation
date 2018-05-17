@@ -178,6 +178,13 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
     return [[[[self class] alloc] initWithSeed:seed octaves:octaves persistence:persistence transform:transform] autorelease];
 }
 
++ (BANoise *)randomNoise {
+    return [[[self alloc] initWithSeed:(unsigned)time(NULL)
+                               octaves:BARandomIntegerInRange(1, 6)
+                           persistence:BARandomCGFloatInRange(0.1, 0.9)
+                             transform:[BANoiseTransform randomTransform]] autorelease];
+}
+
 @end
 
 
