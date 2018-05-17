@@ -217,22 +217,15 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 
 + (instancetype)randomTransform {
     
-    int indices[3] = { 0, 1, 2 };
-    for (int i = 0; i < 3; ++i) {
-        int a = (i + (int)BARandomCGFloatInRange(0.0, 4.0))%3;
-        int t = indices[i];
-        indices[i] = indices[a];
-        indices[a] = t;
-    }
+    double l[16];
+    double t[16];
+    double m[16];
     
-    BANoiseTransform *x[3];
-    x[indices[0]] = [BANoiseTransform randomTranslation];
-    x[indices[1]] = [BANoiseTransform randomRotation];
-    x[indices[2]] = [BANoiseTransform randomScale];
+    makeLinearTransformationMatrix(l, BARandomNoiseVector(), BARandomNoiseVector(), BARandomCGFloatInRange(-M_PI, M_PI));
+    makeTranslationMatrix(t, BARandomNoiseVector());
+    matrixConcatenate(m, l, t);
     
-    BANoiseTransform *t = x[0];
-    t = [t transformByPremultiplyingTransform:x[1]];
-    return [t transformByPremultiplyingTransform:x[2]];
+    return [[[self alloc] initWithMatrix:m] autorelease];
 }
 
 - (BANoiseTransform *)transformByPremultiplyingTransform:(BANoiseTransform *)transform {
