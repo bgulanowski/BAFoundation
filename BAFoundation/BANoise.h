@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BANoiseTypes.h"
-#import "BANoiseTransform.h"
+#import <BAFoundation/BABitArray.h>
+#import <BAFoundation/BASampleArray.h>
+#import <BAFoundation/BANoiseTypes.h>
+#import <BAFoundation/BANoiseTransform.h>
 
 @protocol BANoise <NSObject, NSCoding, NSCopying>
 

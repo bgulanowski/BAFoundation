@@ -6,7 +6,6 @@
 //  Copyright © 2018 Lichen Labs. All rights reserved.
 //
 
-#import <BAFoundation/BABitArray.h>
 #import <BAFoundation/BAMacros.h>
 
 typedef struct {
