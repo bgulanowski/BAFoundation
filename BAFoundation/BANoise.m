@@ -8,9 +8,9 @@
 
 #import <BAFoundation/BANoise.h>
 
-#import "BAFunctions.h"
-#import "BANoiseFunctions.h"
-#import "BANoiseTransform.h"
+#import <BAFoundation/BAFunctions.h>
+#import <BAFoundation/BANoiseFunctions.h>
+#import <BAFoundation/BANoiseTransform.h>
 
 // Implemented in BANoiseFunctions.m
 extern void BANoiseInitialize( void );
