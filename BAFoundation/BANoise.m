@@ -15,9 +15,9 @@
 // Implemented in BANoiseFunctions.m
 extern void BANoiseInitialize( void );
 
-NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
+NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
     
-    srandom(seed);
+    srandom((unsigned)seed);
     
     for(int i=0; i<256; ++i) {
         int swap = random()&255;
@@ -162,7 +162,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
     return copy;
 }
 
-- (instancetype)initWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
     self = [super init];
     if(self) {
         _seed = seed;
@@ -174,12 +174,12 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
     return self;
 }
 
-+ (instancetype)noiseWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
++ (instancetype)noiseWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
     return [[[[self class] alloc] initWithSeed:seed octaves:octaves persistence:persistence transform:transform] autorelease];
 }
 
 + (BANoise *)randomNoise {
-    return [[[self alloc] initWithSeed:(unsigned)time(NULL)
+    return [[[self alloc] initWithSeed:(NSUInteger)time(NULL)
                                octaves:BARandomIntegerInRange(1, 6)
                            persistence:BARandomCGFloatInRange(0.1, 0.9)
                              transform:[BANoiseTransform randomTransform]] autorelease];
@@ -202,7 +202,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
 	[_mod release];
 }
 
-- (instancetype)initWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
 	self = [super initWithSeed:seed octaves:octaves persistence:persistence transform:transform];
 	if (self) {
 		self.mod = [_data noiseModulusData];
@@ -293,7 +293,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
 
 @implementation NSData (BANoise)
 
-- (id)initWithSeed:(unsigned)seed {
+- (id)initWithSeed:(NSUInteger)seed {
     int p[512];
     for(int i=0; i<256; i++) p[i]=i;
     BANoiseDataShuffle(p, seed);
@@ -309,7 +309,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
 	return [NSData dataWithBytes:m length:512*sizeof(int)];
 }
 
-+ (NSData *)noiseDataWithSeed:(unsigned)seed {
++ (NSData *)noiseDataWithSeed:(NSUInteger)seed {
 	if (seed == 0) {
 		return [self defaultNoiseData];
 	}
@@ -322,7 +322,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
 
 + (NSData *)randomNoiseData {
     srandom((unsigned)time(NULL));
-    return [[[self alloc] initWithSeed:(unsigned)random()] autorelease];
+    return [[[self alloc] initWithSeed:random()] autorelease];
 }
 
 @end

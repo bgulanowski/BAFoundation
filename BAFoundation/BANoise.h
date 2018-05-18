@@ -26,7 +26,7 @@
 @interface BANoise : NSObject<BANoise> {
     BANoiseTransform *_transform;
     NSData *_data;
-    unsigned long _seed;
+    NSUInteger _seed;
     NSUInteger _octaves;
     double _persistence;
 }
@@ -40,7 +40,7 @@
 - (BOOL)isEqualToNoise:(BANoise *)other;
 // copies share underlying (immutable) noise data
 - (BANoise *)copyWithOctaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
-+ (BANoise *)noiseWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
++ (BANoise *)noiseWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
 + (BANoise *)randomNoise;
 
 @end
@@ -70,9 +70,9 @@
 
 @interface NSData (BANoise)
 
-- (id)initWithSeed:(unsigned)seed;
+- (id)initWithSeed:(NSUInteger)seed;
 - (NSData *)noiseModulusData;
-+ (NSData *)noiseDataWithSeed:(unsigned)seed;
++ (NSData *)noiseDataWithSeed:(NSUInteger)seed;
 + (NSData *)defaultNoiseData;
 + (NSData *)randomNoiseData;
 
