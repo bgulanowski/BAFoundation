@@ -13,8 +13,7 @@
 #import <BAFoundation/BATypes.h>
 
 NS_INLINE NSInteger BARandomIntegerInRange(NSInteger min, NSInteger max) {
-	NSInteger result = (NSInteger)BARandomCGFloatInRange((CGFloat)min, (CGFloat)max+1);
-	return result > max ? max : result;
+	return min + (NSInteger)(random()%labs(max - min));
 }
 
 NS_INLINE NSInteger powi ( NSInteger base, NSUInteger exp ) {
