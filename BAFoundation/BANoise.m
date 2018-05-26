@@ -133,16 +133,18 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
 
 - (BANoiseEvaluator)evaluator {
 	int *bytes = (int *)[_data bytes];
+    NSUInteger octaves = _octaves;
+    NSUInteger persistence = _persistence;
 	if(_transform) {
 		BAVectorTransformer transformer = [_transform transformer];
 		return [^(double x, double y, double z) {
 			BANoiseVector v = transformer(BANoiseVectorMake(x, y, z));
-			return BANoiseBlend(bytes, v.x, v.y, v.z, _octaves, _persistence);
+			return BANoiseBlend(bytes, v.x, v.y, v.z, octaves, persistence);
 		} copy];
 	}
 	else {
 		return [^(double x, double y, double z) {
-			return BANoiseBlend(bytes, x, y, z, _octaves, _persistence);
+			return BANoiseBlend(bytes, x, y, z, octaves, persistence);
 		} copy];
 	}
 }
