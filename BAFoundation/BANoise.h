@@ -19,6 +19,7 @@
 - (double)evaluateX:(double)x Y:(double)y Z:(double)z;
 @optional
 - (BANoiseEvaluator)evaluator;
+- (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block increment:(double)inc;
 - (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block;
 
 @end

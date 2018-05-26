@@ -113,22 +113,12 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
         return BANoiseBlend((int *)[_data bytes], x, y, z, _octaves, _persistence);
 }
 
+- (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block increment:(double)inc {
+    BANoiseIterate(self.evaluator, block, region, inc);
+}
+
 - (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block {
-    
-    double maxX = region.origin.x + region.size.x;
-    double maxY = region.origin.y + region.size.y;
-    double maxZ = region.origin.z + region.size.z;
-    
-    BANoiseEvaluator evaluator = self.evaluator;
-    
-    for (double z = region.origin.z; z < maxZ; ++z) {
-        for (double y = region.origin.y; y < maxY; ++y) {
-            for (double x = region.origin.x; x < maxX; ++x) {
-                if(block(x, y, z, evaluator(x, y, z)))
-                    return;
-            }
-        }
-    }
+    return [self iterateRegion:region block:block increment:1.0];
 }
 
 - (BANoiseEvaluator)evaluator {
@@ -273,6 +263,10 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
     }
     
     return result;
+}
+
+- (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block increment:(double)inc {
+    BANoiseIterate(self.evaluator, block, region, inc);
 }
 
 - (instancetype)initWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {

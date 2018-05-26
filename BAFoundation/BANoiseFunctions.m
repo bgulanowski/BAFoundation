@@ -8,8 +8,6 @@
 
 #import "BANoiseFunctions.h"
 
-#import "BANoiseTypes.h"
-
 // To quiet compiler
 void BANoiseInitialize( void );
 
@@ -383,4 +381,23 @@ inline static double Identity(const int *p, const int *pmod, double xin, double 
 
 double BASimplexNoiseMax(double octave_count, double persistence) {
     return BASimplexNoise3DBlendInternal(NULL, NULL, 0, 0, 0, octave_count, persistence, Identity);
+}
+
+#pragma mark - Utilities
+
+void BANoiseIterate(BANoiseEvaluator evaluator, BANoiseIteratorBlock block, BANoiseRegion region, double inc) {
+    
+    double maxX = region.origin.x + region.size.x;
+    double maxY = region.origin.y + region.size.y;
+    double maxZ = region.origin.z + region.size.z;
+    
+    for (double z = region.origin.z; z < maxZ; ++z) {
+        for (double y = region.origin.y; y < maxY; ++y) {
+            for (double x = region.origin.x; x < maxX; ++x) {
+                double ix = x*inc, iy = y*inc, iz = z*inc;
+                if(block(ix, iy, iz, evaluator(ix, iy, iz)))
+                    return;
+            }
+        }
+    }
 }
