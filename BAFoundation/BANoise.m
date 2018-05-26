@@ -369,3 +369,19 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
 }
 
 @end
+
+
+@implementation BASampleArray (BANoiseInitializing)
+
+- (void)fillWithNoise:(id<BANoise>)noise increment:(double)increment {
+    BANoiseRegion region = {};
+    double dim = increment * (double)self.order;
+    region.size = BANoiseVectorMake(dim, dim, dim);
+    __block NSUInteger index = 0;
+    [noise iterateRegion:region block:^BOOL(double x, double y, double z, double value) {
+        [self setSample:(UInt8 *)&value atIndex:index++];
+        return NO;
+    } increment:increment];
+}
+
+@end

@@ -84,3 +84,8 @@
 - (id)initWithSize2:(BASize2)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
 + (BABitArray *)bitArrayWithSize2:(BASize2)size noise:(id<BANoise>)noise min:(double)min max:(double)max;
 @end
+
+
+@interface BASampleArray (BANoiseInitializing)
+- (void)fillWithNoise:(id<BANoise>)noise increment:(double)increment;
+@end
