@@ -9,22 +9,43 @@
 #import "BABlendedNoise.h"
 
 
-@interface BANoiseComponent : NSObject {}
+@interface BANoiseComponent : NSObject<BANoise> {}
 @property (nonatomic, readonly) id<BANoise> noise;
 @property (nonatomic) CGFloat contribution;
 - (instancetype)initWithNoise:(id<BANoise>)noise contribution:(CGFloat)contribution;
-- (BANoiseEvaluator)evaluator;
 @end
 
 @implementation BANoiseComponent
 
-- (instancetype)initWithNoise:(id<BANoise>)noise contribution:(CGFloat)contribution {
-    self = [super init];
-    if (self) {
-        _noise = noise;
-        _contribution = contribution;
-    }
-    return self;
+#pragma mark - NSObject
+
+- (void)dealloc {
+    [_noise release];
+    [super dealloc];
+}
+
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSKeyedUnarchiver *)aDecoder {
+    return [self initWithNoise:[aDecoder decodeObjectForKey:NSStringFromSelector(@selector(noise))]
+                  contribution:[aDecoder decodeDoubleForKey:NSStringFromSelector(@selector(contribution))]];
+}
+
+- (void)encodeWithCoder:(NSKeyedArchiver *)aCoder {
+    [aCoder encodeObject:self.noise forKey:NSStringFromSelector(@selector(noise))];
+    [aCoder encodeDouble:self.contribution forKey:NSStringFromSelector(@selector(contribution))];
+}
+
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    return [[BANoiseComponent alloc] initWithNoise:[self.noise copyWithZone:zone] contribution:self.contribution];
+}
+
+#pragma mark - BANoise
+
+- (double)evaluateX:(double)x Y:(double)y Z:(double)z {
+    return [self.noise evaluateX:x Y:y Z:z] * self.contribution;
 }
 
 - (BANoiseEvaluator)evaluator {
@@ -33,6 +54,17 @@
     return [^(double x, double y, double z) {
         return baseEvaluator(x, y, z) * contribution;
     } copy];
+}
+
+#pragma mark - BANoiseComponent
+
+- (instancetype)initWithNoise:(id<BANoise>)noise contribution:(CGFloat)contribution {
+    self = [super init];
+    if (self) {
+        _noise = noise;
+        _contribution = contribution;
+    }
+    return self;
 }
 
 @end
@@ -58,12 +90,12 @@
     [super dealloc];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    return self;
+- (id)initWithCoder:(NSKeyedUnarchiver *)aDecoder {
+    return [self initWithComponents:[aDecoder decodeObjectForKey:NSStringFromSelector(@selector(components))]];
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    
+- (void)encodeWithCoder:(NSKeyedArchiver *)aCoder {
+    [aCoder encodeObject:self.components forKey:NSStringFromSelector(@selector(components))];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -93,12 +125,21 @@
     BANoiseIterate(self.evaluator, block, region, inc);
 }
 
-- (instancetype)initWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {
+- (instancetype)initWithComponents:(NSArray<BANoiseComponent *> *)components {
     self = [self init];
     if (self) {
-        NSAssert([noises count] == [ratios count], @"Unmatched noise ratios");
+        self.components = [components copy];
     }
     return self;
+}
+
+- (instancetype)initWithNoises:(NSArray<id<BANoise>> *)noises ratios:(NSArray<NSNumber *> *)ratios {
+    NSEnumerator<NSNumber *> *ratiosEnumerator = [ratios objectEnumerator];
+    NSMutableArray<BANoiseComponent *> *components = [NSMutableArray<BANoiseComponent *> array];
+    for (id<BANoise> noise in noises) {
+        [components addObject:[[BANoiseComponent alloc] initWithNoise:noise contribution:[[ratiosEnumerator nextObject] doubleValue]]];
+    }
+    return [self initWithComponents:components];
 }
 
 + (BABlendedNoise *)blendedNoiseWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {
