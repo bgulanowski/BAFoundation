@@ -38,33 +38,13 @@
 @property (nonatomic, readonly) NSUInteger octaves;
 @property (nonatomic, readonly) double persistence;
 
+- (instancetype)initWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
+
 - (BOOL)isEqualToNoise:(BANoise *)other;
 // copies share underlying (immutable) noise data
 - (BANoise *)copyWithOctaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
 + (BANoise *)noiseWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform;
 + (BANoise *)randomNoise;
-
-@end
-
-
-@interface BASimplexNoise : BANoise {
-	NSData *_mod;
-}
-
-@end
-
-
-@interface BABlendedNoise : NSObject<BANoise> {
-    NSArray *_noises;
-    NSArray *_ratios;
-	NSUInteger _count;
-}
-
-@property (nonatomic, readonly) NSArray *noises;
-@property (nonatomic, readonly) NSArray *ratios; // nsnumber doubles from (0, 1]
-
-- (instancetype)initWithNoises:(NSArray *)noises ratios:(NSArray *)ratios;
-+ (BABlendedNoise *)blendedNoiseWithNoises:(NSArray *)noises ratios:(NSArray *)ratios;
 
 @end
 

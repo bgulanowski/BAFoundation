@@ -30,6 +30,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
         p[256+i] = p[i];
 }
 
+
 @interface BANoise ()
 @property (nonatomic, strong) NSData *data;
 @end
@@ -175,113 +176,6 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
                                octaves:BARandomIntegerInRange(1, 6)
                            persistence:BARandomCGFloatInRange(0.1, 0.9)
                              transform:[BANoiseTransform randomTransform]] autorelease];
-}
-
-@end
-
-
-@interface BASimplexNoise ()
-@property (nonatomic, strong) NSData *mod;
-@end
-
-
-@implementation BASimplexNoise
-
-@synthesize mod=_mod;
-
-- (void)dealloc {
-	[super dealloc];
-	[_mod release];
-}
-
-- (instancetype)initWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
-	self = [super initWithSeed:seed octaves:octaves persistence:persistence transform:transform];
-	if (self) {
-		self.mod = [_data noiseModulusData];
-	}
-	return self;
-}
-
-- (double)evaluateX:(double)x Y:(double)y {
-	return BASimplexNoise3DBlend([_data bytes], [_mod bytes], x, y, 0, _octaves, _persistence);
-}
-
-- (double)evaluateX:(double)x Y:(double)y Z:(double)z {
-	return BASimplexNoise3DBlend([_data bytes], [_mod bytes], x, y, z, _octaves, _persistence);
-}
-
-- (BANoiseEvaluator)evaluator {
-	int *bytes = (int *)[_data bytes];
-	int *modulus = (int *)[_mod bytes];
-	if(_transform) {
-		BAVectorTransformer transformer = [_transform transformer];
-		return [^(double x, double y, double z) {
-			BANoiseVector v = transformer(BANoiseVectorMake(x, y, z));
-			return BASimplexNoise3DBlend(bytes, modulus, v.x, v.y, v.z, _octaves, _persistence);
-		} copy];
-	}
-	else {
-		return [^(double x, double y, double z) {
-			return BASimplexNoise3DBlend(bytes, modulus, x, y, z, _octaves, _persistence);
-		} copy];
-	}
-}
-
-@end
-
-
-@implementation BABlendedNoise
-
-@synthesize noises=_noises;
-@synthesize ratios=_ratios;
-
-- (void)dealloc {
-	[_noises release], _noises = nil;
-	[_ratios release], _ratios = nil;
-	[super dealloc];
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-    return self;
-}
-
-- (double)evaluateX:(double)x Y:(double)y Z:(double)z {
-    
-    double result = 0;
-	NSUInteger index = 0;
-	for (id<BANoise> noise in _noises) {
-		double ratio = [[_ratios objectAtIndex:index++] doubleValue];
-        result += [noise evaluateX:x Y:y Z:z] * ratio;
-    }
-    
-    return result;
-}
-
-- (void)iterateRegion:(BANoiseRegion)region block:(BANoiseIteratorBlock)block increment:(double)inc {
-    BANoiseIterate(self.evaluator, block, region, inc);
-}
-
-- (instancetype)initWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {
-	self = [self init];
-	if (self) {
-		NSAssert([noises count] == [ratios count], @"Unmatched noise ratios");
-		_count = [noises count];
-		_noises = [noises copy];
-		_ratios = [ratios copy];
-	}
-	return self;
-}
-
-+ (BABlendedNoise *)blendedNoiseWithNoises:(NSArray *)noises ratios:(NSArray *)ratios {
-	return [[[self alloc] initWithNoises:noises ratios:ratios] autorelease];
 }
 
 @end
