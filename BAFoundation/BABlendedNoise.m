@@ -107,7 +107,7 @@
     for (BANoiseComponent *component in self.components) {
         result += [component.noise evaluateX:x Y:y Z:z] * component.contribution;
     }
-    return result;
+    return result / self.components.count;
 }
 
 - (BANoiseEvaluator)evaluator {
@@ -117,7 +117,7 @@
         for (BANoiseEvaluator evaluator in evaluators) {
             result += evaluator(x, y, z);
         }
-        return result;
+        return result/evaluators.count;
     } copy];
 }
 
