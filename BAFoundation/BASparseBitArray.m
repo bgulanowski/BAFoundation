@@ -80,6 +80,8 @@
         range.location += length;
         range.length -= length;
     }
+    
+    dispatch_release(group);
 }
 
 - (void)updateRange:(NSRange)range set:(BOOL)setBits {

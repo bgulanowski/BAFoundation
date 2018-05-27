@@ -128,7 +128,7 @@
 - (instancetype)initWithComponents:(NSArray<BANoiseComponent *> *)components {
     self = [self init];
     if (self) {
-        self.components = [components copy];
+        self.components = [[components copy] autorelease];
     }
     return self;
 }
@@ -137,7 +137,7 @@
     NSEnumerator<NSNumber *> *ratiosEnumerator = [ratios objectEnumerator];
     NSMutableArray<BANoiseComponent *> *components = [NSMutableArray<BANoiseComponent *> array];
     for (id<BANoise> noise in noises) {
-        [components addObject:[[BANoiseComponent alloc] initWithNoise:noise contribution:[[ratiosEnumerator nextObject] doubleValue]]];
+        [components addObject:[[[BANoiseComponent alloc] initWithNoise:noise contribution:[[ratiosEnumerator nextObject] doubleValue]] autorelease]];
     }
     return [self initWithComponents:components];
 }

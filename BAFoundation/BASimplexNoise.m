@@ -17,8 +17,8 @@
 @synthesize mod=_mod;
 
 - (void)dealloc {
-    [super dealloc];
     [_mod release];
+    [super dealloc];
 }
 
 - (instancetype)initWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {

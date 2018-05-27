@@ -208,7 +208,7 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 + (instancetype)valueInfoWithIvar:(Ivar)ivar {
-    return [[self alloc] initWithIvar:ivar];
+    return [[[self alloc] initWithIvar:ivar] autorelease];
 }
 
 - (instancetype)initWithProperty:(objc_property_t)property {
@@ -219,7 +219,7 @@ static void PrepareTypeNamesAndValues( void );
 }
 
 + (instancetype)valueInfoWithProperty:(objc_property_t)property {
-    return [[self alloc] initWithProperty:property];
+    return [[[self alloc] initWithProperty:property] autorelease];
 }
 
 - (NSString *)debugDescription {

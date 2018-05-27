@@ -37,7 +37,7 @@
     return [[self dictionaryWithValuesForKeys:self.class.propertyNames] baf_propertyListRepresentation];
 }
 
-- (instancetype)baf_initWithDictionaryOfValuesForKeys:(NSDictionary *)dictionary {
+- (instancetype)baf_initWithDictionaryOfValuesForKeys:(NSDictionary *)dictionary NS_RETURNS_RETAINED {
     if ((self = [self init])) {
         [self setValuesForKeysWithDictionary:dictionary];
     }
@@ -45,9 +45,9 @@
 }
 
 + (instancetype)baf_objectForPropertyList:(id)propertyList {
-    return [[self alloc] baf_initWithDictionaryOfValuesForKeys:[propertyList baf_mapValues:^(NSString *key, id propertyList) {
+    return [[[self alloc] baf_initWithDictionaryOfValuesForKeys:[propertyList baf_mapValues:^(NSString *key, id propertyList) {
         return [self baf_valueForKey:key propertyList:propertyList];
-    }]];
+    }]] autorelease];
 }
 
 + (id)baf_valueForKey:(NSString *)key propertyList:(id)propertyList {
@@ -124,7 +124,7 @@
 @implementation NSSet (BAFPlistTransforming)
 
 + (instancetype)baf_objectForPropertyList:(NSArray *)propertyList contentClass:(Class)cls {
-    return [[self alloc] initWithArray:[propertyList baf_mapForClass:cls]];
+    return [[[self alloc] initWithArray:[propertyList baf_mapForClass:cls]] autorelease];
 }
 
 - (id)baf_propertyListRepresentation {
@@ -138,7 +138,7 @@
 @implementation NSOrderedSet (BAFPlistTransforming)
 
 + (instancetype)baf_objectForPropertyList:(NSArray *)propertyList contentClass:(Class)cls {
-    return [[self alloc] initWithArray:[propertyList baf_mapForClass:cls]];
+    return [[[self alloc] initWithArray:[propertyList baf_mapForClass:cls]] autorelease];
 }
 
 - (id)baf_propertyListRepresentation {

@@ -14,9 +14,9 @@
 	id object;
 }
 
-@property(nonatomic, readwrite,retain) NSSet *connectedNodes;
-@property(nonatomic, readwrite,retain) BAGraphNode *parentNode;
-@property(nonatomic, readwrite,retain) id object;
+@property(nonatomic, readwrite, retain) NSSet *connectedNodes;
+@property(nonatomic, readwrite, assign) BAGraphNode *parentNode;
+@property(nonatomic, readwrite, retain) id object;
 
 - (void)addConnectedNode:(BAGraphNode *)aNode;
 - (void)removeConnectedNode:(BAGraphNode *)aNode;

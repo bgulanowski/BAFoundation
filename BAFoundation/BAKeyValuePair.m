@@ -20,7 +20,7 @@
 }
 
 + (instancetype)keyValuePairWithKey:(NSObject<NSCopying> *)key value:(id)value {
-    return [[self alloc] initWithKey:key value:value];
+    return [[[self alloc] initWithKey:key value:value] autorelease];
 }
 
 #pragma mark - NSObject
@@ -36,7 +36,7 @@
 #pragma mark - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-    return [BAKeyValuePair keyValuePairWithKey:[(NSObject *)_key copy] value:_value];
+    return [[BAKeyValuePair alloc] initWithKey:[(NSObject *)_key copy] value:_value];
 }
 
 @end

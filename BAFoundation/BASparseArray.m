@@ -390,6 +390,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
     }
     
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    dispatch_release(group);
 }
 
 #pragma mark - Derived Accessors
@@ -500,7 +501,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 
 - (void)insertGeneration {
 	
-	BASparseArray *newChild = [[[self class] alloc] initWithParent:self index:self.offset];
+	BASparseArray *newChild = [[[[self class] alloc] initWithParent:self index:self.offset] autorelease];
 	
 	// Change our now grandchildren's parent to be our new child
 	for (BASparseArray *child in _children) {
@@ -511,7 +512,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 	newChild->_children = _children;
 	
 	// Create new children with new child at index 0
-	_children = [[NSMutableArray alloc] initWithObjects:newChild, nil];
+	_children = [NSMutableArray arrayWithObjects:newChild, nil];
 	for (NSUInteger i=1; i<_scale; ++i)
 		[_children addObject:[NSNull null]];
 }
@@ -537,8 +538,10 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 
 - (BASparseArray *)leafForIndex:(NSUInteger)index {
     
-    if(_level == 1)
+    // _scale is always >= 1, but the analyzer cannot deduce this
+    if(_level <= 1 || _scale == 0) {
         return [self childAtIndex:index];
+    }
     
 //    NSUInteger leafCount = _treeSize/_leafSize;
     NSUInteger childLeafCount = powi(_scale, _level-1); // leafCount/_scale;
