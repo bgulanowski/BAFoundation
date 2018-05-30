@@ -6,7 +6,7 @@
 //  Copyright © 2018 Lichen Labs. All rights reserved.
 //
 
-#import "BANoiseTypes.h"
+#import <BAFoundation/BANoiseTypes.h>
 
 extern const int BADefaultPermutation[512];
 

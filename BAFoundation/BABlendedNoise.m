@@ -8,6 +8,7 @@
 
 #import "BABlendedNoise.h"
 
+#import "BANoiseFunctions.h"
 
 @interface BANoiseComponent : NSObject<BANoise> {}
 @property (nonatomic, readonly) id<BANoise> noise;

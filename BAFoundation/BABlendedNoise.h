@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <BAFoundation/BAFoundation.h>
+#import <BAFoundation/BANoise.h>
 
 @interface BABlendedNoise : NSObject<BANoise>
 

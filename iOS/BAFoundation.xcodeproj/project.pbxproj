@@ -55,6 +55,7 @@
 		84B269B120BB13A4005F8A93 /* BASimplexNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B269B020BB13A4005F8A93 /* BASimplexNoise.m */; };
 		84B269B220BB1413005F8A93 /* BASimplexNoise.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84B269AF20BB13A4005F8A93 /* BASimplexNoise.h */; };
 		84B269B520BB14BE005F8A93 /* BABlendedNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B269B420BB14BE005F8A93 /* BABlendedNoise.m */; };
+		84B269CC20BEEB4C005F8A93 /* BABlendedNoise.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84B269B320BB14BE005F8A93 /* BABlendedNoise.h */; };
 		84BD6A711B80DEE6005C658F /* NSObject+BAIntrospection.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BD6A701B80DEE6005C658F /* NSObject+BAIntrospection.m */; };
 		84BD6A721B8137CC005C658F /* NSObject+BAIntrospection.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 84BD6A6F1B80DEE6005C658F /* NSObject+BAIntrospection.h */; };
 		84C0277120AF2AB40032B5DB /* BANoiseFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C0276E20AF2AB40032B5DB /* BANoiseFunctions.m */; };
@@ -81,6 +82,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				84B269B220BB1413005F8A93 /* BASimplexNoise.h in CopyFiles */,
+				84B269CC20BEEB4C005F8A93 /* BABlendedNoise.h in CopyFiles */,
 				84939D671D3E43390051811E /* NSArray+BAFExtensions.h in CopyFiles */,
 				84939D681D3E43390051811E /* NSDictionary+BAFExtensions.h in CopyFiles */,
 				84939D641D3E42EF0051811E /* BAFoundation.h in CopyFiles */,

@@ -25,6 +25,8 @@
 #import <BAFoundation/BANoiseFunctions.h>
 #import <BAFoundation/BANoiseTransform.h>
 #import <BAFoundation/BANoise.h>
+#import <BAFoundation/BASimplexNoise.h>
+#import <BAFoundation/BABlendedNoise.h>
 
 #import <BAFoundation/BAKeyValuePair.h>
 #import <BAFoundation/BAGraphNode.h>

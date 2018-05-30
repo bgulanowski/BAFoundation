@@ -6,7 +6,8 @@
 //  Copyright © 2018 Bored Astronaut. All rights reserved.
 //
 
-#import <BAFoundation/BASimplexNoise.h>
+#import "BASimplexNoise.h"
+#import "BANoiseFunctions.h"
 
 @interface BASimplexNoise ()
 @property (nonatomic, strong) NSData *mod;
