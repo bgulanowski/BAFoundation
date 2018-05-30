@@ -391,9 +391,9 @@ void BANoiseIterate(BANoiseEvaluator evaluator, BANoiseIteratorBlock block, BANo
     double maxY = region.origin.y + region.size.y;
     double maxZ = region.origin.z + region.size.z;
     
-    for (double z = region.origin.z; z < maxZ; ++z) {
-        for (double y = region.origin.y; y < maxY; ++y) {
-            for (double x = region.origin.x; x < maxX; ++x) {
+    for (double z = region.origin.z; z < maxZ; z += inc) {
+        for (double y = region.origin.y; y < maxY; y += inc) {
+            for (double x = region.origin.x; x < maxX; x += inc) {
                 double ix = x*inc, iy = y*inc, iz = z*inc;
                 if(block(ix, iy, iz, evaluator(ix, iy, iz)))
                     return;
