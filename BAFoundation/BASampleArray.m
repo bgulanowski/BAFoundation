@@ -25,6 +25,10 @@
     return _samples;
 }
 
+- (NSData *)data {
+    return [NSData dataWithBytesNoCopy:_samples length:_size * _count];
+}
+
 
 #pragma mark - NSObject
 - (void)dealloc {
