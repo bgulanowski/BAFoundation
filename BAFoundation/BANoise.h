@@ -27,7 +27,7 @@
 @interface BANoise : NSObject<BANoise> {
     BANoiseTransform *_transform;
     NSData *_data;
-    NSUInteger _seed;
+    unsigned long _seed;
     NSUInteger _octaves;
     double _persistence;
 }

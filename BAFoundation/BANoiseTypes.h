@@ -45,7 +45,9 @@ NS_INLINE BANoiseVector BANormalizeNoiseVector(BANoiseVector v) {
     double length = BANoiseVectorLength(v);
     
     if(length) {
-        r.x = v.x/length, r.y = v.y/length, r.z = v.z/length;
+        r.x = v.x/length;
+        r.y = v.y/length;
+        r.z = v.z/length;
     }
     
     return r;
