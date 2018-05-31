@@ -77,6 +77,10 @@
 		8454E7C420AC72C2001C39E0 /* BANoiseTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 8454E7C120AC72C2001C39E0 /* BANoiseTransform.m */; };
 		8454E7C820AC7418001C39E0 /* BANoiseFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8454E7C620AC7418001C39E0 /* BANoiseFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8454E7CA20AC7418001C39E0 /* BANoiseFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8454E7C720AC7418001C39E0 /* BANoiseFunctions.m */; };
+		846D8ACF20C05A6F000C78EF /* BASimplexNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D8ACB20C05A6F000C78EF /* BASimplexNoise.m */; };
+		846D8AD020C05A6F000C78EF /* BABlendedNoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D8ACC20C05A6F000C78EF /* BABlendedNoise.m */; };
+		846D8AD120C05A6F000C78EF /* BASimplexNoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 846D8ACD20C05A6F000C78EF /* BASimplexNoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		846D8AD220C05A6F000C78EF /* BABlendedNoise.h in Headers */ = {isa = PBXBuildFile; fileRef = 846D8ACE20C05A6F000C78EF /* BABlendedNoise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		848699461707AC0C00727A5D /* BAFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 8428532E16F3A4BE00BD7A71 /* BAFunctions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8486D1081600F3810065DEFF /* BACoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 842C152015FD9BC900D5AE05 /* BACoreDataManager.m */; };
 		8486D1091600F3810065DEFF /* BANoiseMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = B6F030FE14300C9C0087940B /* BANoiseMaker.m */; };
@@ -211,6 +215,10 @@
 		8454E7C120AC72C2001C39E0 /* BANoiseTransform.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BANoiseTransform.m; sourceTree = "<group>"; };
 		8454E7C620AC7418001C39E0 /* BANoiseFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANoiseFunctions.h; sourceTree = "<group>"; };
 		8454E7C720AC7418001C39E0 /* BANoiseFunctions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BANoiseFunctions.m; sourceTree = "<group>"; };
+		846D8ACB20C05A6F000C78EF /* BASimplexNoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BASimplexNoise.m; sourceTree = "<group>"; };
+		846D8ACC20C05A6F000C78EF /* BABlendedNoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BABlendedNoise.m; sourceTree = "<group>"; };
+		846D8ACD20C05A6F000C78EF /* BASimplexNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASimplexNoise.h; sourceTree = "<group>"; };
+		846D8ACE20C05A6F000C78EF /* BABlendedNoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BABlendedNoise.h; sourceTree = "<group>"; };
 		84A0D20416E271110010D80D /* BASparseBitArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseBitArray.h; sourceTree = "<group>"; };
 		84A0D20516E271110010D80D /* BASparseBitArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BASparseBitArray.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84A0D20816E271380010D80D /* BAMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BAMacros.h; sourceTree = "<group>"; };
@@ -500,6 +508,8 @@
 		84AFE7C317970B3B00A27C37 /* Noise */ = {
 			isa = PBXGroup;
 			children = (
+				846D8ACE20C05A6F000C78EF /* BABlendedNoise.h */,
+				846D8ACC20C05A6F000C78EF /* BABlendedNoise.m */,
 				84F9EE8317909D5A005B6DD1 /* BANoise.h */,
 				84F9EE8417909D5A005B6DD1 /* BANoise.m */,
 				8454E7C620AC7418001C39E0 /* BANoiseFunctions.h */,
@@ -509,6 +519,8 @@
 				8454E7C020AC72C2001C39E0 /* BANoiseTransform.h */,
 				8454E7C120AC72C2001C39E0 /* BANoiseTransform.m */,
 				8454E7BA20AC7206001C39E0 /* BANoiseTypes.h */,
+				846D8ACD20C05A6F000C78EF /* BASimplexNoise.h */,
+				846D8ACB20C05A6F000C78EF /* BASimplexNoise.m */,
 			);
 			name = Noise;
 			sourceTree = "<group>";
@@ -546,6 +558,7 @@
 				8454E7C820AC7418001C39E0 /* BANoiseFunctions.h in Headers */,
 				84A0D20916E271380010D80D /* BAMacros.h in Headers */,
 				842C151915FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.h in Headers */,
+				846D8AD220C05A6F000C78EF /* BABlendedNoise.h in Headers */,
 				8454E7C220AC72C2001C39E0 /* BANoiseTransform.h in Headers */,
 				842C151B15FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.h in Headers */,
 				842F43811D29691200B5C48F /* NSDictionary+BAFExtensions.h in Headers */,
@@ -573,6 +586,7 @@
 				84BBE64816E934C500AF371A /* BASparseArray.h in Headers */,
 				848699461707AC0C00727A5D /* BAFunctions.h in Headers */,
 				84F246431ADCB03300D3C499 /* BATypes.h in Headers */,
+				846D8AD120C05A6F000C78EF /* BASimplexNoise.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -812,6 +826,7 @@
 			files = (
 				842F43801D29691200B5C48F /* NSArray+BAFExtensions.m in Sources */,
 				4E98F9D10F92E29B0085B8EC /* BATextIOHandler.m in Sources */,
+				846D8ACF20C05A6F000C78EF /* BASimplexNoise.m in Sources */,
 				4EF2B51D104D60C9000C8EE2 /* BAGraphNode.m in Sources */,
 				84AECAF6184BC9FA002AC8D0 /* DateTransformer.m in Sources */,
 				4E870CF312F1090100017473 /* BABitArray.m in Sources */,
@@ -819,6 +834,7 @@
 				8454E7CA20AC7418001C39E0 /* BANoiseFunctions.m in Sources */,
 				B6F0310014300C9C0087940B /* BANoiseMaker.m in Sources */,
 				842F43841D29691200B5C48F /* NSObject+BAIntrospection.m in Sources */,
+				846D8AD020C05A6F000C78EF /* BABlendedNoise.m in Sources */,
 				842C151A15FD9BAC00D5AE05 /* NSManagedObject+BAAdditions.m in Sources */,
 				842C151C15FD9BAC00D5AE05 /* NSManagedObjectContext+BAAdditions.m in Sources */,
 				842C151E15FD9BAC00D5AE05 /* NSObject+PlistTransforming.m in Sources */,
