@@ -7,6 +7,7 @@
 //
 
 #import <BAFoundation/BAMacros.h>
+#import <BAFoundation/BAFunctions.h>
 
 typedef struct {
     double x;
@@ -14,8 +15,18 @@ typedef struct {
     double z;
 } BANoiseVector;
 
+#define BANoiseVectorZero ((BANoiseVector){ 0, 0, 0 })
+
 NS_INLINE BANoiseVector BANoiseVectorMake(double x, double y, double z) {
     return (BANoiseVector){ x, y, z };
+}
+
+NS_INLINE BOOL BANoiseVectorsEqual(BANoiseVector v1, BANoiseVector v2) {
+    return BAEQ(v1.x, v2.x) && BAEQ(v1.y, v2.y) && BAEQ(v1.z, v2.z);
+}
+
+NS_INLINE BOOL BANoiseVectorIsZero(BANoiseVector v) {
+    return BANoiseVectorsEqual(v, BANoiseVectorZero);
 }
 
 NS_INLINE BANoiseVector BARandomNoiseVector( void ) {
