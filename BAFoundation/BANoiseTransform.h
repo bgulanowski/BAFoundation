@@ -10,7 +10,7 @@
 
 #import <BAFoundation/BANoiseTypes.h>
 
-@interface BANoiseTransform : NSObject {
+@interface BANoiseTransform : NSObject<NSCoding> {
 @private
     BANoiseVector _scale;
     BANoiseVector _rotationAxis;
@@ -45,3 +45,7 @@
 + (instancetype)randomTransform;
 
 @end
+
+NS_INLINE BOOL BANoiseTransformsEqual(BANoiseTransform *a, BANoiseTransform *b) {
+    return [a isEqualToTransform:b] || (a == nil && b == nil);
+}

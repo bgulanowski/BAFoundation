@@ -7,6 +7,8 @@
 //
 
 #import "BANoiseTransform.h"
+#import "BANoiseFunctions.h"
+#import "NSObject+BAIntrospection.h"
 
 NS_INLINE BOOL equalMatrices(double m1[16], double m2[16]) {
     for (NSUInteger i=0; i<16; ++i)
@@ -149,6 +151,49 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 @implementation BANoiseTransform
 
 @synthesize scale=_scale, rotationAxis=_rotationAxis, rotationAngle=_rotationAngle, translation=_translation;
+
+- (NSUInteger)hash {
+    return BAHash((char *)_matrix, 16);
+}
+
+#pragma mark - NSCoding
+
+- (instancetype)initWithCoder:(NSKeyedArchiver *)aDecoder {
+    NSData *matrixData = [aDecoder decodeObjectForKey:SelKey(matrix)];
+    self = [self initWithMatrix:(double *)[matrixData bytes]];
+    if (self) {
+        NSValue *t = [aDecoder decodeObjectForKey:SelKey(translation)];
+        NSValue *s = [aDecoder decodeObjectForKey:SelKey(scale)];
+        NSValue *r = [aDecoder decodeObjectForKey:SelKey(rotationAxis)];
+        _translation = [t noiseVector];
+        _scale = [s noiseVector];
+        _rotationAxis = [r noiseVector];
+        _rotationAngle = [aDecoder decodeDoubleForKey:SelKey(rotationAngle)];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSKeyedArchiver *)aCoder {
+    [aCoder encodeObject:[NSData dataWithBytes:_matrix length:sizeof(double)*16] forKey:SelKey(matrix)];
+    NSString *key = nil;
+    BANoiseVector *vector = NULL;
+    if (!BANoiseVectorIsZero(_translation)) {
+        vector = &_translation;
+        key = SelKey(translation);
+    }
+    else if(!BANoiseVectorIsZero(_scale)) {
+        vector = &_scale;
+    }
+    else if (_rotationAngle != 0.0) {
+        vector = &_rotationAxis;
+        [aCoder encodeDouble:_rotationAngle forKey:SelKey(rotationAngle)];
+    }
+    if (key) {
+        [aCoder encodeObject:[NSValue valueWithNoiseVector:*vector] forKey:key];
+    }
+}
+
+#pragma mark - BANoiseTransform
 
 - (double *)matrix {
     return _matrix;
