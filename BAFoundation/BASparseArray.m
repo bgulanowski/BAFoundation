@@ -512,7 +512,7 @@ void LeafCoordinatesForIndex(NSUInteger leafIndex, NSUInteger *coords, NSUIntege
 	newChild->_children = _children;
 	
 	// Create new children with new child at index 0
-	_children = [NSMutableArray arrayWithObjects:newChild, nil];
+	_children = [[NSMutableArray alloc] initWithObjects:newChild, nil];
 	for (NSUInteger i=1; i<_scale; ++i)
 		[_children addObject:[NSNull null]];
 }
