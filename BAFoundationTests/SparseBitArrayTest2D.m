@@ -33,6 +33,7 @@
 
 - (void)tearDown {
     [super tearDown];
+    [_array release];
     _array = nil;
 }
 
