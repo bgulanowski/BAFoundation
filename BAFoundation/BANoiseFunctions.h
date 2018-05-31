@@ -19,3 +19,8 @@ extern double BASimplexNoise3DBlend(const int *p, const int *mod, double x, doub
 extern double BASimplexNoiseMax(double octave_count, double persistence);
 
 extern void BANoiseIterate(BANoiseEvaluator evaluator, BANoiseIteratorBlock block, BANoiseRegion region, double inc);
+
+@interface NSValue (BANoiseVector)
++ (instancetype)valueWithNoiseVector:(BANoiseVector)v;
+- (BANoiseVector)noiseVector;
+@end

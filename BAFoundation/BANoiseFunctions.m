@@ -401,3 +401,15 @@ void BANoiseIterate(BANoiseEvaluator evaluator, BANoiseIteratorBlock block, BANo
         }
     }
 }
+
+@implementation NSValue (BANoiseVector)
++ (instancetype)valueWithNoiseVector:(BANoiseVector)v {
+    return [self valueWithBytes:&v objCType:@encode(BANoiseVector)];
+}
+
+- (BANoiseVector)noiseVector {
+    BANoiseVector v;
+    [self getValue:&v];
+    return v;
+}
+@end
