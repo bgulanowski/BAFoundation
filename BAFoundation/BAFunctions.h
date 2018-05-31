@@ -189,3 +189,26 @@ NS_INLINE CGRect BARegion2ToCGRect(BARegion2 region) {
 NS_INLINE BARegion2 BARegion2FromCGRect(CGRect rect) {
     return BARegion2Make(CGRectGetMinX(rect), CGRectGetMinY(rect), CGRectGetWidth(rect), CGRectGetHeight(rect));
 }
+
+#pragma mark - Equality
+
+NS_INLINE BOOL BANEQ(double a, double b) {
+    int exp_a = 0, exp_b = 0;
+    double m_a = frexp(a, &exp_a);
+    double m_b = frexp(b, &exp_b);
+    return ( m_b - m_a > DBL_EPSILON || exp_a != exp_b);
+}
+
+NS_INLINE BOOL BAEQ(double a, double b) {
+    return (a == b || !BANEQ(a, b));
+}
+
+#pragma mark - Hashing
+
+NS_INLINE NSUInteger BAHash(char *str, NSUInteger length) {
+    NSUInteger hash = 5381;
+    for(NSUInteger i = 0; i < length; str++, i++) {
+        hash = ((hash << 5) + hash) + (*str);
+    }
+    return hash;
+}
