@@ -15,6 +15,14 @@
 // Implemented in BANoiseFunctions.m
 extern void BANoiseInitialize( void );
 
+typedef struct {
+    unsigned seed;
+    unsigned transformHash;
+    unsigned dataHash;
+    unsigned octaves;
+    float persistence;
+} BANoiseHashData;
+
 NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
     
     srandom((unsigned)seed);
@@ -48,8 +56,18 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
     [super dealloc];
 }
 
+- (BOOL)isEqual:(id)object {
+    return [object isKindOfClass:[self class]] && [self isEqualToNoise:object];
+}
+
 - (NSUInteger)hash {
-    return _seed;
+    BANoiseHashData d;
+    d.dataHash = (unsigned)[_data hash];
+    d.transformHash = (unsigned)[_transform hash];
+    d.seed = (unsigned)_seed;
+    d.octaves = (unsigned)_octaves;
+    d.persistence = (float)_persistence;
+    return BAHash((char *)&d, sizeof(d));
 }
 
 - (id)init {
@@ -141,7 +159,13 @@ NS_INLINE void BANoiseDataShuffle(int p[512], NSUInteger seed) {
 }
 
 - (BOOL)isEqualToNoise:(BANoise *)other {
-    return other->_seed == _seed && other->_octaves == _octaves && other->_persistence == _persistence && [other->_data isEqualToData:_data];
+    return (
+            other->_seed == _seed &&
+            other->_octaves == _octaves &&
+            other->_persistence == _persistence &&
+            [other->_data isEqualToData:_data] &&
+            BANoiseTransformsEqual(other->_transform, _transform)
+            );
 }
 
 - (BANoise *)copyWithOctaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
