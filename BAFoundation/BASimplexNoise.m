@@ -22,7 +22,7 @@
     [super dealloc];
 }
 
-- (instancetype)initWithSeed:(NSUInteger)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
+- (instancetype)initWithSeed:(unsigned)seed octaves:(NSUInteger)octaves persistence:(double)persistence transform:(BANoiseTransform *)transform {
     self = [super initWithSeed:seed octaves:octaves persistence:persistence transform:transform];
     if (self) {
         self.mod = [_data noiseModulusData];
