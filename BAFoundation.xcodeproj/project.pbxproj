@@ -326,8 +326,8 @@
 			isa = PBXGroup;
 			children = (
 				4E792B01133A3178003C9B3E /* baft */,
-				4E4CC4F01338D2BA007AD580 /* Unit Tests */,
 				08FB77AEFE84172EC02AAC07 /* BAFoundation */,
+				4E4CC4F01338D2BA007AD580 /* Unit Tests */,
 				0867D69AFE84028FC02AAC07 /* Dependencies */,
 				8454E7AF20A0E61B001C39E0 /* BAFB */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -359,7 +359,12 @@
 		08FB77AEFE84172EC02AAC07 /* BAFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				84A0D26116E27E480010D80D /* Classes */,
+				84AFE7C117970AF200A27C37 /* Core Data Extensions */,
+				84AFE7C017970ACC00A27C37 /* Data Arrays */,
+				842F43891D29695100B5C48F /* Foundation Extensions */,
+				84AFE7C317970B3B00A27C37 /* Noise */,
+				84AFE7C217970B0200A27C37 /* Transformers */,
+				84AFE7C417970B4E00A27C37 /* Various */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				84FCF0771B0225A0009B00B3 /* BAFoundation.h */,
@@ -450,19 +455,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		84A0D26116E27E480010D80D /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				84AFE7C117970AF200A27C37 /* Core Data Extensions */,
-				84AFE7C017970ACC00A27C37 /* Data Arrays */,
-				842F43891D29695100B5C48F /* Foundation Extensions */,
-				84AFE7C317970B3B00A27C37 /* Noise */,
-				84AFE7C217970B0200A27C37 /* Transformers */,
-				84AFE7C417970B4E00A27C37 /* Various */,
-			);
-			name = Classes;
 			sourceTree = "<group>";
 		};
 		84AFE7C017970ACC00A27C37 /* Data Arrays */ = {
