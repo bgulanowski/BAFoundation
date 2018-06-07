@@ -64,7 +64,7 @@ Class numberClass;
 
 #pragma mark - Entity Conveniences
 + (NSString *)entityName {
-	return nil;
+	return [[self entity] name];
 }
 
 

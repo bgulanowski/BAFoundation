@@ -209,7 +209,7 @@ static NSManagedObjectContext *activeContext;
 }
 
 - (id)objectForEntityNamed:(NSString *)entity {
-    return [self objectsForEntityNamed:entity matchingPredicate:nil limit:1];
+    return [[self objectsForEntityNamed:entity matchingPredicate:nil limit:1] firstObject];
 }
 
 - (id)objectForEntityNamed:(NSString *)entity matchingValue:(id)aValue forKey:(NSString *)aKey create:(BOOL*)create {

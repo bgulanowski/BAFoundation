@@ -207,8 +207,8 @@ NS_INLINE BOOL BAEQ(double a, double b) {
 
 NS_INLINE NSUInteger BAHash(char *str, NSUInteger length) {
     NSUInteger hash = 5381;
-    for(NSUInteger i = 0; i < length; str++, i++) {
-        hash = ((hash << 5) + hash) + (*str);
+    for(NSUInteger i = 0; i < length; i++) {
+        hash = ((hash << 5) + hash) + str[i];
     }
     return hash;
 }

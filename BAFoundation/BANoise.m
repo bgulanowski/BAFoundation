@@ -186,7 +186,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
         _octaves = octaves;
         _persistence = persistence;
         _transform = [transform retain];
-        self.data = [NSData noiseDataWithSeed:seed];
+        _data = [[NSData noiseDataWithSeed:seed] retain];
     }
     return self;
 }
