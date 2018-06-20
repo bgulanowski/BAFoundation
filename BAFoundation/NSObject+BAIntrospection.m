@@ -8,6 +8,8 @@
 
 #import "NSObject+BAIntrospection.h"
 
+#import "BAMacros.h"
+
 // keyed by class name
 static NSMutableDictionary *ivarInfoIndex;
 static NSMutableDictionary *propertyInfoIndex;
@@ -176,6 +178,62 @@ static void PrepareTypeNamesAndValues( void );
     NSLog(@"%@", [[self propertyInfo] debugDescription]);
 }
 
+#pragma mark - Method Introspection
+
++ (void)getMethodInfo:(void(^)(Method))block {
+    unsigned count = 0;
+    Method *methods = class_copyMethodList(self, &count);
+    for (NSUInteger i = 0; i < count; ++i) {
+        block(methods[i]);
+    }
+}
+
++ (NSArray<NSString *> *)methodNames {
+    NSMutableArray *names = [NSMutableArray array];
+    [self getMethodInfo:^(Method method) {
+        SEL methodName = method_getName(method);
+        [names addObject:NSStringFromSelector(methodName)];
+    }];
+    return names;
+}
+
++ (NSArray<BAMethodInfo *> *)methodInfo {
+    NSMutableArray *infos = [NSMutableArray array];
+    [self getMethodInfo:^(Method method) {
+        BAMethodInfo *info = [BAMethodInfo methodInfoWithMethod:method];
+        [infos addObject:info];
+    }];
+    return infos;
+}
+
+@end
+
+#pragma mark -
+
+@implementation BAIntrospector
+
++ (instancetype)introspector {
+    static BAIntrospector *introspector;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        introspector = [[BAIntrospector alloc] init];
+    });
+    return introspector;
+}
+
+- (id)valueForUndefinedKey:(NSString *)key {
+    NSLog(@"Value for undefined key %@", key);
+    return self;
+}
+
+- (BOOL)respondsToSelector:(SEL)aSelector {
+    return YES;
+}
+
+- (void)doesNotRecognizeSelector:(SEL)aSelector {
+    NSLog(@"Received %@ message", NSStringFromSelector(aSelector));
+}
+
 @end
 
 #pragma mark -
@@ -189,12 +247,18 @@ static void PrepareTypeNamesAndValues( void );
     });
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %@ %@>", _name, [NSString stringForValueType:_valueType], _typeName ?: @""];
+}
+
 - (instancetype)initWithName:(NSString *)name encoding:(NSString *)encoding {
     self = [super init];
     if (self) {
         _name = name;
-        _valueType = [encoding encodedValueType];
-        _typeName = [encoding encodedClassName];
+        if ([encoding length]) {
+            _valueType = [encoding encodedValueType];
+            _typeName = [encoding encodedClassName];
+        }
         // for debugging
         _encoding = encoding;
     }
@@ -225,6 +289,59 @@ static void PrepareTypeNamesAndValues( void );
 - (NSString *)debugDescription {
     NSString *typeName = self.typeName ?: [NSString stringForValueType:self.valueType];
     return [NSString stringWithFormat:@"%@: %@ (%@)", self.name, typeName, self.encoding];
+}
+
+@end
+
+#pragma mark -
+
+NSArray<BAValueInfo *> *BAMethodArgumentInfo(Method method) {
+    unsigned argCount = method_getNumberOfArguments(method);
+    static const int buffer_len = 256;
+    static char type[buffer_len];
+    
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:argCount];
+    for (unsigned i = 0; i < argCount; ++i) {
+        method_getArgumentType(method, i, type, buffer_len);
+        NSString *encoding = [NSString stringWithCString:type encoding:NSASCIIStringEncoding];
+        [result addObject:[[BAValueInfo alloc] initWithName:nil encoding:encoding]];
+    }
+    
+    return result;
+}
+
+@interface BAMethodInfo ()
+
+@property (readwrite, retain) NSString *name;
+@property (readwrite) BAValueType returnType;
+@property (readwrite, retain) NSArray<BAValueInfo *> *arguments;
+
+@end
+
+@implementation BAMethodInfo
+
+- (void)dealloc {
+    [_name release];
+    [_arguments release];
+    [super dealloc];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ %@", _name, [_arguments valueForKey:NSStringFromSelector(_cmd)]];
+}
+
+- (instancetype)initWithMethod:(Method)method {
+    self = [self init];
+    if (self) {
+        SEL methodName = method_getName(method);
+        _name = [NSStringFromSelector(methodName) retain];
+        _arguments = [BAMethodArgumentInfo(method) retain];
+    }
+    return self;
+}
+
++ (instancetype)methodInfoWithMethod:(Method)method {
+    return [[[self alloc] initWithMethod:method] autorelease];
 }
 
 @end

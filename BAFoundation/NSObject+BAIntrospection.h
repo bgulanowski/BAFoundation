@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, BAValueType) {
 };
 
 @class BAValueInfo;
+@class BAMethodInfo;
 
 @interface NSObject (BAIntrospection)
 
@@ -47,6 +48,13 @@ typedef NS_ENUM(NSUInteger, BAValueType) {
 + (NSArray *)propertyInfoUpToAncestor:(Class)ancestor;
 + (void)logPropertyInfo;
 
++ (NSArray<NSString *> *)methodNames;
++ (NSArray<BAMethodInfo *> *)methodInfo;
+
+@end
+
+@interface BAIntrospector : NSObject
++ (instancetype)introspector;
 @end
 
 @interface BAValueInfo : NSObject
@@ -65,6 +73,18 @@ typedef NS_ENUM(NSUInteger, BAValueType) {
 
 - (instancetype)initWithProperty:(objc_property_t)property;
 + (instancetype)valueInfoWithProperty:(objc_property_t)property;
+
+@end
+
+OBJC_EXTERN NSArray<BAValueInfo *> *BAMethodArgumentInfo(Method method);
+
+@interface BAMethodInfo : NSObject
+
+@property (readonly) NSString *name;
+@property (readonly) BAValueType returnType;
+@property (readonly) NSArray<BAValueInfo *> *arguments;
+
++ (instancetype)methodInfoWithMethod:(Method)method;
 
 @end
 
