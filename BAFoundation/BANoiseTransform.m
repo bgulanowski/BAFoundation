@@ -253,7 +253,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
 }
 
 + (instancetype)randomRotation {
-    return [[[self alloc] initWithRotationAxis:BARandomNoiseVector() angle:BARandomCGFloatInRange(-M_PI, M_PI)] autorelease];
+    return [[[self alloc] initWithRotationAxis:BARandomNoiseVector() angle:BARandomCGFloatInRange((CGFloat)-M_PI, (CGFloat)M_PI)] autorelease];
 }
 
 + (instancetype)randomScale {
@@ -266,7 +266,7 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     double t[16];
     double m[16];
     
-    makeLinearTransformationMatrix(l, BARandomNoiseVector(), BARandomNoiseVector(), BARandomCGFloatInRange(-M_PI, M_PI));
+    makeLinearTransformationMatrix(l, BARandomNoiseVector(), BARandomNoiseVector(), BARandomCGFloatInRange((CGFloat)-M_PI, (CGFloat)M_PI));
     makeTranslationMatrix(t, BARandomNoiseVector());
     matrixConcatenate(m, l, t);
     

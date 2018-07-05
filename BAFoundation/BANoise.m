@@ -198,7 +198,7 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
 + (BANoise *)randomNoise {
     return [[[self alloc] initWithSeed:(unsigned)time(NULL)
                                octaves:BARandomIntegerInRange(1, 6)
-                           persistence:BARandomCGFloatInRange(0.1, 0.9)
+                           persistence:BARandomCGFloatInRange((CGFloat)0.1, (CGFloat)0.9f)
                              transform:[BANoiseTransform randomTransform]] autorelease];
 }
 
