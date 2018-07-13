@@ -26,7 +26,11 @@
 }
 
 - (NSData *)data {
-    return [NSData dataWithBytesNoCopy:_samples length:_size * _count];
+    return [NSData dataWithBytesNoCopy:_samples length:_size * _count freeWhenDone:NO];
+}
+
+- (NSUInteger)length {
+    return _size * _count;
 }
 
 
@@ -104,18 +108,22 @@
 }
 
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index {
-    memcpy(sample, _samples+index*_size, _size);
+    NSAssert(index < _count, @"index %td beyond bounds %td", index, _count);
+    memcpy(sample, _samples + index * _size, _size);
 }
 
 - (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index {
-    memcpy(_samples+index*_size, sample, _size);
+    NSAssert(index < _count, @"index %td beyond bounds %td", index, _count);
+    memcpy(_samples + index * _size, sample, _size);
 }
 
 - (void)readSamples:(UInt8 *)samples range:(NSRange)range {
-    memcpy(samples, _samples+range.location*_size, _size*range.length);
+    NSAssert(NSMaxRange(range) < _count, @"range %@ beyond bounds %td", NSStringFromRange(range), _count);
+    memcpy(samples, _samples+range.location * _size, range.length * _size);
 }
 
 - (void)writeSamples:(UInt8 *)samples range:(NSRange)range {
+    NSAssert(NSMaxRange(range) < _count, @"range %@ beyond bounds %td", NSStringFromRange(range), _count);
     memcpy(_samples+range.location*_size, samples, _size*range.length);
 }
 
@@ -191,6 +199,77 @@ static inline NSUInteger indexForCoordinates(NSUInteger *coordinates, NSUInteger
 
 +(BASampleArray *)block {
     return (BASampleArray *)[[[self alloc] initWithPower:3 order:32 size:4] autorelease];
+}
+
+#pragma mark - Convenience
++ (NSUInteger)maxOrderForPower:(NSUInteger)power size:(NSUInteger)size {
+    /*
+     mem_size = size * order^power
+     mem_size/size = order^power
+     order = log<power>(memory_size/size>
+     
+     max_mem = NSUIntegerMax = 2^N - 1
+     max_mem_plus_1 = 2^N; N = log2(NSUIntegerMax+1) = sizeof(NSUIntegerMax) * 8 = (32|64)
+     
+     mem_size <= max_mem
+     mem_size < max_mem_plus_1
+     
+     let max_mem = size * max_order^power
+     solve for max_order
+     
+     size * max_order^power = max_mem - 1
+     size * max_order^power = 2^N - 1
+     
+     
+     ASIDE:
+     (2^3)^3 = (2*2*2)*(2*2*2)*(2*2*2) = 2^9 = 2^(3*3)
+     a^4^2 = (a*a*a*a)*(a*a*a*a) = a^8 = a^(4*2)
+     (a^b)^c = a^(b*c)
+     
+     
+     let max_order = 2^M:
+     size * 2^M^power = 2^N - 1
+     size * 2^(M*power) = 2^N - 1
+     
+     let P = M * power:
+     size * 2^P = 2^N - 1
+     
+     
+     ASIDE:
+     2^3 = 8
+     log2(8) = 3
+     2^1 = 2
+     log2(2) = 1
+     2^0 = 1
+     log2(1) = 0
+     
+     
+     let size = 2^Q, (so Q = log2(size)):
+     2^Q * 2^P = 2^N - 1
+     2^(Q+P) = 2^N - 1
+     
+     Q + P < N
+     P < N - Q
+     
+     M*power < N - Q
+     M < (N - Q)/power
+     M < (N - Q)/power
+     
+     max_order < 2^((N - Q)/power)
+     max_order < 2^((N - log2(size))/power)
+     max_order < 2^((N - log2(size))/power)
+     max_order >= 2^((N - log2(size))/power) - 1
+     */
+    
+    if (size <= 1 && power <= 1) {
+        return NSUIntegerMax;
+    }
+    
+    static const NSUInteger N = sizeof(NSUInteger) * 8;
+    const NSUInteger Q = (NSUInteger)ceil(log2f((float)size));
+    const NSUInteger M = (N - Q) / power;
+    
+    return (1 << M) - 1;
 }
 
 @end

@@ -40,6 +40,34 @@
  *
  * In addition, BASampleArray (class) defines convenience methods for a specialized 2- and 3-dimensional
  * versions called "page" and "block". A page is a 32x32 array of 4-byte samples. A block is 32x32x32.
+ *
+ * The order must satisy the relation (order^power)*size <= NSUIntegerMax (aka ULONG_MAX).
+ * (Alternately, order <= (log<power>(NSUIntegerMax))/size or order <= (log<power*size>(NSUIntegerMax).)
+ * For example, an order of 4294967295 (2^32-1, or 0xffffffffUL) and a power of 3 would require
+ * memory of (2^32)^3 == (2^3)^32 == 7.9228162514264338e28, which is not addressable on 64-bit.
+ *
+ * The maximum order for a give power is 2^(sizeof(NSUInteger)*8/power) == 2^32/power or 2^64/power (integer division)
+ *
+ * The first few maximum orders for a sample array of single bytes:
+ *
+ *         |     32-bit    ||     64-bit
+ *  power  | order | count || order | count
+ * ________________________________________
+ *    1    |  2^32 |  2^32 ||  2^64 |  2^64
+ * ________________________________________
+ *    2    |  2^16 |  2^32 ||  2^32 |  2^64
+ * ________________________________________
+ *    3    |  1024 |  2^30 ||  2^21 |  2^63
+ * ________________________________________
+ *    4    |   256 |  2^32 ||  2^16 |  2^64
+ * ________________________________________
+ *    5    |    64 |  2^30 ||  4096 |  2^60
+ * ________________________________________
+ *    6    |    32 |  2^30 ||  1024 |  2^60
+ * ________________________________________
+ *    7    |    16 |  2^28 ||   512 |  2^63
+ * ________________________________________
+ *    8    |    16 |  2^32 ||   256 |  2^64
  */
 
 @interface BASampleArray : NSObject<NSCoding, NSCopying, BASampleArray> {
@@ -59,6 +87,7 @@
 @property (nonatomic, readonly) NSUInteger order;
 @property (nonatomic, readonly) NSUInteger size;
 @property (nonatomic, readonly) NSUInteger count;
+@property (nonatomic, readonly) NSUInteger length;
 
 @property (nonatomic, readonly) NSData *data;
 
@@ -77,5 +106,7 @@
 + (BASampleArray *)sampleArrayWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
 + (BASampleArray *)page;  // power=2, order=32, size=4 =>   4kB
 + (BASampleArray *)block; // power=3, order=32, size=4 => 128kB
+
++ (NSUInteger)maxOrderForPower:(NSUInteger)power size:(NSUInteger)size;
 
 @end
