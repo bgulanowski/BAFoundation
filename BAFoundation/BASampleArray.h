@@ -91,6 +91,7 @@
 
 @property (nonatomic, readonly) NSData *data;
 
+// if (order^power)*size > NSIntegerMax, throws an internal inconsistency exception
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size NS_DESIGNATED_INITIALIZER;
 
 - (BOOL)isEqualToSampleArray:(BASampleArray *)other;

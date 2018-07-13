@@ -73,6 +73,13 @@
 
 #pragma mark - BASampleArray
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size {
+    
+    const NSUInteger maxOrder = [[self class] maxOrderForPower:power size:size];
+    if (order > maxOrder) {
+        NSString *reason = [NSString stringWithFormat:@"Could not meet storage requirements for requested sample array parameters. Choose order <= %td.", maxOrder];
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+    }
+    
     self = [super init];
     if(self) {
 
