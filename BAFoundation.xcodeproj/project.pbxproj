@@ -113,6 +113,10 @@
 		84BBE64916E934C500AF371A /* BASparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BBE64716E934C500AF371A /* BASparseArray.m */; };
 		84C1E65C1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 84C1E65A1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84C1E65D1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */; };
+		84E3D11520F931D3007F8432 /* BANumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E3D11320F931D3007F8432 /* BANumber.h */; };
+		84E3D11620F931D3007F8432 /* BANumber.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E3D11320F931D3007F8432 /* BANumber.h */; };
+		84E3D11720F931D3007F8432 /* BANumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E3D11420F931D3007F8432 /* BANumber.m */; };
+		84E3D11820F931D3007F8432 /* BANumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E3D11420F931D3007F8432 /* BANumber.m */; };
 		84E61CDB1671553C00F796F8 /* BARelationshipProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 84E61CD91671553C00F796F8 /* BARelationshipProxy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */; };
 		84F246431ADCB03300D3C499 /* BATypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 84F246411ADCAFB400D3C499 /* BATypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -246,6 +250,8 @@
 		84BBE64A16E938FB00AF371A /* BASparseArrayPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BASparseArrayPrivate.h; sourceTree = "<group>"; };
 		84C1E65A1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription+BAAdditions.h"; sourceTree = "<group>"; };
 		84C1E65B1944DCDE00D7FF53 /* NSEntityDescription+BAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+BAAdditions.m"; sourceTree = "<group>"; };
+		84E3D11320F931D3007F8432 /* BANumber.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BANumber.h; sourceTree = "<group>"; };
+		84E3D11420F931D3007F8432 /* BANumber.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BANumber.m; sourceTree = "<group>"; };
 		84E61CD91671553C00F796F8 /* BARelationshipProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BARelationshipProxy.h; sourceTree = "<group>"; };
 		84E61CDA1671553C00F796F8 /* BARelationshipProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BARelationshipProxy.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84F246411ADCAFB400D3C499 /* BATypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BATypes.h; sourceTree = "<group>"; };
@@ -528,6 +534,8 @@
 				842F43761D29691200B5C48F /* BAKeyValuePair.m */,
 				4E98F9CE0F92E29B0085B8EC /* BATextIOHandler.h */,
 				4E98F9CF0F92E29B0085B8EC /* BATextIOHandler.m */,
+				84E3D11320F931D3007F8432 /* BANumber.h */,
+				84E3D11420F931D3007F8432 /* BANumber.m */,
 			);
 			name = Various;
 			sourceTree = "<group>";
@@ -539,6 +547,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84E3D11620F931D3007F8432 /* BANumber.h in Headers */,
 				84BBE63D16E8E35800AF371A /* NSData+GZip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -580,6 +589,7 @@
 				84BBE64816E934C500AF371A /* BASparseArray.h in Headers */,
 				848699461707AC0C00727A5D /* BAFunctions.h in Headers */,
 				84F246431ADCB03300D3C499 /* BATypes.h in Headers */,
+				84E3D11520F931D3007F8432 /* BANumber.h in Headers */,
 				846D8AD120C05A6F000C78EF /* BASimplexNoise.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -806,6 +816,7 @@
 				842F43881D29692D00B5C48F /* NSObject+BAIntrospection.m in Sources */,
 				84F9EE8717909D87005B6DD1 /* BANoise.m in Sources */,
 				84058EE81A8852DC009E2D04 /* BABitArray+Rectangles.m in Sources */,
+				84E3D11820F931D3007F8432 /* BANumber.m in Sources */,
 				84BBE63F16E8E35800AF371A /* NSData+GZip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -845,6 +856,7 @@
 				841944EF1637322B0036C725 /* BASampleArray.m in Sources */,
 				84E61CDC1671553C00F796F8 /* BARelationshipProxy.m in Sources */,
 				84A0D20716E271110010D80D /* BASparseBitArray.m in Sources */,
+				84E3D11720F931D3007F8432 /* BANumber.m in Sources */,
 				842F43821D29691200B5C48F /* NSDictionary+BAFExtensions.m in Sources */,
 				84BBE63E16E8E35800AF371A /* NSData+GZip.m in Sources */,
 				84BBE64516E932F000AF371A /* BASparseSampleArray.m in Sources */,
