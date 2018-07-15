@@ -17,12 +17,13 @@ typedef NSUInteger BABlockSample;
 
 @interface BASparseSampleArray : BASparseArray<BASampleArray> {
     BASampleArray *_samples;
-    NSUInteger _sampleSize;  // bytes per sample, starting at 1; default is 1
 }
 
 @property (nonatomic, strong, readonly) BASampleArray *samples;
-@property (nonatomic) NSUInteger sampleSize;
 
+- (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size NS_DESIGNATED_INITIALIZER;
+
+// deprecated; use -initWithPower:order:size
 - (id)initWithBase:(NSUInteger)base power:(NSUInteger)power sampleSize:(NSUInteger)size;
 
 - (BAPageSample)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y;

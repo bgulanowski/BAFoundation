@@ -21,14 +21,19 @@
 
 @protocol BASampleArray <NSObject>
 
+@property (nonatomic, readonly) NSUInteger power;
+@property (nonatomic, readonly) NSUInteger order;
+@property (nonatomic, readonly) NSUInteger size;
+
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
 
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index;
 - (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index;
+
+@optional
 - (void)sample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates;
 - (void)setSample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates;
 
-@optional
 - (void)readSamples:(UInt8 *)samples range:(NSRange)range;
 - (void)writeSamples:(UInt8 *)samples range:(NSRange)range;
 
@@ -82,10 +87,6 @@
 
 // These are immutable
 @property (nonatomic, readonly) UInt8 *samples;
-
-@property (nonatomic, readonly) NSUInteger power;
-@property (nonatomic, readonly) NSUInteger order;
-@property (nonatomic, readonly) NSUInteger size;
 @property (nonatomic, readonly) NSUInteger count;
 @property (nonatomic, readonly) NSUInteger length;
 
@@ -104,9 +105,10 @@
 - (float)blockFloatAtX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 - (void)setBlockFloat:(float)sample  atX:(NSUInteger)x y:(NSUInteger)y z:(NSUInteger)z;
 
-+ (BASampleArray *)sampleArrayWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
-+ (BASampleArray *)page;  // power=2, order=32, size=4 =>   4kB
-+ (BASampleArray *)block; // power=3, order=32, size=4 => 128kB
++ (instancetype)sampleArrayWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size;
++ (instancetype)vectorWithOrder:(NSUInteger)order size:(NSUInteger)size; // power=1
++ (instancetype)page;  // power=2, order=32, size=4 =>   4kB
++ (instancetype)block; // power=3, order=32, size=4 => 128kB
 
 + (NSUInteger)maxOrderForPower:(NSUInteger)power size:(NSUInteger)size;
 

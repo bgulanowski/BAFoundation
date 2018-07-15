@@ -24,7 +24,8 @@ static inline NSUInteger StorageIndexForCoordinates(NSUInteger *coords, NSUInteg
 
 @implementation BASparseSampleArray
 
-@synthesize sampleSize=_sampleSize;
+@synthesize order=_order;
+@synthesize size=_size;
 
 #pragma mark - Accessors
 
@@ -33,7 +34,7 @@ static inline NSUInteger StorageIndexForCoordinates(NSUInteger *coords, NSUInteg
         @synchronized(self) {
             if(!_samples) {
                 // self.base is the same thing as BASampleArray.order (Need to change the name on the latter)
-                _samples = [BASampleArray sampleArrayWithPower:self.power order:self.base size:_sampleSize];
+                _samples = [BASampleArray sampleArrayWithPower:self.power order:self.base size:_size];
             }
         }
     }
@@ -66,14 +67,18 @@ static inline NSUInteger StorageIndexForCoordinates(NSUInteger *coords, NSUInteg
 #pragma mark - BASparseArray
 
 - (id)initWithBase:(NSUInteger)base power:(NSUInteger)power {
-    return [self initWithBase:base power:power sampleSize:1];
+    return [self initWithPower:power order:base size:1];
 }
 
 
 #pragma mark - BASampleArray
 
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size {
-    return [self initWithBase:order power:power sampleSize:size];
+    self = [super initWithBase:order power:power];
+    if(self) {
+        _size = size;
+    }
+    return self;
 }
 
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index {
@@ -141,11 +146,7 @@ static inline NSUInteger StorageIndexForCoordinates(NSUInteger *coords, NSUInteg
 #pragma mark - BASparseSampleArray
 
 - (id)initWithBase:(NSUInteger)base power:(NSUInteger)power sampleSize:(NSUInteger)size {
-    self = [super initWithBase:base power:power];
-    if(self) {
-        self.sampleSize = size;
-    }
-    return self;
+    return [self initWithPower:power order:base size:size];
 }
 
 @end
