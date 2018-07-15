@@ -298,10 +298,24 @@ NS_INLINE void BANoiseDataShuffle(int p[512], unsigned seed) {
     }
     BANoiseRegion region = { { 0, 0, 0 }, { dims[0]*increment, dims[1]*increment, dims[2]*increment } };
     __block NSUInteger index = 0;
-    [noise iterateRegion:region block:^BOOL(double x, double y, double z, double value) {
-        [self setSample:(UInt8 *)&value atIndex:index++];
-        return NO;
-    } increment:increment];
+    BANoiseIteratorBlock block;
+    
+    if (_size == sizeof(double)) {
+        block = ^BOOL(double x, double y, double z, double value) {
+            value = (value * 0.5 + 0.5);
+            [self setSample:(UInt8 *)&value atIndex:index++];
+            return NO;
+        };
+    }
+    else {
+        block = ^BOOL(double x, double y, double z, double value) {
+            float v = (float)(value * 0.5 + 0.5);
+            [self setSample:(UInt8 *)&v atIndex:index++];
+            return NO;
+        };
+    }
+    
+    [noise iterateRegion:region block:block increment:increment];
 }
 
 @end
