@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class BANumber;
+
 /**
  * A Sample Array encapsulates an indexed block of memory. The length of the array and the size (in bytes) of
  * array elements are set at creation. The Sample Array interface takes care of calculating offsets. Values
@@ -94,6 +96,8 @@
 
 // if (order^power)*size > NSIntegerMax, throws an internal inconsistency exception
 - (id)initWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size NS_DESIGNATED_INITIALIZER;
+
+- (void)iterate:(void(^)(BANumber *, NSUInteger, UInt8 *))block;
 
 - (BOOL)isEqualToSampleArray:(BASampleArray *)other;
 

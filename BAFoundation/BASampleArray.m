@@ -9,6 +9,7 @@
 #import <BAFoundation/BASampleArray.h>
 
 #import <BAFoundation/BAFunctions.h>
+#import "BANumber.h"
 
 
 #pragma mark -
@@ -134,6 +135,19 @@
     memcpy(_samples+range.location*_size, samples, _size*range.length);
 }
 
+- (void)iterate:(void (^)(BANumber *, NSUInteger, UInt8 *))block {
+    
+    BANumber *indices = [[BANumber alloc] initWithBase:_order size:_power initialValue:0];
+    const NSUInteger length = _size * _count;
+    
+    for (NSUInteger i = 0; i < length; i+=_size) {
+        block(indices, i, &_samples[i]);
+        [indices increment];
+    }
+}
+
+// FIXME: this only works for order==2!
+// FIXME: this doesn't work at all
 static inline NSUInteger indexForCoordinates(NSUInteger *coordinates, NSUInteger power) {
     
     NSUInteger sampleIndex = 0;
@@ -198,6 +212,10 @@ static inline NSUInteger indexForCoordinates(NSUInteger *coordinates, NSUInteger
 #pragma mark - Factories
 + (BASampleArray *)sampleArrayWithPower:(NSUInteger)power order:(NSUInteger)order size:(NSUInteger)size {
     return (BASampleArray *)[[[self alloc] initWithPower:power order:order size:size] autorelease];
+}
+
++ (instancetype)vectorWithOrder:(NSUInteger)order size:(NSUInteger)size {
+    return (BASampleArray *)[[[self alloc] initWithPower:1 order:order size:size] autorelease];
 }
 
 + (BASampleArray *)page {
