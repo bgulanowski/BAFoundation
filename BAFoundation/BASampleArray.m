@@ -146,26 +146,30 @@
     }
 }
 
-// FIXME: this only works for order==2!
-// FIXME: this doesn't work at all
-static inline NSUInteger indexForCoordinates(NSUInteger *coordinates, NSUInteger power) {
+static inline NSUInteger indexForCoordinates(NSUInteger *coordinates, NSUInteger power, NSUInteger order) {
     
-    NSUInteger sampleIndex = 0;
-    NSUInteger factor = 1;
+    NSUInteger sampleIndex = coordinates[0];
+    NSUInteger factor = order;
     
-    for(NSUInteger i=0; i<power; ++i) {
-        sampleIndex += coordinates[i] * factor++;
+    for(NSUInteger i = 1; i < power; ++i) {
+        sampleIndex += coordinates[i] * factor;
+        factor *= order;
     }
     
     return sampleIndex;
 }
 
+// private, exposed to tests only
+- (NSUInteger)indexForCoordinates:(NSUInteger *)coordinates {
+    return indexForCoordinates(coordinates, _power, _order);
+}
+
 - (void)sample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates {
-     [self sample:sample atIndex:indexForCoordinates(coordinates, _power)];
+     [self sample:sample atIndex:indexForCoordinates(coordinates, _power, _order)];
 }
 
 - (void)setSample:(UInt8 *)sample atCoordinates:(NSUInteger *)coordinates {
-    [self setSample:sample atIndex:indexForCoordinates(coordinates, _power)];
+    [self setSample:sample atIndex:indexForCoordinates(coordinates, _power, _order)];
 }
 
 - (UInt32)pageSampleAtX:(NSUInteger)x y:(NSUInteger)y {
