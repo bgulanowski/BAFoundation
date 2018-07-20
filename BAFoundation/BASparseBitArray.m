@@ -718,8 +718,9 @@ static NSArray *BlanksForRegion(BARegion2 region) {
 
 // This creates the sizing information for a bit array
 + (BASampleArray *)sampleArrayForBase:(NSUInteger)base power:(NSUInteger)power {
-	if(power == 2)
+    if(power <= 2) {
 		return [BASampleArray sampleArrayForSize2:BASize2Make(base, base)];
+    }
 	
 	BASampleArray *sa = [BASampleArray sampleArrayWithPower:1 order:power size:sizeof(NSUInteger)];
 	for(NSUInteger i=0; i<power; ++i)

@@ -554,7 +554,7 @@ static inline BOOL clrBit(unsigned char *buffer, NSUInteger index) {
 	if(self) {
 		length = bits; // never changes
         size = [vector copy]; // never changes
-		size2 = size.size2;
+        size2 = size.size2;
 		bufferLength = bits/bitsInChar + ((bits%bitsInChar) > 0 ? 1 : 0);
 		self.count = 0;
 		if(length > 0) {

@@ -116,22 +116,22 @@
 }
 
 - (void)sample:(UInt8 *)sample atIndex:(NSUInteger)index {
-    NSAssert(index < _count, @"index %td beyond bounds %td", index, _count);
+    NSAssert(index <= _count, @"index %td beyond bounds %td", index, _count);
     memcpy(sample, _samples + index * _size, _size);
 }
 
 - (void)setSample:(UInt8 *)sample atIndex:(NSUInteger)index {
-    NSAssert(index < _count, @"index %td beyond bounds %td", index, _count);
+    NSAssert(index <= _count, @"index %td beyond bounds %td", index, _count);
     memcpy(_samples + index * _size, sample, _size);
 }
 
 - (void)readSamples:(UInt8 *)samples range:(NSRange)range {
-    NSAssert(NSMaxRange(range) < _count, @"range %@ beyond bounds %td", NSStringFromRange(range), _count);
+    NSAssert(NSMaxRange(range) <= _count, @"range %@ beyond bounds %td", NSStringFromRange(range), _count);
     memcpy(samples, _samples+range.location * _size, range.length * _size);
 }
 
 - (void)writeSamples:(UInt8 *)samples range:(NSRange)range {
-    NSAssert(NSMaxRange(range) < _count, @"range %@ beyond bounds %td", NSStringFromRange(range), _count);
+    NSAssert(NSMaxRange(range) <= _count, @"range %@ beyond bounds %td", NSStringFromRange(range), _count);
     memcpy(_samples+range.location*_size, samples, _size*range.length);
 }
 
