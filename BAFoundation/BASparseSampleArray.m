@@ -50,20 +50,6 @@ static inline NSUInteger StorageIndexForCoordinates(NSUInteger *coords, NSUInteg
 }
 
 
-#pragma mark - NSCoding
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [super initWithCoder:aDecoder];
-    if(self) {
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [super encodeWithCoder:aCoder];
-}
-
-
 #pragma mark - BASparseArray
 
 - (id)initWithBase:(NSUInteger)base power:(NSUInteger)power {
