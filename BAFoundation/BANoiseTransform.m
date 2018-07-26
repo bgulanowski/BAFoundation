@@ -141,9 +141,9 @@ static BANoiseVector transformVector(BANoiseVector vector, double *matrix) {
     
     BANoiseVector r;
     
-    r.x = vector.x * matrix[0] + vector.y * matrix[4] + vector.z * matrix[8];
-    r.y = vector.x * matrix[1] + vector.y * matrix[5] + vector.z * matrix[9];
-    r.z = vector.x * matrix[2] + vector.y * matrix[6] + vector.z * matrix[10];
+    r.x = vector.x * matrix[0] + vector.y * matrix[4] + vector.z * matrix[8] + matrix[12];
+    r.y = vector.x * matrix[1] + vector.y * matrix[5] + vector.z * matrix[9] + matrix[13];
+    r.z = vector.x * matrix[2] + vector.y * matrix[6] + vector.z * matrix[10] + matrix[14];
     
     return r;
 }
