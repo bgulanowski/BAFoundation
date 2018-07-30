@@ -27,6 +27,7 @@
 		84A0D23516E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D21E16E2724F0010D80D /* NSManagedObjectContext+BAAdditions.m */; };
 		84A0D23716E2724F0010D80D /* NSObject+PlistTransforming.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A0D22016E2724F0010D80D /* NSObject+PlistTransforming.m */; };
 		84A0D23916E2728A0010D80D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84A0D23816E2728A0010D80D /* UIKit.framework */; };
+		84ADAD83210F596700F40793 /* BANumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ADAD82210F596700F40793 /* BANumber.m */; };
 		84AEC9CA184BB6C9002AC8D0 /* BANoise.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEC9C1184BB6C9002AC8D0 /* BANoise.m */; };
 		84AEC9CC184BB6C9002AC8D0 /* BASparseArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEC9C3184BB6C9002AC8D0 /* BASparseArray.m */; };
 		84AEC9CF184BB6C9002AC8D0 /* BASparseSampleArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 84AEC9C6184BB6C9002AC8D0 /* BASparseSampleArray.m */; };
@@ -152,6 +153,8 @@
 		84A0D21F16E2724F0010D80D /* NSObject+PlistTransforming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+PlistTransforming.h"; sourceTree = "<group>"; };
 		84A0D22016E2724F0010D80D /* NSObject+PlistTransforming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+PlistTransforming.m"; sourceTree = "<group>"; };
 		84A0D23816E2728A0010D80D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		84ADAD81210F596700F40793 /* BANumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BANumber.h; sourceTree = "<group>"; };
+		84ADAD82210F596700F40793 /* BANumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BANumber.m; sourceTree = "<group>"; };
 		84AEC9C0184BB6C9002AC8D0 /* BANoise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BANoise.h; sourceTree = "<group>"; };
 		84AEC9C1184BB6C9002AC8D0 /* BANoise.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = BANoise.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		84AEC9C2184BB6C9002AC8D0 /* BASparseArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BASparseArray.h; sourceTree = "<group>"; };
@@ -204,6 +207,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84ADAD7C210F58C500F40793 /* Various */ = {
+			isa = PBXGroup;
+			children = (
+				B6AAB6DC14C21BC20007A0A4 /* BAGraphNode.h */,
+				B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */,
+				842F43721D29507300B5C48F /* BAKeyValuePair.h */,
+				842F43731D29507300B5C48F /* BAKeyValuePair.m */,
+				84ADAD81210F596700F40793 /* BANumber.h */,
+				84ADAD82210F596700F40793 /* BANumber.m */,
+				B6AAB6E014C21BC20007A0A4 /* BATextIOHandler.h */,
+				B6AAB6E114C21BC20007A0A4 /* BATextIOHandler.m */,
+				84A0D21316E2724F0010D80D /* BAUUID.h */,
+				84A0D21416E2724F0010D80D /* BAUUID.m */,
+			);
+			name = Various;
+			sourceTree = "<group>";
+		};
+		84ADAD7D210F592A00F40793 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				84AECAE7184BC080002AC8D0 /* BAFunctions.h */,
+				84A0D20C16E2724F0010D80D /* BAMacros.h */,
+				84F246E81ADF3B7100D3C499 /* BATypes.h */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
 		84AECAFB184BCAA7002AC8D0 /* Transformers */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +256,8 @@
 				84AEC9C8184BB6C9002AC8D0 /* NSData+GZip.m */,
 				842F436F1D294FBA00B5C48F /* NSDictionary+BAFExtensions.h */,
 				842F43701D294FBA00B5C48F /* NSDictionary+BAFExtensions.m */,
+				84BD6A6F1B80DEE6005C658F /* NSObject+BAIntrospection.h */,
+				84BD6A701B80DEE6005C658F /* NSObject+BAIntrospection.m */,
 				84A0D21F16E2724F0010D80D /* NSObject+PlistTransforming.h */,
 				84A0D22016E2724F0010D80D /* NSObject+PlistTransforming.m */,
 			);
@@ -249,9 +281,11 @@
 			name = "Core Data";
 			sourceTree = "<group>";
 		};
-		84AECAFE184BCAEA002AC8D0 /* Sample Arrays */ = {
+		84AECAFE184BCAEA002AC8D0 /* Data Arrays */ = {
 			isa = PBXGroup;
 			children = (
+				84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */,
+				84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */,
 				B6AAB6DA14C21BC20007A0A4 /* BABitArray.h */,
 				B6AAB6DB14C21BC20007A0A4 /* BABitArray.m */,
 				84A0D20F16E2724F0010D80D /* BASampleArray.h */,
@@ -264,7 +298,7 @@
 				84AEC9C5184BB6C9002AC8D0 /* BASparseSampleArray.h */,
 				84AEC9C6184BB6C9002AC8D0 /* BASparseSampleArray.m */,
 			);
-			name = "Sample Arrays";
+			name = "Data Arrays";
 			sourceTree = "<group>";
 		};
 		84AECAFF184BCAF8002AC8D0 /* Noise */ = {
@@ -285,15 +319,6 @@
 				84B269B020BB13A4005F8A93 /* BASimplexNoise.m */,
 			);
 			name = Noise;
-			sourceTree = "<group>";
-		};
-		84BD6A6E1B80DECF005C658F /* Introspection */ = {
-			isa = PBXGroup;
-			children = (
-				84BD6A6F1B80DEE6005C658F /* NSObject+BAIntrospection.h */,
-				84BD6A701B80DEE6005C658F /* NSObject+BAIntrospection.m */,
-			);
-			name = Introspection;
 			sourceTree = "<group>";
 		};
 		B6AAB6BF14C21B9A0007A0A4 = {
@@ -327,26 +352,14 @@
 			isa = PBXGroup;
 			children = (
 				84939D631D3E42D10051811E /* BAFoundation.h */,
-				84BD6A6E1B80DECF005C658F /* Introspection */,
-				84F246E61ADF3B7100D3C499 /* BABitArray+Rectangles.h */,
-				84F246E71ADF3B7100D3C499 /* BABitArray+Rectangles.m */,
-				84F246E81ADF3B7100D3C499 /* BATypes.h */,
-				84AECAE7184BC080002AC8D0 /* BAFunctions.h */,
-				84A0D20C16E2724F0010D80D /* BAMacros.h */,
 				84AECAFD184BCAC9002AC8D0 /* Core Data */,
-				B6AAB6DC14C21BC20007A0A4 /* BAGraphNode.h */,
-				B6AAB6DD14C21BC20007A0A4 /* BAGraphNode.m */,
-				84AECAFF184BCAF8002AC8D0 /* Noise */,
-				84AECAFE184BCAEA002AC8D0 /* Sample Arrays */,
-				B6AAB6E014C21BC20007A0A4 /* BATextIOHandler.h */,
-				B6AAB6E114C21BC20007A0A4 /* BATextIOHandler.m */,
-				84A0D21316E2724F0010D80D /* BAUUID.h */,
-				84A0D21416E2724F0010D80D /* BAUUID.m */,
-				84AECAFB184BCAA7002AC8D0 /* Transformers */,
+				84AECAFE184BCAEA002AC8D0 /* Data Arrays */,
 				84AECAFC184BCAB5002AC8D0 /* Foundation Extensions */,
+				84AECAFF184BCAF8002AC8D0 /* Noise */,
+				84ADAD7D210F592A00F40793 /* Other Sources */,
 				B6AAB6D014C21B9A0007A0A4 /* Supporting Files */,
-				842F43721D29507300B5C48F /* BAKeyValuePair.h */,
-				842F43731D29507300B5C48F /* BAKeyValuePair.m */,
+				84AECAFB184BCAA7002AC8D0 /* Transformers */,
+				84ADAD7C210F58C500F40793 /* Various */,
 			);
 			name = BAFoundation;
 			path = ../BAFoundation;
@@ -435,6 +448,7 @@
 				84A0D22B16E2724F0010D80D /* BAUUID.m in Sources */,
 				84A0D22D16E2724F0010D80D /* DateTransformer.m in Sources */,
 				84A0D22F16E2724F0010D80D /* FloatNumberTransformer.m in Sources */,
+				84ADAD83210F596700F40793 /* BANumber.m in Sources */,
 				842F43711D294FBA00B5C48F /* NSDictionary+BAFExtensions.m in Sources */,
 				84A0D23116E2724F0010D80D /* IntegerNumberTransformer.m in Sources */,
 				84A0D23316E2724F0010D80D /* NSManagedObject+BAAdditions.m in Sources */,
